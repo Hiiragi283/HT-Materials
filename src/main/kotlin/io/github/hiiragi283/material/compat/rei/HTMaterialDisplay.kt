@@ -16,7 +16,7 @@ class HTMaterialDisplay(val material: HTMaterial) : Display {
 
     override fun getOutputEntries(): MutableList<EntryIngredient> = mutableListOf(entries)
 
-    override fun getCategoryIdentifier(): CategoryIdentifier<*> = HTReiPlugin.MATERIAL_ID
+    override fun getCategoryIdentifier(): CategoryIdentifier<*> = HMReiPlugin.MATERIAL_ID
 
     fun getItemEntries(): Collection<Item> = HTPartManager.getPartToItemTable().row(material).values.flatten().toSet()
 

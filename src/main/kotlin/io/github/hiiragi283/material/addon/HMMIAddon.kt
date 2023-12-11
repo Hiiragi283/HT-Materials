@@ -7,7 +7,7 @@ import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.common.util.isAir
 import net.minecraft.util.registry.Registry
 
-object HTMIAddon : HTMaterialsAddon {
+object HMMIAddon : HTMaterialsAddon {
 
     override val modId: String = "modern_industrialization"
 

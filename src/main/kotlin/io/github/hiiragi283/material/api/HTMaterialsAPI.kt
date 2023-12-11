@@ -15,6 +15,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import java.util.*
 import java.util.function.Consumer
+import java.util.function.Supplier
 
 @Suppress("unused")
 object HTMaterialsAPI {
@@ -22,7 +23,7 @@ object HTMaterialsAPI {
     //    Fluid    //
 
     @JvmStatic
-    fun getMaterialFluid(material: HTMaterial): HTMaterialFluid? = HTMaterialFluid.getStill(material)
+    fun getMaterialFluid(material: HTMaterial): HTMaterialFluid? = HTMaterialFluid.getFluid(material)
 
     //    Material - Common    //
 
@@ -84,6 +85,11 @@ object HTMaterialsAPI {
 
     @JvmStatic
     fun getItems(material: HTMaterial, shape: HTShape): Collection<Item> = HTPartManager.getItems(material, shape)
+
+    @JvmStatic
+    fun registerItemToPart(material: HTMaterial, shape: HTShape, supplier: Supplier<out ItemConvertible>) {
+        HTPartManager.register(material, shape, supplier.get())
+    }
 
     @JvmStatic
     fun registerItemToPart(material: HTMaterial, shape: HTShape, itemConvertible: ItemConvertible) {

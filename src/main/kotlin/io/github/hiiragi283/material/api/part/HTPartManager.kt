@@ -16,6 +16,7 @@ import net.minecraft.item.Items
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryEntry
 import java.util.*
+import java.util.function.Supplier
 
 object HTPartManager {
 
@@ -134,8 +135,6 @@ object HTPartManager {
         forceRegister(HTVanillaMaterials.LAPIS, HTShapes.BLOCK, Items.LAPIS_BLOCK)
         forceRegister(HTVanillaMaterials.LAPIS, HTShapes.GEM, Items.LAPIS_LAZULI)
         forceRegister(HTVanillaMaterials.LAPIS, HTShapes.ORE, Items.LAPIS_ORE)
-        //Lava
-        forceRegister(HTVanillaMaterials.LAVA, HTShapes.BUCKET, Items.LAVA_BUCKET)
         //Nether Brick
         forceRegister(HTVanillaMaterials.NETHER_BRICK, HTShapes.BLOCK, Items.NETHER_BRICKS)
         forceRegister(HTVanillaMaterials.NETHER_BRICK, HTShapes.GEM, Items.NETHER_BRICK)
@@ -161,8 +160,6 @@ object HTPartManager {
         forceRegister(HTVanillaMaterials.STONE, HTShapes.BLOCK, Items.STONE)
         //Tuff
         forceRegister(HTVanillaMaterials.TUFF, HTShapes.BLOCK, Items.TUFF)
-        //Water
-        forceRegister(HTVanillaMaterials.WATER, HTShapes.BUCKET, Items.WATER_BUCKET)
         //Wood
         forceRegister(HTVanillaMaterials.WOOD, HTShapes.BLOCK, Items.OAK_PLANKS)
         forceRegister(HTVanillaMaterials.WOOD, HTShapes.BLOCK, Items.BIRCH_PLANKS)
@@ -194,6 +191,11 @@ object HTPartManager {
 
     private fun checkItemNotAir(itemConvertible: ItemConvertible): Item = itemConvertible.asItem().also { item ->
         check(!item.isAir()) { "The Entry: $itemConvertible has no valid Item!" }
+    }
+
+    @JvmStatic
+    fun register(material: HTMaterial, shape: HTShape, supplier: Supplier<out ItemConvertible>) {
+        register(material, shape, supplier.get())
     }
 
     @JvmStatic

@@ -8,7 +8,7 @@ import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShapes
 import techreborn.init.TRContent
 
-object HTTRAddon : HTMaterialsAddon {
+object HMTRAddon : HTMaterialsAddon {
 
     override val modId: String = "techreborn"
 

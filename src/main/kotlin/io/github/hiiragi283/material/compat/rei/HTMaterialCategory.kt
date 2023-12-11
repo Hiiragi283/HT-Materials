@@ -29,7 +29,7 @@ import net.minecraft.util.math.MathHelper
 @Suppress("UnstableApiUsage")
 object HTMaterialCategory : DisplayCategory<HTMaterialDisplay> {
 
-    override fun getCategoryIdentifier(): CategoryIdentifier<HTMaterialDisplay> = HTReiPlugin.MATERIAL_ID
+    override fun getCategoryIdentifier(): CategoryIdentifier<HTMaterialDisplay> = HMReiPlugin.MATERIAL_ID
 
     override fun getTitle(): Text = LiteralText(HTMaterialsCommon.MOD_NAME)
 

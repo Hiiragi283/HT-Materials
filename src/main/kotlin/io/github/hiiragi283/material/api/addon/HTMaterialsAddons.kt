@@ -1,6 +1,7 @@
 package io.github.hiiragi283.material.api.addon
 
 import io.github.hiiragi283.material.api.block.HTMaterialBlock
+import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.part.HTPartManager.hasDefaultItem
@@ -62,6 +63,7 @@ object HTMaterialsAddons : HTMaterialsAddon {
 
         registerLootTables()
         registerRecipes()
+        HTFluidManager.registerAllFluids()
 
         RRPCallback.BEFORE_USER.register {
             //Register Loot Tables

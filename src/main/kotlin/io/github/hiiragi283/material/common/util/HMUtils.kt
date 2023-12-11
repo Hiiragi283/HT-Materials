@@ -1,10 +1,13 @@
 @file:JvmName("HTUtil")
-@file:Suppress("unused")
+@file:Suppress("unused", "UnstableApiUsage")
 
 package io.github.hiiragi283.material.common.util
 
 import net.fabricmc.api.EnvType
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction
 import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.ModContainer
+import net.fabricmc.loader.api.metadata.ModMetadata
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.item.BlockItem
@@ -35,8 +38,17 @@ fun Identifier.modify(function: Function<String, String>) = Identifier(this.name
 
 //    Loader    //
 
+fun getAllModId(): Collection<String> = FabricLoader.getInstance()
+    .allMods
+    .map(ModContainer::getMetadata)
+    .map(ModMetadata::getId)
+
 fun getEnvType(): EnvType = FabricLoader.getInstance().environmentType
 
 fun isDevEnv(): Boolean = FabricLoader.getInstance().isDevelopmentEnvironment
 
 fun isModLoaded(id: String): Boolean = FabricLoader.getInstance().isModLoaded(id)
+
+//    Storage    //
+
+fun getTransaction(): Transaction = Transaction.getCurrentUnsafe()?.openNested() ?: Transaction.openOuter()

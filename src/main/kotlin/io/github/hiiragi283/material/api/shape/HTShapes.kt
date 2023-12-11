@@ -16,16 +16,12 @@ object HTShapes {
     fun getShape(name: String): HTShape? = map[name]
 
     @JvmStatic
-    fun register(shape: HTShape) {
-        map.putIfAbsent(shape.name, shape)
-    }
+    fun register(shape: HTShape): HTShape = shape.also { map.putIfAbsent(it.name, shape) }
 
     //    Block    //
 
     @JvmField
-    val BLOCK: HTShape = object : HTShape {
-
-        override val name: String = "block"
+    val BLOCK: HTShape = register(object : HTShape("block") {
 
         override fun canGenerateBlock(material: HTMaterial): Boolean = material.hasFlag(HTMaterialFlag.GENERATE_BLOCk)
 
@@ -37,12 +33,10 @@ object HTShapes {
 
         override fun getCommonPath(material: HTMaterial): String = "${material.getName()}_blocks"
 
-    }.register()
+    })
 
     @JvmField
-    val ORE: HTShape = object : HTShape {
-
-        override val name: String = "ore"
+    val ORE: HTShape = register(object : HTShape("ore") {
 
         override fun canGenerateBlock(material: HTMaterial): Boolean = false
 
@@ -54,12 +48,10 @@ object HTShapes {
 
         override fun getCommonPath(material: HTMaterial): String = "${material.getName()}_ores"
 
-    }.register()
+    })
 
     @JvmField
-    val RAW_BLOCK: HTShape = object : HTShape {
-
-        override val name: String = "raw_block"
+    val RAW_BLOCK: HTShape = register(object : HTShape("raw_block") {
 
         override fun canGenerateBlock(material: HTMaterial): Boolean = false
 
@@ -71,15 +63,13 @@ object HTShapes {
 
         override fun getCommonPath(material: HTMaterial): String = "raw_${material.getName()}_blocks"
 
-    }.register()
+    })
 
     //    Fluid    //
 
     //DO NOT call register()!!
     @JvmField
-    val FLUID = object : HTShape {
-
-        override val name: String = "fluid"
+    val FLUID = object : HTShape("fluid") {
 
         override fun canGenerateBlock(material: HTMaterial): Boolean = false
 
@@ -100,57 +90,55 @@ object HTShapes {
     //    Item    //
 
     @JvmField
-    val BLADE: HTShape = HTSimpleShape.Item("blade")
+    val BLADE: HTShape = HTShape.create("blade")
 
     @JvmField
-    val BOLT: HTShape = HTSimpleShape.Item("bolt")
+    val BOLT: HTShape = HTShape.create("bolt")
 
     @JvmField
-    val BUCKET: HTShape = HTSimpleShape.Item("bucket")
+    val BUCKET: HTShape = HTShape.create("bucket")
 
     @JvmField
-    val CRUSHED_DUST: HTShape = HTSimpleShape.Item("crushed_dust")
+    val CRUSHED_DUST: HTShape = HTShape.create("crushed_dust")
 
     @JvmField
-    val CURVED_PLATE: HTShape = HTSimpleShape.Item("curved_plate")
+    val CURVED_PLATE: HTShape = HTShape.create("curved_plate")
 
     @JvmField
-    val DOUBLE_INGOT: HTShape = HTSimpleShape.Item("double_ingot")
+    val DOUBLE_INGOT: HTShape = HTShape.create("double_ingot")
 
     @JvmField
-    val DRILL_HEAD: HTShape = HTSimpleShape.Item("drill_head")
+    val DRILL_HEAD: HTShape = HTShape.create("drill_head")
 
     @JvmField
-    val DUST: HTShape = HTSimpleShape.Item("dust")
+    val DUST: HTShape = HTShape.create("dust")
 
     @JvmField
-    val GEAR: HTShape = HTSimpleShape.Item("gear")
+    val GEAR: HTShape = HTShape.create("gear")
 
     @JvmField
-    val GEM: HTShape = HTSimpleShape.Item("gem")
+    val GEM: HTShape = HTShape.create("gem")
 
     @JvmField
-    val HOT_INGOT: HTShape = HTSimpleShape.Item("hot_ingot")
+    val HOT_INGOT: HTShape = HTShape.create("hot_ingot")
 
     @JvmField
-    val INGOT: HTShape = HTSimpleShape.Item("ingot")
+    val INGOT: HTShape = HTShape.create("ingot")
 
     @JvmField
-    val LARGE_PLATE: HTShape = HTSimpleShape.Item("large_plate")
+    val LARGE_PLATE: HTShape = HTShape.create("large_plate")
 
     @JvmField
-    val NUGGET: HTShape = HTSimpleShape.Item("nugget")
+    val NUGGET: HTShape = HTShape.create("nugget")
 
     @JvmField
-    val PLATE: HTShape = HTSimpleShape.Item("plate")
+    val PLATE: HTShape = HTShape.create("plate")
 
     @JvmField
-    val RING: HTShape = HTSimpleShape.Item("ring")
+    val RING: HTShape = HTShape.create("ring")
 
     @JvmField
-    val RAW_ORE: HTShape = object : HTShape {
-
-        override val name: String = "raw_ore"
+    val RAW_ORE: HTShape = object : HTShape("raw_ore") {
 
         override fun canGenerateBlock(material: HTMaterial): Boolean = false
 
@@ -162,21 +150,21 @@ object HTShapes {
 
         override fun getCommonPath(material: HTMaterial): String = "raw_${material.getName()}_ores"
 
-    }.register()
+    }
 
     @JvmField
-    val ROD: HTShape = HTSimpleShape.Item("rod")
+    val ROD: HTShape = HTShape.create("rod")
 
     @JvmField
-    val ROTOR: HTShape = HTSimpleShape.Item("rotor")
+    val ROTOR: HTShape = HTShape.create("rotor")
 
     @JvmField
-    val SMALL_DUST: HTShape = HTSimpleShape.Item("small_dust")
+    val SMALL_DUST: HTShape = HTShape.create("small_dust")
 
     @JvmField
-    val TINY_DUST: HTShape = HTSimpleShape.Item("tiny_dust")
+    val TINY_DUST: HTShape = HTShape.create("tiny_dust")
 
     @JvmField
-    val WIRE: HTShape = HTSimpleShape.Item("wire")
+    val WIRE: HTShape = HTShape.create("wire")
 
 }
