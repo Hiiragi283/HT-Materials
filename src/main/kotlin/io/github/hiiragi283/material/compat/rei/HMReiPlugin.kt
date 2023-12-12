@@ -3,8 +3,6 @@ package io.github.hiiragi283.material.compat.rei
 import dev.architectury.fluid.FluidStack
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.part.HTPart
-import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.common.HTMaterialsCommon
 import me.shedaniel.rei.api.client.entry.renderer.EntryRendererRegistry
 import me.shedaniel.rei.api.client.gui.widgets.Tooltip
@@ -30,7 +28,7 @@ object HMReiPlugin : REIClientPlugin {
         registry.transformTooltip(VanillaEntryTypes.FLUID) { fluidStack: EntryStack<FluidStack>, _, tooltip: Tooltip? ->
             HTFluidManager.getMaterial(fluidStack.value.fluid)?.run {
                 val tooltipDummy: MutableList<Text> = mutableListOf()
-                HTPart(this, HTShapes.FLUID).appendTooltip(ItemStack.EMPTY, tooltipDummy)
+                this.appendFluidTooltip(ItemStack.EMPTY, tooltipDummy)
                 tooltip?.addAllTexts(tooltipDummy)
             }
             return@transformTooltip tooltip
@@ -42,7 +40,10 @@ object HMReiPlugin : REIClientPlugin {
     }
 
     override fun registerDisplays(registry: DisplayRegistry) {
-        HTMaterial.REGISTRY.map(::HTMaterialDisplay).forEach(registry::add)
+        HTMaterial.REGISTRY
+            .map(::HTMaterialDisplay)
+            .filterNot { it.getEntries().isEmpty() }
+            .forEach(registry::add)
     }
 
     override fun registerEntries(registry: EntryRegistry) {

@@ -65,77 +65,52 @@ object HTShapes {
 
     })
 
-    //    Fluid    //
-
-    //DO NOT call register()!!
-    @JvmField
-    val FLUID = object : HTShape("fluid") {
-
-        override fun canGenerateBlock(material: HTMaterial): Boolean = false
-
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-        override fun getIdPath(material: HTMaterial): String = material.getName()
-
-        override fun getForgePath(material: HTMaterial): String {
-            throw UnsupportedOperationException()
-        }
-
-        override fun getCommonPath(material: HTMaterial): String {
-            throw UnsupportedOperationException()
-        }
-
-    }
-
     //    Item    //
 
     @JvmField
-    val BLADE: HTShape = HTShape.create("blade")
+    val BLADE: HTShape = HTShape.createAndRegister("blade")
 
     @JvmField
-    val BOLT: HTShape = HTShape.create("bolt")
+    val BOLT: HTShape = HTShape.createAndRegister("bolt")
 
     @JvmField
-    val BUCKET: HTShape = HTShape.create("bucket")
+    val CRUSHED_DUST: HTShape = HTShape.createAndRegister("crushed_dust")
 
     @JvmField
-    val CRUSHED_DUST: HTShape = HTShape.create("crushed_dust")
+    val CURVED_PLATE: HTShape = HTShape.createAndRegister("curved_plate")
 
     @JvmField
-    val CURVED_PLATE: HTShape = HTShape.create("curved_plate")
+    val DOUBLE_INGOT: HTShape = HTShape.createAndRegister("double_ingot")
 
     @JvmField
-    val DOUBLE_INGOT: HTShape = HTShape.create("double_ingot")
+    val DRILL_HEAD: HTShape = HTShape.createAndRegister("drill_head")
 
     @JvmField
-    val DRILL_HEAD: HTShape = HTShape.create("drill_head")
+    val DUST: HTShape = HTShape.createAndRegister("dust")
 
     @JvmField
-    val DUST: HTShape = HTShape.create("dust")
+    val GEAR: HTShape = HTShape.createAndRegister("gear")
 
     @JvmField
-    val GEAR: HTShape = HTShape.create("gear")
+    val GEM: HTShape = HTShape.createAndRegister("gem")
 
     @JvmField
-    val GEM: HTShape = HTShape.create("gem")
+    val HOT_INGOT: HTShape = HTShape.createAndRegister("hot_ingot")
 
     @JvmField
-    val HOT_INGOT: HTShape = HTShape.create("hot_ingot")
+    val INGOT: HTShape = HTShape.createAndRegister("ingot")
 
     @JvmField
-    val INGOT: HTShape = HTShape.create("ingot")
+    val LARGE_PLATE: HTShape = HTShape.createAndRegister("large_plate")
 
     @JvmField
-    val LARGE_PLATE: HTShape = HTShape.create("large_plate")
+    val NUGGET: HTShape = HTShape.createAndRegister("nugget")
 
     @JvmField
-    val NUGGET: HTShape = HTShape.create("nugget")
+    val PLATE: HTShape = HTShape.createAndRegister("plate")
 
     @JvmField
-    val PLATE: HTShape = HTShape.create("plate")
-
-    @JvmField
-    val RING: HTShape = HTShape.create("ring")
+    val RING: HTShape = HTShape.createAndRegister("ring")
 
     @JvmField
     val RAW_ORE: HTShape = object : HTShape("raw_ore") {
@@ -153,18 +128,18 @@ object HTShapes {
     }
 
     @JvmField
-    val ROD: HTShape = HTShape.create("rod")
+    val ROD: HTShape = HTShape.createAndRegister("rod")
 
     @JvmField
-    val ROTOR: HTShape = HTShape.create("rotor")
+    val ROTOR: HTShape = HTShape.createAndRegister("rotor")
 
     @JvmField
-    val SMALL_DUST: HTShape = HTShape.create("small_dust")
+    val SMALL_DUST: HTShape = HTShape.createAndRegister("small_dust")
 
     @JvmField
-    val TINY_DUST: HTShape = HTShape.create("tiny_dust")
+    val TINY_DUST: HTShape = HTShape.createAndRegister("tiny_dust")
 
     @JvmField
-    val WIRE: HTShape = HTShape.create("wire")
+    val WIRE: HTShape = HTShape.createAndRegister("wire")
 
 }

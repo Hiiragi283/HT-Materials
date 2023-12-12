@@ -21,7 +21,9 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
     lateinit var fluid: Fluid
 
-    var attribute = AttributeHandler()
+    var temperature: Int = FluidConstants.WATER_TEMPERATURE
+    var viscosity: Int = FluidConstants.WATER_VISCOSITY
+    var isGas: Boolean = false
 
     override val key: HTPropertyKey<HTFluidProperty> = HTPropertyKey.FLUID
 
@@ -31,35 +33,27 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
     private val fluidVariant: FluidVariant by lazy { FluidVariant.of(fluid) }
 
+    private lateinit var handlerCache: FluidVariantAttributeHandler
+
     override fun appendTooltip(part: HTPart, stack: ItemStack, lines: MutableList<Text>) {
+        if (!::handlerCache.isInitialized) {
+            handlerCache = FluidVariantAttributes.getHandlerOrDefault(fluid)
+        }
         //Luminance
-        lines.add(
-            TranslatableText(
-                "tooltip.ht_materials.material.luminance",
-                attribute.getLuminance(fluidVariant)
-            )
-        )
+        handlerCache.getLuminance(fluidVariant).run {
+            lines.add(TranslatableText("tooltip.ht_materials.material.luminance", this))
+        }
         //Temperature
-        lines.add(
-            TranslatableText(
-                "tooltip.ht_materials.material.temperature",
-                attribute.getTemperature(fluidVariant)
-            )
-        )
+        handlerCache.getTemperature(fluidVariant).run {
+            lines.add(TranslatableText("tooltip.ht_materials.material.temperature", this))
+        }
         //Viscosity
-        lines.add(
-            TranslatableText(
-                "tooltip.ht_materials.material.viscosity",
-                attribute.getViscosity(fluidVariant, null)
-            )
-        )
+        handlerCache.getViscosity(fluidVariant, null).run {
+            lines.add(TranslatableText("tooltip.ht_materials.material.viscosity", this))
+        }
         //Is gas
-        var key = "tooltip.ht_materials.material.state.%s"
-            if (attribute.isLighterThanAir(fluidVariant)) {
-                key = key.format("gas")
-            } else {
-                key = key.format("fluid")
-            }
+        val type: String = if (handlerCache.isLighterThanAir(fluidVariant)) "gas" else "fluid"
+        val key = "tooltip.ht_materials.material.state.$type"
         lines.add(TranslatableText("tooltip.ht_materials.material.state", TranslatableText(key)))
     }
 
@@ -69,31 +63,25 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
         HTMaterialFluid.Still(material).run {
             HTMaterialFluid.Bucket(this)
             HTMaterialFluid.Block(this)
-            FluidVariantAttributes.register(this, attribute)
+            FluidVariantAttributes.register(this, object : FluidVariantAttributeHandler {
+
+                override fun getFillSound(variant: FluidVariant): Optional<SoundEvent> =
+                    Optional.of(SoundEvents.ITEM_BUCKET_FILL_LAVA)
+                        .filter { temperature > FluidConstants.WATER_TEMPERATURE }
+
+                override fun getEmptySound(variant: FluidVariant): Optional<SoundEvent> =
+                    Optional.of(SoundEvents.ITEM_BUCKET_EMPTY_LAVA)
+                        .filter { temperature > FluidConstants.WATER_TEMPERATURE }
+
+                override fun getTemperature(variant: FluidVariant): Int = temperature
+
+                override fun getViscosity(variant: FluidVariant, world: World?): Int = viscosity
+
+                override fun isLighterThanAir(variant: FluidVariant): Boolean = isGas
+
+            })
             fluid = this
         }
-    }
-
-    //    Attribute    //
-
-    class AttributeHandler internal constructor() : FluidVariantAttributeHandler {
-
-        var temperature: Int = FluidConstants.WATER_TEMPERATURE
-        var viscosity: Int = FluidConstants.WATER_VISCOSITY
-        var isGas: Boolean = false
-
-        override fun getFillSound(variant: FluidVariant): Optional<SoundEvent> =
-            Optional.of(SoundEvents.ITEM_BUCKET_FILL_LAVA).filter { temperature > FluidConstants.WATER_TEMPERATURE }
-
-        override fun getEmptySound(variant: FluidVariant): Optional<SoundEvent> =
-            Optional.of(SoundEvents.ITEM_BUCKET_EMPTY_LAVA).filter { temperature > FluidConstants.WATER_TEMPERATURE }
-
-        override fun getTemperature(variant: FluidVariant): Int = temperature
-
-        override fun getViscosity(variant: FluidVariant, world: World?): Int = viscosity
-
-        override fun isLighterThanAir(variant: FluidVariant): Boolean = isGas
-
     }
 
 }

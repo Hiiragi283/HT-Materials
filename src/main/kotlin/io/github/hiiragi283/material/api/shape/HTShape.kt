@@ -37,8 +37,13 @@ abstract class HTShape(val name: String) {
     abstract fun getCommonPath(material: HTMaterial): String
 
     companion object {
+
         @JvmStatic
-        fun create(name: String): HTShape = Impl(name).also(HTShapes::register)
+        fun create(name: String): HTShape = Impl(name)
+
+        @JvmStatic
+        fun createAndRegister(name: String): HTShape = create(name).also(HTShapes::register)
+
     }
 
     //    Any    //

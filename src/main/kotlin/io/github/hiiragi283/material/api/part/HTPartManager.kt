@@ -16,7 +16,6 @@ import net.minecraft.item.Items
 import net.minecraft.util.registry.Registry
 import net.minecraft.util.registry.RegistryEntry
 import java.util.*
-import java.util.function.Supplier
 
 object HTPartManager {
 
@@ -170,7 +169,7 @@ object HTPartManager {
         forceRegister(HTVanillaMaterials.WOOD, HTShapes.BLOCK, Items.CRIMSON_HYPHAE)
         forceRegister(HTVanillaMaterials.WOOD, HTShapes.BLOCK, Items.WARPED_HYPHAE)
 
-        //Event Registration
+        //Event
         ServerWorldEvents.LOAD.register { _, _ ->
 
             itemToPart.clear()
@@ -191,11 +190,6 @@ object HTPartManager {
 
     private fun checkItemNotAir(itemConvertible: ItemConvertible): Item = itemConvertible.asItem().also { item ->
         check(!item.isAir()) { "The Entry: $itemConvertible has no valid Item!" }
-    }
-
-    @JvmStatic
-    fun register(material: HTMaterial, shape: HTShape, supplier: Supplier<out ItemConvertible>) {
-        register(material, shape, supplier.get())
     }
 
     @JvmStatic

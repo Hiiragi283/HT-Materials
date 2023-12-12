@@ -30,9 +30,6 @@ data class HTPart(val material: HTMaterial, val shape: HTShape) {
         material.asFormula().takeIf(String::isNotEmpty)?.let { formula: String ->
             lines.add(TranslatableText("tooltip.ht_materials.material.formula", formula))
         }
-        //Fluid Amount
-        /*val fluidAmount: Long = material.getFluidAmountPerIngot() * stack.count
-        lines.add(TranslatableText("tooltip.ht_materials.material.fluid_amount", fluidAmount))*/
         //Molar Mass
         material.asMolarMass().takeIf { it > 0.0 }?.let { molar: Double ->
             lines.add(TranslatableText("tooltip.ht_materials.material.molar", molar))

@@ -9,6 +9,7 @@ import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
+import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.common.HTMaterialsCommon
@@ -19,6 +20,8 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
 import net.minecraft.client.resource.language.I18n
+import net.minecraft.item.ItemStack
+import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
@@ -177,6 +180,28 @@ class HTMaterial private constructor(
             HTCommonMaterials
         }
 
+        private val FLUID = object : HTShape("fluid") {
+
+            override fun canGenerateBlock(material: HTMaterial): Boolean = false
+
+            override fun canGenerateItem(material: HTMaterial): Boolean = false
+
+            override fun getIdPath(material: HTMaterial): String = material.getName()
+
+            override fun getForgePath(material: HTMaterial): String {
+                throw UnsupportedOperationException()
+            }
+
+            override fun getCommonPath(material: HTMaterial): String {
+                throw UnsupportedOperationException()
+            }
+
+        }
+
+    }
+
+    fun appendFluidTooltip(stack: ItemStack, lines: MutableList<Text>) {
+        HTPart(this, FLUID).appendTooltip(stack, lines)
     }
 
 }

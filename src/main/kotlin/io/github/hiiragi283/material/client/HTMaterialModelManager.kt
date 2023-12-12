@@ -1,6 +1,5 @@
 package io.github.hiiragi283.material.client
 
-import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.shape.HTShape
@@ -48,32 +47,8 @@ object HTMaterialModelManager {
             //Item Model
             addModel(itemModelId, ModelJsonBuilder.create(blockModelId))
         }
-        //Bucket
-        registerConsumer(HTShapes.BUCKET) { material: HTMaterial, shape: HTShape ->
-            addModel(
-                getItemModelId(material, shape),
-                ModelJsonBuilder.create(Models.GENERATED)
-                    .addTexture(TextureKey.LAYER0, Identifier("minecraft:item/bucket"))
-                    .addTexture("layer1", HTMaterialsCommon.id("item/bucket"))
-            )
-        }
         //Dust
         registerSimpleConsumer(HTShapes.DUST, Identifier("item/sugar"))
-        //Fluid
-        registerConsumer(HTShapes.FLUID) { material: HTMaterial, shape: HTShape ->
-            val block: HTMaterialFluid.Block = HTMaterialFluid.getBlock(material) ?: return@registerConsumer
-            val modelId: Identifier = shape.getIdentifier(material).prefix("block/fluid/")
-            //BlockState
-            addBlockState(
-                shape.getIdentifier(material),
-                BlockStateModelGenerator.createSingletonBlockState(block, modelId)
-            )
-            //Model (for particle)
-            addModel(
-                modelId,
-                ModelJsonBuilder().addTexture(TextureKey.PARTICLE, Identifier("minecraft:block/white_concrete"))
-            )
-        }
         //Gear
         registerSimpleConsumer(HTShapes.GEAR)
         //Gem

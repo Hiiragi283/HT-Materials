@@ -21,7 +21,7 @@ object HTElementMaterials {
             molarMass = MolarMassConvertible { 1.0 }
         }
         modifyProperties {
-            setFluid { it.attribute.isGas = true }
+            setFluid { it.isGas = true }
         }
     }
 
@@ -33,7 +33,7 @@ object HTElementMaterials {
             molarMass = MolarMassConvertible { 4.0 }
         }
         modifyProperties {
-            setFluid { it.attribute.isGas = true }
+            setFluid { it.isGas = true }
         }
     }
 
@@ -83,7 +83,7 @@ object HTElementMaterials {
             molarMass = MolarMassConvertible { 14.0 }
         }
         modifyProperties {
-            setFluid { it.attribute.isGas = true }
+            setFluid { it.isGas = true }
         }
     }
 
@@ -94,7 +94,7 @@ object HTElementMaterials {
             molarMass = MolarMassConvertible { 16.0 }
         }
         modifyProperties {
-            setFluid { it.attribute.isGas = true }
+            setFluid { it.isGas = true }
         }
     }
 
@@ -106,7 +106,7 @@ object HTElementMaterials {
             molarMass = MolarMassConvertible { 19.0 }
         }
         modifyProperties {
-            setFluid { it.attribute.isGas = true }
+            setFluid { it.isGas = true }
         }
     }
 
@@ -191,7 +191,7 @@ object HTElementMaterials {
             molarMass = MolarMassConvertible { 35.5 }
         }
         modifyProperties {
-            setFluid { it.attribute.isGas = true }
+            setFluid { it.isGas = true }
         }
     }
 

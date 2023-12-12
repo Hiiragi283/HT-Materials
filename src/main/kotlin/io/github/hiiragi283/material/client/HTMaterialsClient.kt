@@ -5,11 +5,11 @@ import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialBlockItem
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.part.HTPartManager
-import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.common.HTMaterialsCommon
+import io.github.hiiragi283.material.common.util.asBlock
 import io.github.hiiragi283.material.common.util.getTransaction
+import io.github.hiiragi283.material.common.util.prefix
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -25,10 +25,15 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.minecraft.client.color.block.BlockColorProvider
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.client.render.RenderLayer
+import net.minecraft.data.client.BlockStateModelGenerator
+import net.minecraft.data.client.Models
+import net.minecraft.data.client.TextureKey
 import net.minecraft.fluid.Fluid
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
+import pers.solid.brrp.v1.model.ModelJsonBuilder
 
 @Suppress("UnstableApiUsage")
 @Environment(EnvType.CLIENT)
@@ -88,6 +93,24 @@ object HTMaterialsClient : ClientModInitializer {
             )
             //Register Translucent Layer
             BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), still, flowing)
+            //Register Fluid Block BlockState and Model
+            val id: Identifier = material.getIdentifier()
+            val modelId: Identifier = id.prefix("block/fluid/")
+            HTMaterialModelManager.addBlockState(
+                id,
+                BlockStateModelGenerator.createSingletonBlockState(fluid.asBlock(), modelId)
+            )
+            HTMaterialModelManager.addModel(
+                modelId,
+                ModelJsonBuilder().addTexture(TextureKey.PARTICLE, Identifier("minecraft:block/white_concrete"))
+            )
+            //Register Fluid Bucket Model
+            HTMaterialModelManager.addModel(
+                Registry.ITEM.getId(fluid.bucketItem).prefix("item/"),
+                ModelJsonBuilder.create(Models.GENERATED)
+                    .addTexture(TextureKey.LAYER0, Identifier("minecraft:item/bucket"))
+                    .addTexture("layer1", HTMaterialsCommon.id("item/bucket"))
+            )
         }
     }
 
@@ -123,8 +146,7 @@ object HTMaterialsClient : ClientModInitializer {
                 ?.map(StorageView<FluidVariant>::getResource)
                 ?.map(FluidVariant::getFluid)
                 ?.mapNotNull(HTFluidManager::getMaterial)
-                ?.map { HTPart(it, HTShapes.FLUID) }
-                ?.forEach { it.appendTooltip(stack, lines) }
+                ?.forEach { it.appendFluidTooltip(stack, lines) }
 
         }
 

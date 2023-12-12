@@ -10,6 +10,7 @@ import net.fabricmc.loader.api.ModContainer
 import net.fabricmc.loader.api.metadata.ModMetadata
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
+import net.minecraft.fluid.Fluid
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.Items
@@ -21,6 +22,10 @@ import java.util.function.Function
 fun Item.asBlock(): Block = (this as? BlockItem)?.block ?: Blocks.AIR
 
 fun Block.isAir(): Boolean = this == Blocks.AIR
+
+//    Fluid    //
+
+fun Fluid.asBlock(): Block = this.defaultState.blockState.block
 
 //    Item   //
 

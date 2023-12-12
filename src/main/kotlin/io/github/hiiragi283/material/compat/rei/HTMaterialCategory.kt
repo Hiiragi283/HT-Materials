@@ -13,11 +13,10 @@ import me.shedaniel.rei.api.client.gui.widgets.WidgetWithBounds
 import me.shedaniel.rei.api.client.gui.widgets.Widgets
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory
 import me.shedaniel.rei.api.common.category.CategoryIdentifier
+import me.shedaniel.rei.api.common.entry.EntryStack
 import me.shedaniel.rei.api.common.util.EntryStacks
 import net.minecraft.client.gui.Element
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.item.Item
-import net.minecraft.item.Items
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.util.math.MathHelper
@@ -39,7 +38,7 @@ object HTMaterialCategory : DisplayCategory<HTMaterialDisplay> {
         val widgets: MutableList<Widget> = mutableListOf()
         widgets += Widgets
             .createSlot(Point(bounds.centerX - 8, bounds.y + 3))
-            .entry(EntryStacks.of(display.getItemEntries().firstOrNull() ?: Items.AIR))
+            .entry(display.getEntries().firstOrNull() ?: EntryStack.empty())
         val rectangle = Rectangle(
             bounds.centerX - bounds.width / 2 - 1,
             bounds.y + 23,
@@ -49,12 +48,11 @@ object HTMaterialCategory : DisplayCategory<HTMaterialDisplay> {
         widgets += Widgets.createSlotBase(rectangle)
         widgets += HTScrollableSlotsWidget(
             rectangle,
-            display.getItemEntries().map { item: Item ->
+            display.getEntries().map { entry: EntryStack<*> ->
                 Widgets.createSlot(Point(0, 0))
                     .disableBackground()
-                    .entry(EntryStacks.of(item))
-            }
-        )
+                    .entry(entry)
+            })
         return widgets
     }
 

@@ -10,6 +10,13 @@ The Material System was invented to handle Tags more generally by decomposing th
 
 ![Material System](/images/material_system.png)
 
+## Material Item
+
+HT Materials can automatically generate simple ingredient blocks/items, called _Material Item_ based on the Material
+System.
+
+![Material Item](/images/material_item.png)
+
 ## Tag Sync
 
 Many Fabric mods follows `Conventional Tag` format such as `c:zinc_ingots` or `c:raw_iron_ore`, but some mods
@@ -18,7 +25,15 @@ compatability between them. HT Materials synchronizes these different format aut
 
 ![Tag Sync1](/images/tag_sync.png)
 
-## Creating Addon
+## Fluid Unification
+
+HT Materials can sync not only tags but also fluids! After the flattening, fluid became vanilla feature and has been
+managed with Identifier: namespace and path. This destructive change divided fluid with same name and different
+namespace. Based on the Material System, there fluids are linked to Conventional Tags.
+
+![Fluid Unification](/images/fluid_unification.png)
+
+## How to create Addon
 
 1. Add new entrypoint `ht_materials` in `fabric.mod.json`
 2. Implement `io.github.hiiragi283.material.api.addon.HTMaterialsAddon`

@@ -2,7 +2,7 @@ package io.github.hiiragi283.material.api.fluid
 
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPart
-import io.github.hiiragi283.material.api.shape.HTShapes
+import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.common.HTMaterialsCommon
 import io.github.hiiragi283.material.common.util.prefix
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -160,7 +160,7 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
         private val materialHT: HTMaterial = fluid.material
 
         init {
-            fluidBlock.putIfAbsent(fluid.material, this)
+            fluidBlock.putIfAbsent(materialHT, this)
             Registry.register(Registry.BLOCK, materialHT.getIdentifier(), this)
         }
 
@@ -172,7 +172,11 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
 
     class Bucket internal constructor(fluid: Still) : BucketItem(fluid, itemSettings) {
 
-        private val part = HTPart(fluid.material, HTShapes.BUCKET)
+        companion object {
+            private val shape: HTShape = HTShape.create("bucket")
+        }
+
+        private val part: HTPart = HTPart(fluid.material, shape)
 
         init {
             fluidBucket.putIfAbsent(fluid.material, this)
