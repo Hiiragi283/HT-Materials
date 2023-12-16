@@ -1,30 +1,21 @@
 package io.github.hiiragi283.material.api.addon
 
-import io.github.hiiragi283.material.api.block.HTMaterialBlock
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.part.HTPartManager.hasDefaultItem
-import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.client.HTMaterialModelManager
 import io.github.hiiragi283.material.common.HTMaterialsCommon
 import io.github.hiiragi283.material.common.HTRecipeManager
-import io.github.hiiragi283.material.common.util.asBlock
 import io.github.hiiragi283.material.common.util.isModLoaded
-import io.github.hiiragi283.material.common.util.prefix
 import io.github.hiiragi283.material.common.util.suffix
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.data.server.BlockLootTableGenerator
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
 import net.minecraft.item.Item
-import net.minecraft.resource.ResourceType
-import net.minecraft.util.Identifier
-import pers.solid.brrp.v1.api.RuntimeResourcePack
-import pers.solid.brrp.v1.fabric.api.RRPCallback
 
 object HTMaterialsAddons : HTMaterialsAddon {
 
@@ -56,50 +47,44 @@ object HTMaterialsAddons : HTMaterialsAddon {
         HTMaterial.REGISTRY.forEach(HTMaterial::asMolarMass)
     }
 
-    private val RESOURCE_PACK: RuntimeResourcePack = RuntimeResourcePack.create(HTMaterialsCommon.id("runtime"))
+    //private val RESOURCE_PACK: RuntimeResourcePack = RuntimeResourcePack.create(HTMaterialsCommon.id("runtime"))
 
     override fun commonSetup() {
         cache.forEach(HTMaterialsAddon::commonSetup)
 
-        registerLootTables()
-        registerRecipes()
-        HTFluidManager.registerAllFluids()
+        //registerLootTables()
+        //HTMaterialsCommon.LOGGER.info("Loot Tables Registered!")
 
-        RRPCallback.BEFORE_USER.register {
-            //Register Loot Tables
-            registerLootTables()
-            HTMaterialsCommon.LOGGER.info("Loot Tables Registered!")
+        registerRecipes()
+        HTMaterialsCommon.LOGGER.info("Recipes Registered!")
+
+        HTFluidManager.registerAllFluids()
+        HTMaterialsCommon.LOGGER.info("All Fluids Registered to HTFluidManager!")
+
+        /*RRPCallback.BEFORE_USER.register {
             //Register Resource Pack
             it.add(RESOURCE_PACK)
             HTMaterialsCommon.LOGGER.info("Dynamic Data Pack Registered!")
-        }
+        }*/
     }
 
-    private fun registerLootTables() {
+    /*private fun registerLootTables() {
         HTPartManager.getDefaultItemTable().values()
             .map(Item::asBlock)
             .filterIsInstance<HTMaterialBlock>()
-            .forEach { block: HTMaterialBlock ->
-                val lootId: Identifier = block.lootTableId
-                if (RESOURCE_PACK.contains(
-                        ResourceType.SERVER_DATA,
-                        lootId.prefix("loot_tables/").suffix(".json")
-                    )
-                ) return@forEach
-                RESOURCE_PACK.addLootTable(lootId, BlockLootTableGenerator.drops(block))
-            }
-    }
+            .forEach { block -> RESOURCE_PACK.addLootTable(block.lootTableId, BlockLootTableGenerator.drops(block)) }
+    }*/
 
     private fun registerRecipes() {
         HTMaterial.REGISTRY.forEach { material ->
-            materialRecipe(material)
-            HTPartManager.getDefaultItem(material, HTShapes.BLOCK)?.let { blockRecipe(material, it) }
+            //materialRecipe(material)
+            //HTPartManager.getDefaultItem(material, HTShapes.BLOCK)?.let { blockRecipe(material, it) }
             HTPartManager.getDefaultItem(material, HTShapes.INGOT)?.let { ingotRecipe(material, it) }
             HTPartManager.getDefaultItem(material, HTShapes.NUGGET)?.let { nuggetRecipe(material, it) }
         }
     }
 
-    private fun materialRecipe(material: HTMaterial) {
+    /*private fun materialRecipe(material: HTMaterial) {
         //1x Block -> 9x Ingot/Gem
         val shape: HTShape = material.getDefaultShape() ?: return
         val result: Item = HTPartManager.getDefaultItem(material, shape) ?: return
@@ -121,7 +106,7 @@ object HTMaterialsAddons : HTMaterialsAddon {
                 .input('A', shape.getCommonTag(material))
                 .setBypassesValidation(true)
         )
-    }
+    }*/
 
     private fun ingotRecipe(material: HTMaterial, item: Item) {
         //9x Nugget -> 1x Ingot

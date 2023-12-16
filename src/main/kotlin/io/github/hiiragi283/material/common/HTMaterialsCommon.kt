@@ -1,8 +1,6 @@
 package io.github.hiiragi283.material.common
 
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddons
-import io.github.hiiragi283.material.api.block.HTMaterialBlock
-import io.github.hiiragi283.material.api.item.HTMaterialBlockItem
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
@@ -12,7 +10,6 @@ import io.github.hiiragi283.material.api.shape.HTShapes
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.Items
@@ -58,23 +55,19 @@ object HTMaterialsCommon : ModInitializer {
         LOGGER.info("All Materials Verified!")
 
         //Initialize Game Objects
-        registerMaterialBlocks()
-        LOGGER.info("All Material Blocks Registered!")
+        //registerMaterialBlocks()
+        //LOGGER.info("All Material Blocks Registered!")
         registerMaterialFluids()
         LOGGER.info("All Material Fluids Registered!")
         registerMaterialItems()
         LOGGER.info("All Material Items Registered!")
-
-        //Register Common Events
-        //registerEvents()
-        //LOGGER.info("Common Events Registered!")
 
     }
 
     @JvmStatic
     fun id(path: String) = Identifier(MOD_ID, path)
 
-    private fun registerMaterialBlocks() {
+    /*private fun registerMaterialBlocks() {
         HTShapes.REGISTRY
             .forEach { shape: HTShape ->
             HTMaterial.REGISTRY
@@ -95,7 +88,7 @@ object HTMaterialsCommon : ModInitializer {
                     }
                 }
         }
-    }
+    }*/
 
     private fun registerMaterialItems() {
         HTShapes.REGISTRY.forEach { shape: HTShape ->

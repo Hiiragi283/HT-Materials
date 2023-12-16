@@ -2,6 +2,7 @@ package io.github.hiiragi283.material.common
 
 import aztech.modern_industrialization.recipe.json.MIRecipeJson
 import com.google.gson.JsonObject
+import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder
 import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder
 import net.minecraft.data.server.recipe.RecipeJsonProvider
 import net.minecraft.util.Identifier
@@ -25,8 +26,11 @@ object HTRecipeManager {
 
     //    Create    //
 
-    fun registerCreateRecipe() {
-
+    @JvmStatic
+    fun registerMechanicalCrafting(recipeId: Identifier, builder: MechanicalCraftingRecipeBuilder) {
+        builder.build({ provider: RecipeJsonProvider ->
+            REGISTRY.putIfAbsent(recipeId, provider.toJson())
+        }, recipeId)
     }
 
     //    Modern Industrialization    //

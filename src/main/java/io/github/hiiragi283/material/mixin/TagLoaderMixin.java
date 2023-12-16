@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Reference: <a href="https://github.com/GregTechCEu/GregTech-Modern/blob/1.20.1/common/src/main/java/com/gregtechceu/gtceu/core/mixins/TagLoaderMixin.java">...</a>
@@ -28,16 +27,7 @@ public class TagLoaderMixin<T> implements HTTagLoader<T> {
 
     @Inject(method = "loadTags", at = @At(value = "RETURN"))
     private void ht_materials$loadTags(ResourceManager manager, CallbackInfoReturnable<Map<Identifier, Tag.Builder>> cir) {
-        Map<Identifier, Tag.Builder> map = cir.getReturnValue();
-        var registry = ht_materials$getRegistry();
-        if (registry == null) return;
-        if (Objects.equals(registry, Registry.BLOCK)) {
-            HTTagLoaderMixin.blockTags(map);
-        } else if (Objects.equals(registry, Registry.FLUID)) {
-            HTTagLoaderMixin.fluidTags(map);
-        } else if (Objects.equals(registry, Registry.ITEM)) {
-            HTTagLoaderMixin.itemTags(map);
-        }
+        HTTagLoaderMixin.loadTags(cir.getReturnValue(), ht_materials$getRegistry());
     }
 
     //    HTTagLoader    //

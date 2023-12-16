@@ -71,44 +71,44 @@ class HTMaterialFlag private constructor(
 
         @JvmField
         val GENERATE_BLOCk = create("generate_block") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
         }
 
         @JvmField
         val GENERATE_DUST = create("generate_dust") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
         }
 
         @JvmField
         val GENERATE_GEAR = create("generate_gear") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
         }
 
         @JvmField
         val GENERATE_GEM = create("generate_gem") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
             requiredProperties.add(HTPropertyKey.GEM)
         }
 
         @JvmField
         val GENERATE_INGOT = create("generate_ingot") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
         }
 
         @JvmField
         val GENERATE_NUGGET = create("generate_nugget") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
             requiredProperties.add(HTPropertyKey.METAL)
         }
 
         @JvmField
         val GENERATE_PLATE = create("generate_plate") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
         }
 
         @JvmField
         val GENERATE_ROD = create("generate_rod") {
-            requiredProperties.add(HTPropertyKey.SOLID)
+            //requiredProperties.add(HTPropertyKey.SOLID)
         }
 
     }

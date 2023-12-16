@@ -28,26 +28,26 @@ class HTMaterialProperties : MutableMap<HTPropertyKey<*>, HTMaterialProperty<*>>
     }
 
     fun setGem(type: HTGemProperty.Type) {
-        this.add(HTSolidProperty.createGem())
+        //this.add(HTSolidProperty.createGem())
         this.add(HTGemProperty(type))
     }
 
     fun setMetal() {
-        this.add(HTSolidProperty.createMetal())
+        //this.add(HTSolidProperty.createMetal())
         this.add(HTMetalProperty())
     }
 
     fun setSolid() {
-        this.add(HTSolidProperty.createSolid())
+        //this.add(HTSolidProperty.createSolid())
     }
 
     fun setStone() {
-        this.add(HTSolidProperty.createStone())
+        //this.add(HTSolidProperty.createStone())
         this.add(HTMetalProperty())
     }
 
     fun setWood() {
-        this.add(HTSolidProperty.createWood())
+        //this.add(HTSolidProperty.createWood())
         this.add(HTMetalProperty())
     }
 

@@ -2,7 +2,6 @@ package io.github.hiiragi283.material.client
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
-import io.github.hiiragi283.material.api.item.HTMaterialBlockItem
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
@@ -22,7 +21,6 @@ import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
-import net.minecraft.client.color.block.BlockColorProvider
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.data.client.BlockStateModelGenerator
@@ -45,8 +43,8 @@ object HTMaterialsClient : ClientModInitializer {
         HTMaterialModelManager
 
         //Register Block Color Provider
-        registerBlockColorProvider()
-        HTMaterialsCommon.LOGGER.info("Block Color Provider Registered!")
+        //registerBlockColorProvider()
+        //HTMaterialsCommon.LOGGER.info("Block Color Provider Registered!")
 
         //Register Render Handler for Material Fluid
         registerFluidRenderHandler()
@@ -62,7 +60,7 @@ object HTMaterialsClient : ClientModInitializer {
 
     }
 
-    private fun registerBlockColorProvider() {
+    /*private fun registerBlockColorProvider() {
         //Material Blocks
         HTPartManager.getDefaultItemTable().values()
             .filterIsInstance<HTMaterialBlockItem>()
@@ -76,7 +74,7 @@ object HTMaterialsClient : ClientModInitializer {
                     item
                 )
             }
-    }
+    }*/
 
     private fun registerFluidRenderHandler() {
         HTMaterial.REGISTRY.forEach { material: HTMaterial ->

@@ -14,7 +14,10 @@ import net.minecraft.fluid.Fluid
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
 import net.minecraft.item.Items
+import net.minecraft.tag.TagKey
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
+import net.minecraft.util.registry.RegistryEntry
 import java.util.function.Function
 
 //    Block    //
@@ -57,3 +60,8 @@ fun isModLoaded(id: String): Boolean = FabricLoader.getInstance().isModLoaded(id
 //    Storage    //
 
 fun getTransaction(): Transaction = Transaction.getCurrentUnsafe()?.openNested() ?: Transaction.openOuter()
+
+//    Tag    //
+
+fun <T> TagKey<T>.getEntries(registry: Registry<T>): Collection<T> =
+    registry.getOrCreateEntryList(this).map(RegistryEntry<T>::value)

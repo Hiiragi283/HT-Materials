@@ -1,10 +1,7 @@
 package io.github.hiiragi283.material.common
 
-import io.github.hiiragi283.material.api.block.HTMaterialBlock
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.material.property.HTSolidProperty
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
@@ -18,6 +15,17 @@ import net.minecraft.util.registry.Registry
 
 internal object HTTagLoaderMixin {
 
+    @JvmStatic
+    fun loadTags(map: MutableMap<Identifier, Tag.Builder>, registry: Registry<*>?) {
+        when (registry) {
+            //Registry.BLOCK -> blockTags(map)
+            Registry.FLUID -> fluidTags(map)
+            Registry.ITEM -> itemTags(map)
+            else -> {}
+        }
+    }
+
+    /*
     @JvmStatic
     fun blockTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Mining Tool & Harvest Level Tags
@@ -35,7 +43,7 @@ internal object HTTagLoaderMixin {
             }
         }
         HTMaterialsCommon.LOGGER.info("Registered Mining Tool & Harvest Level Tags!")
-    }
+    }*/
 
     @JvmStatic
     fun fluidTags(map: MutableMap<Identifier, Tag.Builder>) {

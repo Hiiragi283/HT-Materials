@@ -1,6 +1,8 @@
 package io.github.hiiragi283.material.api.part
 
-import com.google.common.collect.*
+import com.google.common.collect.HashBasedTable
+import com.google.common.collect.ImmutableTable
+import com.google.common.collect.Table
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.materials.HTElementMaterials
 import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
@@ -8,14 +10,13 @@ import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.common.HTMaterialsCommon
 import io.github.hiiragi283.material.common.util.computeIfAbsent
+import io.github.hiiragi283.material.common.util.getEntries
 import io.github.hiiragi283.material.common.util.isAir
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents
 import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import net.minecraft.item.Items
 import net.minecraft.util.registry.Registry
-import net.minecraft.util.registry.RegistryEntry
-import java.util.*
 
 object HTPartManager {
 
@@ -177,9 +178,9 @@ object HTPartManager {
 
             HTMaterial.REGISTRY.forEach { material ->
                 HTShapes.REGISTRY.forEach { shape ->
-                    Registry.ITEM.getEntryList(shape.getCommonTag(material))
-                        .map { it.map(RegistryEntry<Item>::value) }
-                        .ifPresent { it.forEach { item -> register(material, shape, item) } }
+                    shape.getCommonTag(material)
+                        .getEntries(Registry.ITEM)
+                        .forEach { item -> register(material, shape, item) }
                 }
             }
 

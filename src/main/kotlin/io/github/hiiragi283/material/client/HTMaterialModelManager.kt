@@ -8,9 +8,6 @@ import io.github.hiiragi283.material.common.HTMaterialsCommon
 import io.github.hiiragi283.material.common.util.prefix
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
-import net.minecraft.block.Block
-import net.minecraft.block.Blocks
-import net.minecraft.data.client.BlockStateModelGenerator
 import net.minecraft.data.client.BlockStateSupplier
 import net.minecraft.data.client.Models
 import net.minecraft.data.client.TextureKey
@@ -29,7 +26,7 @@ object HTMaterialModelManager {
 
     init {
         //Block
-        registerConsumer(HTShapes.BLOCK) { material: HTMaterial, shape: HTShape ->
+        /*registerConsumer(HTShapes.BLOCK) { material: HTMaterial, shape: HTShape ->
             val block: Block = Blocks.AIR
             val blockModelId: Identifier = getBlockModelId(material, shape)
             val itemModelId: Identifier = getItemModelId(material, shape)
@@ -46,7 +43,7 @@ object HTMaterialModelManager {
             )
             //Item Model
             addModel(itemModelId, ModelJsonBuilder.create(blockModelId))
-        }
+        }*/
         //Dust
         registerSimpleConsumer(HTShapes.DUST, Identifier("item/sugar"))
         //Gear

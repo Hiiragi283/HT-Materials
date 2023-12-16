@@ -16,16 +16,12 @@ import io.github.hiiragi283.material.common.HTMaterialsCommon
 import io.github.hiiragi283.material.common.util.commonId
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
 import net.minecraft.client.resource.language.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
-import net.minecraft.util.registry.SimpleRegistry
 import java.awt.Color
 
 @Suppress("UnstableApiUsage")
@@ -154,24 +150,23 @@ class HTMaterial private constructor(
 
         internal var canModify: Boolean = true
 
+        private val map: MutableMap<String, HTMaterial> = mutableMapOf()
+
         @JvmField
-        val REGISTRY: SimpleRegistry<HTMaterial> = FabricRegistryBuilder.createSimple(
-            HTMaterial::class.java,
-            HTMaterialsCommon.id("material")
-        ).attribute(RegistryAttribute.SYNCED).buildAndRegister()
+        val REGISTRY: Collection<HTMaterial> = map.values
 
         @JvmStatic
         fun create(name: String, init: HTMaterial.() -> Unit = {}) =
             HTMaterial(Info(name), HTMaterialProperties(), HTMaterialFlags())
                 .also { check(canModify) { "Cannot register material after Initialization!!" } }
                 .apply(init)
-                .also { mat ->
-                    Registry.register(REGISTRY, commonId(name), mat)
-                    HTMaterialsCommon.LOGGER.info("The Material: $mat registered!")
+                .also { material ->
+                    map.putIfAbsent(name, material)
+                    HTMaterialsCommon.LOGGER.info("The Material: $material registered!")
                 }
 
         @JvmStatic
-        fun getMaterial(name: String): HTMaterial? = REGISTRY.get(commonId(name))
+        fun getMaterial(name: String): HTMaterial? = map[name]
 
         init {
             HTElementMaterials

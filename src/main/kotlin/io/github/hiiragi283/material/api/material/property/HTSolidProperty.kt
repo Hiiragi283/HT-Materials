@@ -3,22 +3,19 @@ package io.github.hiiragi283.material.api.material.property
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPart
 import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager
-import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.Block
-import net.minecraft.block.Blocks
 import net.minecraft.item.ItemStack
-import net.minecraft.tag.BlockTags
 import net.minecraft.tag.TagKey
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 
 class HTSolidProperty private constructor(
-    val blockSettings: FabricBlockSettings,
+    //val blockSettings: FabricBlockSettings,
     var harvestLevel: Int,
     var harvestTool: TagKey<Block>?
 ) : HTMaterialProperty<HTSolidProperty> {
 
-    companion object {
+    /*companion object {
 
         @JvmStatic
         fun createSolid(): HTSolidProperty = HTSolidProperty(
@@ -55,7 +52,7 @@ class HTSolidProperty private constructor(
             BlockTags.AXE_MINEABLE
         )
 
-    }
+    }*/
 
     override val key: HTPropertyKey<HTSolidProperty> = HTPropertyKey.SOLID
 
