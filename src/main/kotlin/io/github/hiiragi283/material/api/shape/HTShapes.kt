@@ -2,8 +2,12 @@ package io.github.hiiragi283.material.api.shape
 
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object HTShapes {
+
+    private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
 
     internal var canModify: Boolean = true
 
@@ -16,7 +20,10 @@ object HTShapes {
     fun getShape(name: String): HTShape? = map[name]
 
     @JvmStatic
-    fun register(shape: HTShape): HTShape = shape.also { map.putIfAbsent(it.name, shape) }
+    fun register(shape: HTShape): HTShape = shape.also {
+        map.putIfAbsent(it.name, shape)
+        LOGGER.info("The Shape: ${it.name} registered!")
+    }
 
     //    Block    //
 

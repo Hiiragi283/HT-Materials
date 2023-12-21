@@ -7,7 +7,7 @@ import io.github.hiiragi283.material.api.material.MolarMassConvertible
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.api.material.property.HTGemProperty
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
-import io.github.hiiragi283.material.common.util.HTColor
+import io.github.hiiragi283.material.util.HTColor
 
 object HTCommonMaterials {
 

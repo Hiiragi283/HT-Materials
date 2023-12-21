@@ -4,7 +4,7 @@ import io.github.hiiragi283.material.api.addon.HTMaterialsAddon
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShapes
-import io.github.hiiragi283.material.common.util.isAir
+import io.github.hiiragi283.material.util.isAir
 import net.minecraft.util.registry.Registry
 
 object HMMIAddon : HTMaterialsAddon {

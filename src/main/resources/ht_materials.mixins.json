@@ -11,7 +11,8 @@
     "TagManagerLoaderMixin"
   ],
   "client": [
-    "ClientMainMixin"
+    "ClientMainMixin",
+    "ModelLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

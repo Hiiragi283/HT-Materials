@@ -62,8 +62,9 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
         HTMaterialFluid.Flowing(material)
         HTMaterialFluid.Still(material).run {
             HTMaterialFluid.Bucket(this)
-            HTMaterialFluid.Block(this)
             FluidVariantAttributes.register(this, object : FluidVariantAttributeHandler {
+
+                override fun getName(fluidVariant: FluidVariant): Text = material.getTranslatedText()
 
                 override fun getFillSound(variant: FluidVariant): Optional<SoundEvent> =
                     Optional.of(SoundEvents.ITEM_BUCKET_FILL_LAVA)

@@ -1,7 +1,7 @@
 package io.github.hiiragi283.material.api.item
 
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.block.HTMaterialBlock
-import io.github.hiiragi283.material.common.HTMaterialsCommon
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item

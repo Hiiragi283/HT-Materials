@@ -7,7 +7,6 @@ import io.github.hiiragi283.material.api.material.materials.HTElementMaterials;
 import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials;
 import io.github.hiiragi283.material.api.material.property.HTWoodProperty;
 import io.github.hiiragi283.material.api.shape.HTShapes;
-import io.github.hiiragi283.material.common.HTMaterialsCommon;
 import net.minecraft.item.Items;
 import org.jetbrains.annotations.NotNull;
 

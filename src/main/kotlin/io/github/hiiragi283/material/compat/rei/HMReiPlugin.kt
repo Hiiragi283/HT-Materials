@@ -1,9 +1,9 @@
 package io.github.hiiragi283.material.compat.rei
 
 import dev.architectury.fluid.FluidStack
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.common.HTMaterialsCommon
 import me.shedaniel.rei.api.client.entry.renderer.EntryRendererRegistry
 import me.shedaniel.rei.api.client.gui.widgets.Tooltip
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin

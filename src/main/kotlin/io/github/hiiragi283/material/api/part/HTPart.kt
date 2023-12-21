@@ -1,9 +1,9 @@
 package io.github.hiiragi283.material.api.part
 
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.item.HTMaterialItemConvertible
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.common.HTMaterialsCommon
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.resource.language.I18n

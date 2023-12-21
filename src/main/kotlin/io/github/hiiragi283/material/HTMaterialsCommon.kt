@@ -1,4 +1,4 @@
-package io.github.hiiragi283.material.common
+package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddons
 import io.github.hiiragi283.material.api.item.HTMaterialItem
@@ -16,16 +16,15 @@ import net.minecraft.item.Items
 import net.minecraft.util.Identifier
 import net.minecraft.util.Rarity
 import net.minecraft.util.registry.Registry
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object HTMaterialsCommon : ModInitializer {
 
     const val MOD_ID: String = "ht_materials"
     const val MOD_NAME: String = "HT Materials"
 
-    @JvmField
-    val LOGGER: Logger = LogManager.getLogger(MOD_NAME)
+    private val LOGGER: Logger = LoggerFactory.getLogger(MOD_NAME)
 
     @JvmField
     val ITEM_GROUP: ItemGroup = FabricItemGroupBuilder.create(id("material"))

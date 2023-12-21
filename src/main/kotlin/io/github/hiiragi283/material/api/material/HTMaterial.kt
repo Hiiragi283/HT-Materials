@@ -1,5 +1,6 @@
 package io.github.hiiragi283.material.api.material
 
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags
 import io.github.hiiragi283.material.api.material.materials.HTAtomicGroups
@@ -12,8 +13,7 @@ import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.util.commonId
+import io.github.hiiragi283.material.util.commonId
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.awt.Color
 
 @Suppress("UnstableApiUsage")
@@ -148,6 +150,8 @@ class HTMaterial private constructor(
 
     companion object {
 
+        private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
+
         internal var canModify: Boolean = true
 
         private val map: MutableMap<String, HTMaterial> = mutableMapOf()
@@ -162,7 +166,7 @@ class HTMaterial private constructor(
                 .apply(init)
                 .also { material ->
                     map.putIfAbsent(name, material)
-                    HTMaterialsCommon.LOGGER.info("The Material: $material registered!")
+                    LOGGER.info("The Material: $material registered!")
                 }
 
         @JvmStatic

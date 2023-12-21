@@ -1,14 +1,11 @@
-package io.github.hiiragi283.material.client
+package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.util.asBlock
-import io.github.hiiragi283.material.common.util.getTransaction
-import io.github.hiiragi283.material.common.util.prefix
+import io.github.hiiragi283.material.util.getTransaction
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -23,24 +20,20 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.client.render.RenderLayer
-import net.minecraft.data.client.BlockStateModelGenerator
-import net.minecraft.data.client.Models
-import net.minecraft.data.client.TextureKey
 import net.minecraft.fluid.Fluid
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
-import pers.solid.brrp.v1.model.ModelJsonBuilder
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-@Suppress("UnstableApiUsage")
+@Suppress("UnstableApiUsage", "unused")
 @Environment(EnvType.CLIENT)
 object HTMaterialsClient : ClientModInitializer {
 
-    override fun onInitializeClient() {
+    private val LOGGER: Logger = LoggerFactory.getLogger("${HTMaterialsCommon.MOD_NAME}/Client")
 
-        //Register Default Model Consumer
-        HTMaterialModelManager
+    override fun onInitializeClient() {
 
         //Register Block Color Provider
         //registerBlockColorProvider()
@@ -48,15 +41,15 @@ object HTMaterialsClient : ClientModInitializer {
 
         //Register Render Handler for Material Fluid
         registerFluidRenderHandler()
-        HTMaterialsCommon.LOGGER.info("Material Fluid Renderer Registered!")
+        LOGGER.info("Material Fluid Renderer Registered!")
 
         //Register Item Color Provider
         registerItemColorProvider()
-        HTMaterialsCommon.LOGGER.info("Item Color Provider Registered!")
+        LOGGER.info("Item Color Provider Registered!")
 
         //Register Client Events
         registerEvents()
-        HTMaterialsCommon.LOGGER.info("Client Events Registered!")
+        LOGGER.info("Client Events Registered!")
 
     }
 
@@ -81,7 +74,7 @@ object HTMaterialsClient : ClientModInitializer {
             val fluid: HTMaterialFluid = HTMaterialFluid.getFluid(material) ?: return@forEach
             val flowing: Fluid = fluid.flowing
             val still: Fluid = fluid.still
-            //Register Fluid Model
+            //Register Fluid Renderer
             FluidRenderHandlerRegistry.INSTANCE.register(
                 still, flowing, SimpleFluidRenderHandler(
                     Identifier("minecraft:block/white_concrete"),
@@ -92,7 +85,7 @@ object HTMaterialsClient : ClientModInitializer {
             //Register Translucent Layer
             BlockRenderLayerMap.INSTANCE.putFluids(RenderLayer.getTranslucent(), still, flowing)
             //Register Fluid Block BlockState and Model
-            val id: Identifier = material.getIdentifier()
+            /*val id: Identifier = material.getIdentifier()
             val modelId: Identifier = id.prefix("block/fluid/")
             HTMaterialModelManager.addBlockState(
                 id,
@@ -108,7 +101,7 @@ object HTMaterialsClient : ClientModInitializer {
                 ModelJsonBuilder.create(Models.GENERATED)
                     .addTexture(TextureKey.LAYER0, Identifier("minecraft:item/bucket"))
                     .addTexture("layer1", HTMaterialsCommon.id("item/bucket"))
-            )
+            )*/
         }
     }
 

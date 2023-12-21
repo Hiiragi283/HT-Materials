@@ -1,7 +1,7 @@
 @file:JvmName("TableUtil")
 @file:Suppress("unused")
 
-package io.github.hiiragi283.material.common.util
+package io.github.hiiragi283.material.util
 
 import com.google.common.collect.Table
 

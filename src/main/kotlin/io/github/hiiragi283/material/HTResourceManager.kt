@@ -1,4 +1,4 @@
-package io.github.hiiragi283.material.common
+package io.github.hiiragi283.material
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -28,7 +28,7 @@ object HTResourceManager {
                             val jsonObject: JsonObject = gson.fromJson(inputStreamReader, JsonObject::class.java)
                             consumer.accept(identifier, jsonObject)
                         } catch (e: Exception) {
-                            HTMaterialsCommon.LOGGER.error(e)
+                            e.printStackTrace()
                         }
                     }
 

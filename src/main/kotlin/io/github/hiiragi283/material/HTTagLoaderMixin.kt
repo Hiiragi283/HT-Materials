@@ -1,12 +1,13 @@
-package io.github.hiiragi283.material.common
+package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
-import io.github.hiiragi283.material.common.util.*
 import io.github.hiiragi283.material.mixin.TagBuilderMixin
+import io.github.hiiragi283.material.util.*
+import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
 import net.minecraft.tag.Tag
 import net.minecraft.tag.TagKey
@@ -48,8 +49,12 @@ internal object HTTagLoaderMixin {
     @JvmStatic
     fun fluidTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Tags from HTFluidManager
-        HTFluidManager.getMaterialToFluidsMap().forEach { material, fluid ->
-            registerTag(getOrCreateBuilder(map, commonId(material.getName())), Registry.FLUID, fluid)
+        HTFluidManager.getMaterialToFluidsMap().forEach { material: HTMaterial, fluid: Fluid ->
+            registerTag(
+                getOrCreateBuilder(map, commonId(material.getName())),
+                Registry.FLUID,
+                fluid
+            )
         }
     }
 
@@ -59,27 +64,26 @@ internal object HTTagLoaderMixin {
         HTPartManager.getPartToItemTable().forEach { (material: HTMaterial, shape: HTShape, items: Collection<Item>) ->
             items.forEach { item: Item ->
                 registerTag(
-                    getOrCreateBuilder(map, shape.getCommonTag(material)),
+                    getOrCreateBuilder(map, shape.getCommonTag(material).id),
                     Registry.ITEM,
                     item
                 )
             }
         }
-        HTMaterialsCommon.LOGGER.info("Registered Tags for HTPartManager's Entries!")
+        HTMixinLogger.INSTANCE.info("Registered Tags for HTPartManager's Entries!")
         //Sync ForgeTag and CommonTag entries
         HTMaterial.REGISTRY.forEach { material ->
-            HTShapes.REGISTRY.forEach { shape ->
-                val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(material))
-                val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(material))
+            HTShapes.REGISTRY.forEach shape@{ shape ->
+                val forgeBuilder: Tag.Builder = getBuilder(map, shape.getForgeTag(material)) ?: return@shape
+                val commonBuilder: Tag.Builder = getBuilder(map, shape.getCommonTag(material)) ?: return@shape
                 syncBuilder(commonBuilder, forgeBuilder)
                 syncBuilder(forgeBuilder, commonBuilder)
             }
         }
-        HTMaterialsCommon.LOGGER.info("Synced Forge Tags and Common Tags!")
+        HTMixinLogger.INSTANCE.info("Synced Forge Tags and Common Tags!")
     }
 
-    private fun getOrCreateBuilder(map: MutableMap<Identifier, Tag.Builder>, tagKey: TagKey<*>) =
-        getOrCreateBuilder(map, tagKey.id)
+    private fun getBuilder(map: MutableMap<Identifier, Tag.Builder>, tagKey: TagKey<*>): Tag.Builder? = map[tagKey.id]
 
     private fun getOrCreateBuilder(map: MutableMap<Identifier, Tag.Builder>, id: Identifier) =
         map.computeIfAbsent(id) { Tag.Builder.create() }

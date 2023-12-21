@@ -1,9 +1,9 @@
 package io.github.hiiragi283.material.api.shape
 
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.util.commonId
+import io.github.hiiragi283.material.util.commonId
 import net.minecraft.item.Item
 import net.minecraft.tag.TagKey
 import net.minecraft.util.Identifier

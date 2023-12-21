@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.event.Event
 import net.fabricmc.fabric.api.event.EventFactory
 
 /**
- * Reference: https://github.com/Fabricators-of-Create/Porting-Lib/blob/1.18.2/src/main/java/io/github/fabricators_of_create/porting_lib/event/common/ModsLoadedCallback.java
+ * @see <a href="https://github.com/Fabricators-of-Create/Porting-Lib/blob/1.18.2/src/main/java/io/github/fabricators_of_create/porting_lib/event/common/ModsLoadedCallback.java">GitHub - Porting Lib</a>
  */
 
 fun interface HTModsLoadedCallback {

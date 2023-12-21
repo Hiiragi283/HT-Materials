@@ -5,15 +5,18 @@ import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.util.getAllModId
+import io.github.hiiragi283.material.util.getAllModId
 import net.minecraft.fluid.FlowableFluid
 import net.minecraft.fluid.Fluid
 import net.minecraft.fluid.Fluids
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object HTFluidManager {
+
+    private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
 
     //    Fluid -> HTMaterial    //
 
@@ -76,12 +79,12 @@ object HTFluidManager {
         //HTMaterial -> Fluid
         if (!hasDefaultFluid(material)) {
             materialToFluid[material] = fluid
-            HTMaterialsCommon.LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} registered as Default Fluid for Material: $material!!")
+            LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} registered as Default Fluid for Material: $material!!")
         }
         //HTMaterial -> Collection<Fluid>
         materialToFluids.put(material, fluid)
         //print info
-        HTMaterialsCommon.LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} linked to Material: $material!")
+        LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} linked to Material: $material!")
     }
 
     @JvmStatic
@@ -91,11 +94,11 @@ object HTFluidManager {
         fluidToMaterial.putIfAbsent(fluid, material)
         //HTMaterial -> Fluid
         materialToFluid[material] = fluid
-        HTMaterialsCommon.LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} registered as Default Fluid for Material: $material!!")
+        LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} registered as Default Fluid for Material: $material!!")
         //HTMaterial -> Collection<Fluid>
         materialToFluids.put(material, fluid)
         //print info
-        HTMaterialsCommon.LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} linked to Material: $material!")
+        LOGGER.info("The Fluid: ${Registry.FLUID.getId(fluid)} linked to Material: $material!")
     }
 
     //    Initialization    //

@@ -1,15 +1,14 @@
 package io.github.hiiragi283.material.api.fluid
 
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.util.prefix
+import io.github.hiiragi283.material.util.prefix
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
-import net.minecraft.block.FluidBlock
 import net.minecraft.fluid.FlowableFluid
 import net.minecraft.fluid.Fluid
 import net.minecraft.fluid.FluidState
@@ -18,8 +17,6 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.state.StateManager
-import net.minecraft.state.property.Properties
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -36,28 +33,16 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
 
         private val fluidStill: MutableMap<HTMaterial, Still> = mutableMapOf()
 
-        private val fluidBlock: MutableMap<HTMaterial, Block> = mutableMapOf()
-
         private val fluidBucket: MutableMap<HTMaterial, Bucket> = mutableMapOf()
 
         @JvmStatic
         fun getFluids(): Collection<HTMaterialFluid> = HTFluidManager.getDefaultFluidMap().values.filterIsInstance<HTMaterialFluid>()
 
         @JvmStatic
-        fun getBlocks(): Collection<Block> = HTFluidManager.getDefaultFluidMap().values
-            .map(Fluid::getDefaultState)
-            .map(FluidState::getBlockState)
-            .map(BlockState::getBlock)
-            .filterIsInstance<Block>()
-
-        @JvmStatic
         fun getBuckets(): Collection<Bucket> = getFluids().map(HTMaterialFluid::getBucketItem).filterIsInstance<Bucket>()
 
         @JvmStatic
         fun getFluid(material: HTMaterial): HTMaterialFluid? = fluidStill[material]
-
-        @JvmStatic
-        fun getBlock(material: HTMaterial): Block? = fluidBlock[material]
 
         @JvmStatic
         fun getBucket(material: HTMaterial): Bucket? = fluidBucket[material]
@@ -101,10 +86,7 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
 
     override fun getFlowing(): Fluid = fluidFlowing[material]!!
 
-    override fun toBlockState(state: FluidState): BlockState = fluidBlock
-        .getOrDefault(material, Blocks.AIR)
-        .defaultState
-        .with(Properties.LEVEL_15, getBlockStateLevel(state))
+    override fun toBlockState(state: FluidState): BlockState = Blocks.AIR.defaultState
 
     override fun getBucketItem(): Item = fluidBucket[material]!!
 
@@ -150,21 +132,6 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
         override fun getLevel(state: FluidState): Int = 8
 
         override fun isStill(state: FluidState): Boolean = true
-
-    }
-
-    //    Block    //
-
-    class Block internal constructor(fluid: Still) : FluidBlock(fluid, blockSettings) {
-
-        private val materialHT: HTMaterial = fluid.material
-
-        init {
-            fluidBlock.putIfAbsent(materialHT, this)
-            Registry.register(Registry.BLOCK, materialHT.getIdentifier(), this)
-        }
-
-        override fun getName(): MutableText = materialHT.getTranslatedText()
 
     }
 

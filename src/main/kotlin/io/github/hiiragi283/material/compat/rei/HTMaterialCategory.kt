@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.compat.rei
 
-import io.github.hiiragi283.material.common.HTMaterialsCommon
+import io.github.hiiragi283.material.HTMaterialsCommon
 import me.shedaniel.clothconfig2.ClothConfigInitializer
 import me.shedaniel.clothconfig2.api.scroll.ScrollingContainer
 import me.shedaniel.math.Point

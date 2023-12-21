@@ -1,7 +1,6 @@
 @file:JvmName("HTUtil")
-@file:Suppress("unused", "UnstableApiUsage")
 
-package io.github.hiiragi283.material.common.util
+package io.github.hiiragi283.material.util
 
 import net.fabricmc.api.EnvType
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction
@@ -59,9 +58,12 @@ fun isModLoaded(id: String): Boolean = FabricLoader.getInstance().isModLoaded(id
 
 //    Storage    //
 
+@Suppress("UnstableApiUsage")
 fun getTransaction(): Transaction = Transaction.getCurrentUnsafe()?.openNested() ?: Transaction.openOuter()
 
 //    Tag    //
 
-fun <T> TagKey<T>.getEntries(registry: Registry<T>): Collection<T> =
-    registry.getOrCreateEntryList(this).map(RegistryEntry<T>::value)
+fun <T : Any> TagKey<T>.getEntries(registry: Registry<T>): Collection<T> = registry.getEntryList(this)
+    .map { it as Iterable<RegistryEntry<T>> }
+    .orElse(listOf())
+    .map(RegistryEntry<T>::value)

@@ -1,8 +1,8 @@
 package io.github.hiiragi283.material.api.item
 
+import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.common.HTMaterialsCommon
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack

@@ -6,7 +6,7 @@ import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.MolarMassConvertible
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
-import io.github.hiiragi283.material.common.util.HTColor
+import io.github.hiiragi283.material.util.HTColor
 import java.awt.Color
 
 object HTElementMaterials {

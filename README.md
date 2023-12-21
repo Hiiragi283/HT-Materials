@@ -12,7 +12,7 @@ The Material System was invented to handle Tags more generally by decomposing th
 
 ## Material Item
 
-HT Materials can automatically generate simple ingredient blocks/items, called _Material Item_ based on the Material
+HT Materials can automatically generate simple ingredient items, called _Material Item_ based on the Material
 System.
 
 ![Material Item](/images/material_item.png)

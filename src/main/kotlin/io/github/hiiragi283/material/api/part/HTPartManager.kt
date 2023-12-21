@@ -8,17 +8,20 @@ import io.github.hiiragi283.material.api.material.materials.HTElementMaterials
 import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.util.computeIfAbsent
-import io.github.hiiragi283.material.common.util.getEntries
-import io.github.hiiragi283.material.common.util.isAir
+import io.github.hiiragi283.material.util.computeIfAbsent
+import io.github.hiiragi283.material.util.getEntries
+import io.github.hiiragi283.material.util.isAir
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents
 import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import net.minecraft.item.Items
 import net.minecraft.util.registry.Registry
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object HTPartManager {
+
+    private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
 
     //    Item -> HTPart    //
 
@@ -203,12 +206,12 @@ object HTPartManager {
         //HTMaterial, HTShape -> ItemConvertible
         if (!partToItem.contains(material, shape)) {
             partToItem.put(material, shape, item)
-            HTMaterialsCommon.LOGGER.info("The Item: ${Registry.ITEM.getId(item)} registered as Default Item for Material: $material and Shape: $shape!!")
+            LOGGER.info("The Item: ${Registry.ITEM.getId(item)} registered as Default Item for Material: $material and Shape: $shape!!")
         }
         //HTMaterial, HTShape -> Collection<ItemConvertible>
         partToItems.computeIfAbsent(material, shape) { _, _ -> mutableSetOf() }.add(item)
         //print info
-        HTMaterialsCommon.LOGGER.info("The Item: ${Registry.ITEM.getId(item)} linked to Material: $material and Shape: $shape!")
+        LOGGER.info("The Item: ${Registry.ITEM.getId(item)} linked to Material: $material and Shape: $shape!")
     }
 
     @JvmSynthetic
@@ -219,11 +222,11 @@ object HTPartManager {
         itemToPart.putIfAbsent(item, HTPart(material, shape))
         //HTMaterial, HTShape -> ItemConvertible
         partToItem.put(material, shape, item)
-        HTMaterialsCommon.LOGGER.info("The Item: ${Registry.ITEM.getId(item)} registered as Default Item for Material: $material and Shape: $shape!!")
+        LOGGER.info("The Item: ${Registry.ITEM.getId(item)} registered as Default Item for Material: $material and Shape: $shape!!")
         //HTMaterial, HTShape -> Collection<ItemConvertible>
         partToItems.computeIfAbsent(material, shape) { _, _ -> mutableSetOf() }.add(item)
         //print info
-        HTMaterialsCommon.LOGGER.info("The Item: ${Registry.ITEM.getId(item)} linked to Material: $material and Shape: $shape!")
+        LOGGER.info("The Item: ${Registry.ITEM.getId(item)} linked to Material: $material and Shape: $shape!")
     }
 
 }

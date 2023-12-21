@@ -1,23 +1,28 @@
 package io.github.hiiragi283.material.api.addon
 
+import io.github.hiiragi283.material.HTMaterialsCommon
+import io.github.hiiragi283.material.HTRecipeManager
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.part.HTPartManager.hasDefaultItem
 import io.github.hiiragi283.material.api.shape.HTShapes
-import io.github.hiiragi283.material.client.HTMaterialModelManager
-import io.github.hiiragi283.material.common.HTMaterialsCommon
-import io.github.hiiragi283.material.common.HTRecipeManager
-import io.github.hiiragi283.material.common.util.isModLoaded
-import io.github.hiiragi283.material.common.util.suffix
+import io.github.hiiragi283.material.util.isModLoaded
+import io.github.hiiragi283.material.util.suffix
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.data.server.RecipeProvider
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder
 import net.minecraft.item.Item
+import net.minecraft.tag.TagKey
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 object HTMaterialsAddons : HTMaterialsAddon {
+
+    private val LOGGER: Logger = LoggerFactory.getLogger("${HTMaterialsCommon.MOD_NAME}/Addons")
 
     private var cache: List<HTMaterialsAddon> = FabricLoader.getInstance()
         .getEntrypoints(HTMaterialsCommon.MOD_ID, HTMaterialsAddon::class.java)
@@ -56,10 +61,10 @@ object HTMaterialsAddons : HTMaterialsAddon {
         //HTMaterialsCommon.LOGGER.info("Loot Tables Registered!")
 
         registerRecipes()
-        HTMaterialsCommon.LOGGER.info("Recipes Registered!")
+        LOGGER.info("Recipes Registered!")
 
         HTFluidManager.registerAllFluids()
-        HTMaterialsCommon.LOGGER.info("All Fluids Registered to HTFluidManager!")
+        LOGGER.info("All Fluids Registered to HTFluidManager!")
 
         /*RRPCallback.BEFORE_USER.register {
             //Register Resource Pack
@@ -111,23 +116,27 @@ object HTMaterialsAddons : HTMaterialsAddon {
     private fun ingotRecipe(material: HTMaterial, item: Item) {
         //9x Nugget -> 1x Ingot
         if (!hasDefaultItem(material, HTShapes.NUGGET)) return
+        val nuggetTag: TagKey<Item> = HTShapes.NUGGET.getCommonTag(material)
         HTRecipeManager.registerVanillaRecipe(
             HTShapes.INGOT.getIdentifier(material, HTMaterialsCommon.MOD_ID).suffix("_shaped"),
             ShapedRecipeJsonBuilder.create(item)
-                .patterns("AAA", "AAA", "AAA")
-                .input('A', HTShapes.NUGGET.getCommonTag(material))
-                .setBypassesValidation(true)
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern("AAA")
+                .input('A', nuggetTag)
+                .criterion("has_nugget", RecipeProvider.conditionsFromTag(nuggetTag))
         )
     }
 
     private fun nuggetRecipe(material: HTMaterial, item: Item) {
         //1x Ingot -> 9x Nugget
         if (!hasDefaultItem(material, HTShapes.INGOT)) return
+        val ingotTag = HTShapes.INGOT.getCommonTag(material)
         HTRecipeManager.registerVanillaRecipe(
             HTShapes.NUGGET.getIdentifier(material, HTMaterialsCommon.MOD_ID).suffix("_shapeless"),
             ShapelessRecipeJsonBuilder.create(item, 9)
-                .input(HTShapes.INGOT.getCommonTag(material))
-                .setBypassesValidation(true)
+                .input(ingotTag)
+                .criterion("has_ingot", RecipeProvider.conditionsFromTag(ingotTag))
         )
     }
 
@@ -136,8 +145,8 @@ object HTMaterialsAddons : HTMaterialsAddon {
         commonSetup()
         cache.forEach(HTMaterialsAddon::clientSetup)
         //Register Models and BlockStates
-        HTMaterialModelManager.register()
-        HTMaterialsCommon.LOGGER.info("BlockStates and Models Registered!")
+        //HTMaterialModelManager.register()
+        LOGGER.info("BlockStates and Models Registered!")
     }
 
 }

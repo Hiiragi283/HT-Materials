@@ -1,4 +1,4 @@
-package io.github.hiiragi283.material.common
+package io.github.hiiragi283.material
 
 import aztech.modern_industrialization.recipe.json.MIRecipeJson
 import com.google.gson.JsonObject
