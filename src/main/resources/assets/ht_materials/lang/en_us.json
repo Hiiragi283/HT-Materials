@@ -110,6 +110,7 @@
   "ht_shape.ring": "%s Ring",
   "ht_shape.rod": "%s Rod",
   "ht_shape.rotor": "%s Rotor",
+  "ht_shape.small_dust": "%s Small Dust",
   "ht_shape.tiny_dust": "%s Tiny Dust",
   "ht_shape.wire": "%s Wire",
   "item.ht_materials.icon": "HT Materials",

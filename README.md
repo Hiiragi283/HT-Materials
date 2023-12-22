@@ -1,5 +1,8 @@
 # HT Materials for Fabric
 
+![Requires Fabric API](https://i.imgur.com/Ol1Tcf8.png)
+![Requires Fabric Language Kotlin](https://i.imgur.com/c1DH9VL.png)
+
 This is a simple Minecraft mod for **Fabric/Quilt 1.18.2** that provides _**Material System**_ and _**Tag Sync**_
 
 ## Material System

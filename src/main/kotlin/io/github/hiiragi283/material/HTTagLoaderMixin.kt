@@ -74,24 +74,36 @@ internal object HTTagLoaderMixin {
         //Sync ForgeTag and CommonTag entries
         HTMaterial.REGISTRY.forEach { material ->
             HTShapes.REGISTRY.forEach shape@{ shape ->
-                val forgeBuilder: Tag.Builder = getBuilder(map, shape.getForgeTag(material)) ?: return@shape
-                val commonBuilder: Tag.Builder = getBuilder(map, shape.getCommonTag(material)) ?: return@shape
+                val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(material))
+                val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(material))
                 syncBuilder(commonBuilder, forgeBuilder)
                 syncBuilder(forgeBuilder, commonBuilder)
             }
         }
         HTMixinLogger.INSTANCE.info("Synced Forge Tags and Common Tags!")
+        //Remove Empty Builder
+        HashMap(map).forEach { (key: Identifier, value: Tag.Builder) ->
+            if ((value as TagBuilderMixin).entries.isEmpty()) {
+                map.remove(key)
+            }
+        }
+        HTMixinLogger.INSTANCE.info("Removed empty tag builders!")
     }
 
-    private fun getBuilder(map: MutableMap<Identifier, Tag.Builder>, tagKey: TagKey<*>): Tag.Builder? = map[tagKey.id]
+    @JvmStatic
+    private fun getOrCreateBuilder(map: MutableMap<Identifier, Tag.Builder>, tagKey: TagKey<*>): Tag.Builder =
+        getOrCreateBuilder(map, tagKey.id)
 
+    @JvmStatic
     private fun getOrCreateBuilder(map: MutableMap<Identifier, Tag.Builder>, id: Identifier) =
         map.computeIfAbsent(id) { Tag.Builder.create() }
 
+    @JvmStatic
     private fun <T> registerTag(builder: Tag.Builder, registry: Registry<T>, value: T) {
         builder.add(registry.getId(value), HTMaterialsCommon.MOD_NAME)
     }
 
+    @JvmStatic
     private fun syncBuilder(parentBuilder: Tag.Builder, childBuilder: Tag.Builder) {
         (childBuilder as TagBuilderMixin).entries.forEach(parentBuilder::add)
     }

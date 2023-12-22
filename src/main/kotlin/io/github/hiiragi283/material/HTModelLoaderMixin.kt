@@ -27,11 +27,12 @@ object HTModelLoaderMixin {
         cir: CallbackInfoReturnable<JsonUnbakedModel>
     ) {
         if (id.namespace == HTMaterialsCommon.MOD_ID) {
-            val resource: Resource = when {
-                id.path.startsWith("block/") -> getBlockResource(id, resourceManager)
-                id.path.startsWith("item/") -> getItemResource(id, resourceManager)
+            val modelId: Identifier = when {
+                id.path.startsWith("block/") -> getBlockId(id)
+                id.path.startsWith("item/") -> getItemId(id)
                 else -> null
             } ?: return
+            val resource: Resource = resourceManager.getResource(modelId)
             val reader = InputStreamReader(resource.inputStream, StandardCharsets.UTF_8)
             val jsonUnbakedModel: JsonUnbakedModel =
                 JsonUnbakedModel.deserialize(reader).apply { this.id = id.toString() }
@@ -40,29 +41,29 @@ object HTModelLoaderMixin {
     }
 
     @JvmStatic
-    private fun getBlockResource(id: Identifier, resourceManager: ResourceManager): Resource? {
+    private fun getBlockId(id: Identifier): Identifier? {
         val block: Block = Registry.BLOCK.get(id.modify { it.removePrefix("block/") })
         return null
     }
 
     @JvmStatic
-    private fun getItemResource(id: Identifier, resourceManager: ResourceManager): Resource? {
+    private fun getItemId(id: Identifier): Identifier? {
         val item: Item = Registry.ITEM.get(id.modify { it.removePrefix("item/") })
         return when (item) {
-            is HTMaterialItem -> getMaterialItemResource(item, resourceManager)
-            is HTMaterialFluid.Bucket -> resourceManager.getResource(HTMaterialsCommon.id("models/item/bucket.json"))
+            is HTMaterialItem -> getMaterialItemId(item)
+            is HTMaterialFluid.Bucket -> HTMaterialsCommon.id("models/item/bucket.json")
             else -> null
         }
     }
 
     @JvmStatic
-    private fun getMaterialItemResource(item: HTMaterialItem, resourceManager: ResourceManager): Resource? {
+    private fun getMaterialItemId(item: HTMaterialItem): Identifier? {
         val (material: HTMaterial, shape: HTShape) = item
         return if (shape == HTShapes.GEM) {
             material.getProperty(HTPropertyKey.GEM)?.type?.let { "${it.name.lowercase()}_gem" }?.let {
-                resourceManager.getResource(HTMaterialsCommon.id("models/item/$it.json"))
+                HTMaterialsCommon.id("models/item/$it.json")
             }
-        } else resourceManager.getResource(HTMaterialsCommon.id("models/item/${shape}.json"))
+        } else HTMaterialsCommon.id("models/item/${shape}.json")
     }
 
 }
