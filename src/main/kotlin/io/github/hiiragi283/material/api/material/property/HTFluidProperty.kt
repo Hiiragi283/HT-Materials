@@ -1,7 +1,7 @@
 package io.github.hiiragi283.material.api.material.property
 
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPart
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
@@ -27,7 +27,7 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
     override val key: HTPropertyKey<HTFluidProperty> = HTPropertyKey.FLUID
 
-    override fun verify(material: HTMaterial) {
+    override fun verify(material: HTMaterialNew) {
 
     }
 
@@ -57,7 +57,7 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
         lines.add(TranslatableText("tooltip.ht_materials.material.state", TranslatableText(key)))
     }
 
-    internal fun init(material: HTMaterial) {
+    internal fun init(material: HTMaterialNew) {
         if (this::fluid.isInitialized) return
         HTMaterialFluid.Flowing(material)
         HTMaterialFluid.Still(material).run {

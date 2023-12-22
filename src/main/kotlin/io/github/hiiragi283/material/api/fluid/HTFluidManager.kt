@@ -3,8 +3,7 @@ package io.github.hiiragi283.material.api.fluid
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
-import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.util.getAllModId
 import net.minecraft.fluid.FlowableFluid
 import net.minecraft.fluid.Fluid
@@ -20,40 +19,40 @@ object HTFluidManager {
 
     //    Fluid -> HTMaterial    //
 
-    private val fluidToMaterial: MutableMap<Fluid, HTMaterial> = mutableMapOf()
+    private val fluidToMaterial: MutableMap<Fluid, HTMaterialNew> = mutableMapOf()
 
     @JvmStatic
-    fun getFluidToMaterialMap(): Map<Fluid, HTMaterial> = fluidToMaterial
+    fun getFluidToMaterialMap(): Map<Fluid, HTMaterialNew> = fluidToMaterial
 
     @JvmStatic
-    fun getMaterial(fluid: Fluid): HTMaterial? = fluidToMaterial[fluid]
+    fun getMaterial(fluid: Fluid): HTMaterialNew? = fluidToMaterial[fluid]
 
     @JvmStatic
     fun hasMaterial(fluid: Fluid): Boolean = fluid in fluidToMaterial
 
-    //    HTMaterial -> Fluid    //
+    //    HTMaterialNew -> Fluid    //
 
-    private val materialToFluid: MutableMap<HTMaterial, Fluid> = mutableMapOf()
-
-    @JvmStatic
-    fun getDefaultFluidMap(): Map<HTMaterial, Fluid> = materialToFluid
+    private val materialToFluid: MutableMap<HTMaterialNew, Fluid> = mutableMapOf()
 
     @JvmStatic
-    fun getDefaultFluid(material: HTMaterial): Fluid? = materialToFluid[material]
+    fun getDefaultFluidMap(): Map<HTMaterialNew, Fluid> = materialToFluid
 
     @JvmStatic
-    fun hasDefaultFluid(material: HTMaterial): Boolean = material in materialToFluid
-
-    //   HTMaterial -> Collection<Fluid>    //
-
-    private val materialToFluids: Multimap<HTMaterial, Fluid> = HashMultimap.create()
+    fun getDefaultFluid(material: HTMaterialNew): Fluid? = materialToFluid[material]
 
     @JvmStatic
-    fun getMaterialToFluidsMap(): ImmutableMultimap<HTMaterial, Fluid> =
+    fun hasDefaultFluid(material: HTMaterialNew): Boolean = material in materialToFluid
+
+    //   HTMaterialNew -> Collection<Fluid>    //
+
+    private val materialToFluids: Multimap<HTMaterialNew, Fluid> = HashMultimap.create()
+
+    @JvmStatic
+    fun getMaterialToFluidsMap(): ImmutableMultimap<HTMaterialNew, Fluid> =
         ImmutableMultimap.copyOf(materialToFluids)
 
     @JvmStatic
-    fun getFluids(material: HTMaterial): Collection<Fluid> = materialToFluids[material] ?: setOf()
+    fun getFluids(material: HTMaterialNew): Collection<Fluid> = materialToFluids[material] ?: setOf()
 
     //    Registration    //
 
@@ -62,7 +61,7 @@ object HTFluidManager {
     }
 
     @JvmStatic
-    fun register(material: HTMaterial, fluid: Fluid) {
+    fun register(material: HTMaterialNew, fluid: Fluid) {
         checkFluidNotEmpty(fluid)
         if (fluid is FlowableFluid) {
             registerInternal(material, fluid.still)
@@ -73,8 +72,8 @@ object HTFluidManager {
     }
 
     @JvmSynthetic
-    private fun registerInternal(material: HTMaterial, fluid: Fluid) {
-        //Fluid -> HTMaterial
+    private fun registerInternal(material: HTMaterialNew, fluid: Fluid) {
+        //Fluid -> HTMaterialNew
         fluidToMaterial.putIfAbsent(fluid, material)
         //HTMaterial -> Fluid
         if (!hasDefaultFluid(material)) {
@@ -89,8 +88,8 @@ object HTFluidManager {
 
     @JvmStatic
     @JvmSynthetic
-    internal fun forceRegister(material: HTMaterial, fluid: Fluid) {
-        //Fluid -> HTMaterial
+    internal fun forceRegister(material: HTMaterialNew, fluid: Fluid) {
+        //Fluid -> HTMaterialNew
         fluidToMaterial.putIfAbsent(fluid, material)
         //HTMaterial -> Fluid
         materialToFluid[material] = fluid
@@ -103,19 +102,19 @@ object HTFluidManager {
 
     //    Initialization    //
 
-    init {
+    /*init {
         //Water
         forceRegister(HTVanillaMaterials.WATER, Fluids.WATER)
         forceRegister(HTVanillaMaterials.WATER, Fluids.FLOWING_WATER)
         //Lava
         forceRegister(HTVanillaMaterials.LAVA, Fluids.LAVA)
         forceRegister(HTVanillaMaterials.LAVA, Fluids.FLOWING_LAVA)
-    }
+    }*/
 
     @JvmStatic
     internal fun registerAllFluids() {
         getAllModId().forEach { modid: String ->
-            HTMaterial.REGISTRY.forEach { material ->
+            HTMaterialNew.REGISTRY.forEach { material ->
                 Registry.FLUID.get(Identifier(modid, material.getName())).run {
                     if (this != Fluids.EMPTY) {
                         register(material, this)

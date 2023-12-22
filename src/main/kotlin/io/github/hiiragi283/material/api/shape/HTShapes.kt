@@ -1,74 +1,54 @@
 package io.github.hiiragi283.material.api.shape
 
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 object HTShapes {
-
-    private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
-
-    internal var canModify: Boolean = true
-
-    private val map: MutableMap<String, HTShape> = mutableMapOf()
-
-    @JvmField
-    val REGISTRY: Collection<HTShape> = map.values
-
-    @JvmStatic
-    fun getShape(name: String): HTShape? = map[name]
-
-    @JvmStatic
-    fun register(shape: HTShape): HTShape = shape.also {
-        map.putIfAbsent(it.name, shape)
-        LOGGER.info("The Shape: ${it.name} registered!")
-    }
 
     //    Block    //
 
     @JvmField
-    val BLOCK: HTShape = register(object : HTShape("block") {
+    val BLOCK: HTShape = HTShape.register(object : HTShape("block") {
 
-        override fun canGenerateBlock(material: HTMaterial): Boolean = material.hasFlag(HTMaterialFlag.GENERATE_BLOCk)
+        override fun canGenerateBlock(material: HTMaterialNew): Boolean = material.hasFlag(HTMaterialFlag.GENERATE_BLOCk)
 
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
+        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterial): String = "${material.getName()}_block"
+        override fun getIdPath(material: HTMaterialNew): String = "${material.getName()}_block"
 
-        override fun getForgePath(material: HTMaterial): String = "storage_blocks/${material.getName()}"
+        override fun getForgePath(material: HTMaterialNew): String = "storage_blocks/${material.getName()}"
 
-        override fun getCommonPath(material: HTMaterial): String = "${material.getName()}_blocks"
-
-    })
-
-    @JvmField
-    val ORE: HTShape = register(object : HTShape("ore") {
-
-        override fun canGenerateBlock(material: HTMaterial): Boolean = false
-
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-        override fun getIdPath(material: HTMaterial): String = "${material.getName()}_ore"
-
-        override fun getForgePath(material: HTMaterial): String = "ores/${material.getName()}"
-
-        override fun getCommonPath(material: HTMaterial): String = "${material.getName()}_ores"
+        override fun getCommonPath(material: HTMaterialNew): String = "${material.getName()}_blocks"
 
     })
 
     @JvmField
-    val RAW_BLOCK: HTShape = register(object : HTShape("raw_block") {
+    val ORE: HTShape = HTShape.register(object : HTShape("ore") {
 
-        override fun canGenerateBlock(material: HTMaterial): Boolean = false
+        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
 
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
+        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterial): String = "raw_${material.getName()}_block"
+        override fun getIdPath(material: HTMaterialNew): String = "${material.getName()}_ore"
 
-        override fun getForgePath(material: HTMaterial): String = "storage_blocks/raw_${material.getName()}"
+        override fun getForgePath(material: HTMaterialNew): String = "ores/${material.getName()}"
 
-        override fun getCommonPath(material: HTMaterial): String = "raw_${material.getName()}_blocks"
+        override fun getCommonPath(material: HTMaterialNew): String = "${material.getName()}_ores"
+
+    })
+
+    @JvmField
+    val RAW_BLOCK: HTShape = HTShape.register(object : HTShape("raw_block") {
+
+        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
+
+        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
+
+        override fun getIdPath(material: HTMaterialNew): String = "raw_${material.getName()}_block"
+
+        override fun getForgePath(material: HTMaterialNew): String = "storage_blocks/raw_${material.getName()}"
+
+        override fun getCommonPath(material: HTMaterialNew): String = "raw_${material.getName()}_blocks"
 
     })
 
@@ -122,15 +102,15 @@ object HTShapes {
     @JvmField
     val RAW_ORE: HTShape = object : HTShape("raw_ore") {
 
-        override fun canGenerateBlock(material: HTMaterial): Boolean = false
+        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
 
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
+        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterial): String = "raw_${material.getName()}_block"
+        override fun getIdPath(material: HTMaterialNew): String = "raw_${material.getName()}_block"
 
-        override fun getForgePath(material: HTMaterial): String = "raw_materials/${material.getName()}"
+        override fun getForgePath(material: HTMaterialNew): String = "raw_materials/${material.getName()}"
 
-        override fun getCommonPath(material: HTMaterial): String = "raw_${material.getName()}_ores"
+        override fun getCommonPath(material: HTMaterialNew): String = "raw_${material.getName()}_ores"
 
     }
 

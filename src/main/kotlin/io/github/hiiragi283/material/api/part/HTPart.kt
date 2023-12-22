@@ -2,7 +2,7 @@ package io.github.hiiragi283.material.api.part
 
 import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.item.HTMaterialItemConvertible
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.shape.HTShape
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -14,7 +14,7 @@ import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 
-data class HTPart(override val materialHT: HTMaterial, override val shapeHT: HTShape) : HTMaterialItemConvertible {
+data class HTPart(override val materialHT: HTMaterialNew, override val shapeHT: HTShape) : HTMaterialItemConvertible {
 
     @Environment(EnvType.CLIENT)
     fun getTranslatedName(): String =
@@ -32,20 +32,20 @@ data class HTPart(override val materialHT: HTMaterial, override val shapeHT: HTS
         //Name
         lines.add(TranslatableText("tooltip.ht_materials.material.name", getTranslatedName()))
         //Formula
-        materialHT.asFormula().takeIf(String::isNotEmpty)?.let { formula: String ->
+        materialHT.info.formula.takeIf(String::isNotEmpty)?.let { formula: String ->
             lines.add(TranslatableText("tooltip.ht_materials.material.formula", formula))
         }
         //Molar Mass
-        materialHT.asMolarMass().takeIf { it > 0.0 }?.let { molar: Double ->
+        materialHT.info.molarMass.takeIf { it > 0.0 }?.let { molar: Double ->
             lines.add(TranslatableText("tooltip.ht_materials.material.molar", molar))
         }
         //Tooltip from Properties
-        materialHT.getProperties().forEach { it.appendTooltip(this, stack, lines) }
+        materialHT.properties.values.forEach { it.appendTooltip(this, stack, lines) }
     }
 
     //    HTMaterialItemConvertible    //
 
-    override fun getPart(): HTPart = this
+    override val part: HTPart = this
 
     override fun asItem(): Item = HTPartManager.getDefaultItem(materialHT, shapeHT) ?: Items.AIR
 

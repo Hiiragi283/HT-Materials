@@ -2,6 +2,7 @@ package io.github.hiiragi283.material.api
 
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
@@ -10,7 +11,6 @@ import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.api.shape.HTShapes
 import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import java.util.*
@@ -22,7 +22,7 @@ object HTMaterialsAPI {
     //    Fluid    //
 
     @JvmStatic
-    fun getMaterialFluid(material: HTMaterial): HTMaterialFluid? = HTMaterialFluid.getFluid(material)
+    fun getMaterialFluid(material: HTMaterialNew): HTMaterialFluid? = HTMaterialFluid.getFluid(material)
 
     //    Material - Common    //
 
@@ -49,7 +49,7 @@ object HTMaterialsAPI {
         HTMaterialFlag.create(name) { init.accept(this) }
 
     @JvmStatic
-    fun getMaterialFlag(name: String): Optional<HTMaterialFlag> = Optional.ofNullable(HTMaterialFlag.REGISTRY[name])
+    fun getMaterialFlag(name: String): Optional<HTMaterialFlag> = Optional.ofNullable(HTMaterialFlag.getFlag(name))
 
     @JvmStatic
     fun modifyFlags(material: HTMaterial, init: Consumer<HTMaterialFlags>) {
@@ -60,7 +60,7 @@ object HTMaterialsAPI {
 
     @JvmStatic
     fun <T : HTMaterialProperty<T>> getPropertyKey(name: String): Optional<HTMaterialProperty<T>> =
-        Optional.ofNullable(HTPropertyKey.get<T>(name))
+        Optional.ofNullable(HTPropertyKey.getKey<T>(name))
 
     @JvmStatic
     fun modifyProperties(material: HTMaterial, init: Consumer<HTMaterialProperties>) {
@@ -70,7 +70,7 @@ object HTMaterialsAPI {
     //    Shape    //
 
     @JvmStatic
-    fun getShape(name: String): Optional<HTShape> = Optional.ofNullable(HTShapes.getShape(name))
+    fun getShape(name: String): Optional<HTShape> = Optional.ofNullable(HTShape.getShape(name))
 
     //    Part    //
 
@@ -79,14 +79,14 @@ object HTMaterialsAPI {
         Optional.ofNullable(HTPartManager.getPart(itemConvertible))
 
     @JvmStatic
-    fun getDefaultItem(material: HTMaterial, shape: HTShape): Optional<Item> =
+    fun getDefaultItem(material: HTMaterialNew, shape: HTShape): Optional<Item> =
         Optional.ofNullable(HTPartManager.getDefaultItem(material, shape))
 
     @JvmStatic
-    fun getItems(material: HTMaterial, shape: HTShape): Collection<Item> = HTPartManager.getItems(material, shape)
+    fun getItems(material: HTMaterialNew, shape: HTShape): Collection<Item> = HTPartManager.getItems(material, shape)
 
     @JvmStatic
-    fun registerItemToPart(material: HTMaterial, shape: HTShape, itemConvertible: ItemConvertible) {
+    fun registerItemToPart(material: HTMaterialNew, shape: HTShape, itemConvertible: ItemConvertible) {
         HTPartManager.register(material, shape, itemConvertible)
     }
 

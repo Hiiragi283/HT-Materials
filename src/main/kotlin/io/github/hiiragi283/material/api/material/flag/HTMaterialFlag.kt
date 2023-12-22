@@ -1,7 +1,8 @@
 package io.github.hiiragi283.material.api.material.flag
 
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
+import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap
 
 class HTMaterialFlag private constructor(
     val name: String,
@@ -10,10 +11,10 @@ class HTMaterialFlag private constructor(
 ) {
 
     init {
-        map.putIfAbsent(name, this)
+        REGISTRY.putIfAbsent(name, this)
     }
 
-    fun verify(material: HTMaterial) {
+    fun verify(material: HTMaterialNew) {
         requiredProperties.forEach { key: HTPropertyKey<*> ->
             if (!material.hasProperty(key)) {
                 throw IllegalStateException("The material: $material has no property: ${key.name} but required for ${this.name}!")
@@ -56,10 +57,10 @@ class HTMaterialFlag private constructor(
 
         //    Registry    //
 
-        private val map: MutableMap<String, HTMaterialFlag> = mutableMapOf()
+        private val REGISTRY: ApiProviderMap<String, HTMaterialFlag> = ApiProviderMap.create()
 
-        @JvmField
-        val REGISTRY: Map<String, HTMaterialFlag> = map
+        @JvmStatic
+        fun getFlag(key: String): HTMaterialFlag? = REGISTRY.get(key)
 
         //    Builder    //
 
@@ -70,46 +71,32 @@ class HTMaterialFlag private constructor(
         //    Flags    //
 
         @JvmField
-        val GENERATE_BLOCk = create("generate_block") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
-        }
+        val GENERATE_BLOCk = create("generate_block")
 
         @JvmField
-        val GENERATE_DUST = create("generate_dust") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
-        }
+        val GENERATE_DUST = create("generate_dust")
 
         @JvmField
-        val GENERATE_GEAR = create("generate_gear") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
-        }
+        val GENERATE_GEAR = create("generate_gear")
 
         @JvmField
         val GENERATE_GEM = create("generate_gem") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
             requiredProperties.add(HTPropertyKey.GEM)
         }
 
         @JvmField
-        val GENERATE_INGOT = create("generate_ingot") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
-        }
+        val GENERATE_INGOT = create("generate_ingot")
 
         @JvmField
         val GENERATE_NUGGET = create("generate_nugget") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
             requiredProperties.add(HTPropertyKey.METAL)
         }
 
         @JvmField
-        val GENERATE_PLATE = create("generate_plate") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
-        }
+        val GENERATE_PLATE = create("generate_plate")
 
         @JvmField
-        val GENERATE_ROD = create("generate_rod") {
-            //requiredProperties.add(HTPropertyKey.SOLID)
-        }
+        val GENERATE_ROD = create("generate_rod")
 
     }
 

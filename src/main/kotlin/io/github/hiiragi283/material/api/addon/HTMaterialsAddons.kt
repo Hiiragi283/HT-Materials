@@ -4,8 +4,10 @@ import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.HTRecipeManager
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.part.HTPartManager.hasDefaultItem
+import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.isModLoaded
 import io.github.hiiragi283.material.util.suffix
@@ -38,18 +40,15 @@ object HTMaterialsAddons : HTMaterialsAddon {
     }
 
     override fun registerMaterials() {
-        HTMaterial
+        HTMaterialNew
         cache.forEach(HTMaterialsAddon::registerMaterials)
     }
 
     override fun modifyMaterials() {
         cache.forEach(HTMaterialsAddon::modifyMaterials)
-        HTMaterial.REGISTRY.forEach(HTMaterial::verify)
-        HTShapes.canModify = false
+        HTMaterialNew.REGISTRY.forEach(HTMaterialNew::verify)
+        HTShape.canModify = false
         HTMaterial.canModify = false
-        HTMaterial.REGISTRY.forEach(HTMaterial::asColor)
-        HTMaterial.REGISTRY.forEach(HTMaterial::asFormula)
-        HTMaterial.REGISTRY.forEach(HTMaterial::asMolarMass)
     }
 
     //private val RESOURCE_PACK: RuntimeResourcePack = RuntimeResourcePack.create(HTMaterialsCommon.id("runtime"))
@@ -81,7 +80,7 @@ object HTMaterialsAddons : HTMaterialsAddon {
     }*/
 
     private fun registerRecipes() {
-        HTMaterial.REGISTRY.forEach { material ->
+        HTMaterialNew.REGISTRY.forEach { material ->
             //materialRecipe(material)
             //HTPartManager.getDefaultItem(material, HTShapes.BLOCK)?.let { blockRecipe(material, it) }
             HTPartManager.getDefaultItem(material, HTShapes.INGOT)?.let { ingotRecipe(material, it) }
@@ -113,7 +112,7 @@ object HTMaterialsAddons : HTMaterialsAddon {
         )
     }*/
 
-    private fun ingotRecipe(material: HTMaterial, item: Item) {
+    private fun ingotRecipe(material: HTMaterialNew, item: Item) {
         //9x Nugget -> 1x Ingot
         if (!hasDefaultItem(material, HTShapes.NUGGET)) return
         val nuggetTag: TagKey<Item> = HTShapes.NUGGET.getCommonTag(material)
@@ -128,7 +127,7 @@ object HTMaterialsAddons : HTMaterialsAddon {
         )
     }
 
-    private fun nuggetRecipe(material: HTMaterial, item: Item) {
+    private fun nuggetRecipe(material: HTMaterialNew, item: Item) {
         //1x Ingot -> 9x Nugget
         if (!hasDefaultItem(material, HTShapes.INGOT)) return
         val ingotTag = HTShapes.INGOT.getCommonTag(material)

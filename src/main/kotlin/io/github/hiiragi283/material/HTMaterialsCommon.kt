@@ -2,11 +2,10 @@ package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddons
 import io.github.hiiragi283.material.api.item.HTMaterialItem
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.api.shape.HTShapes
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -26,23 +25,27 @@ object HTMaterialsCommon : ModInitializer {
 
     private val LOGGER: Logger = LoggerFactory.getLogger(MOD_NAME)
 
-    @JvmField
-    val ITEM_GROUP: ItemGroup = FabricItemGroupBuilder.create(id("material"))
-        .icon(Items.IRON_INGOT::getDefaultStack)
-        .build()
+    @get:JvmName("ITEM_GROUP")
+    val ITEM_GROUP: ItemGroup by lazy {
+        FabricItemGroupBuilder.create(id("material")).icon(Items.IRON_INGOT::getDefaultStack).build()
+    }
 
-    @JvmField
-    val ICON: Item = Registry.register(
-        Registry.ITEM,
-        id("icon"),
-        Item(FabricItemSettings().group(ITEM_GROUP).rarity(Rarity.EPIC))
-    )
+    @get:JvmName("ICON")
+    val ICON: Item by lazy {
+        Registry.register(
+            Registry.ITEM,
+            id("icon"),
+            Item(FabricItemSettings().group(ITEM_GROUP).rarity(Rarity.EPIC))
+        )
+    }
 
     override fun onInitialize() {
 
         //Collect Addons
         HTMaterialsAddons
 
+        ITEM_GROUP
+        ICON
         //Register Materials and Shapes
         HTMaterialsAddons.registerShapes()
         LOGGER.info("HTShape loaded!")
@@ -90,10 +93,10 @@ object HTMaterialsCommon : ModInitializer {
     }*/
 
     private fun registerMaterialItems() {
-        HTShapes.REGISTRY.forEach { shape: HTShape ->
-            HTMaterial.REGISTRY
+        HTShape.REGISTRY.forEach { shape: HTShape ->
+            HTMaterialNew.REGISTRY
                 .filter(shape::canGenerateItem)
-                .forEach { material: HTMaterial ->
+                .forEach { material: HTMaterialNew ->
                     val identifier: Identifier = shape.getIdentifier(material)
                     //Register Item
                     HTMaterialItem(material, shape).run {
@@ -106,7 +109,7 @@ object HTMaterialsCommon : ModInitializer {
     }
 
     private fun registerMaterialFluids() {
-        HTMaterial.REGISTRY.forEach { material -> material.getProperty(HTPropertyKey.FLUID)?.init(material) }
+        HTMaterialNew.REGISTRY.forEach { material -> material.getProperty(HTPropertyKey.FLUID)?.init(material) }
     }
 
 }

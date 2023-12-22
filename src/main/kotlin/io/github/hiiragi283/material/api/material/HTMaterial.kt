@@ -10,7 +10,6 @@ import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.commonId
@@ -34,8 +33,6 @@ class HTMaterial private constructor(
 ) : ColorConvertible, FormulaConvertible, MolarMassConvertible {
 
     fun verify() {
-        properties.verify(this)
-        flags.verify(this)
     }
 
     //    Properties    //
@@ -179,28 +176,10 @@ class HTMaterial private constructor(
             HTCommonMaterials
         }
 
-        private val FLUID = object : HTShape("fluid") {
-
-            override fun canGenerateBlock(material: HTMaterial): Boolean = false
-
-            override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-            override fun getIdPath(material: HTMaterial): String = material.getName()
-
-            override fun getForgePath(material: HTMaterial): String {
-                throw UnsupportedOperationException()
-            }
-
-            override fun getCommonPath(material: HTMaterial): String {
-                throw UnsupportedOperationException()
-            }
-
-        }
-
     }
 
     fun appendFluidTooltip(stack: ItemStack, lines: MutableList<Text>) {
-        HTPart(this, FLUID).appendTooltip(stack, lines)
+
     }
 
 }

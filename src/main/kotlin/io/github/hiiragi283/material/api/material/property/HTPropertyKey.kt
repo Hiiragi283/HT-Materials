@@ -1,9 +1,11 @@
 package io.github.hiiragi283.material.api.material.property
 
+import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap
+
 data class HTPropertyKey<T : HTMaterialProperty<T>>(val name: String, val clazz: Class<T>) {
 
     init {
-        map.putIfAbsent(name, this)
+        REGISTRY.putIfAbsent(name, this)
     }
 
     //    Any    //
@@ -18,19 +20,16 @@ data class HTPropertyKey<T : HTMaterialProperty<T>>(val name: String, val clazz:
         private val map: MutableMap<String, HTPropertyKey<*>> = mutableMapOf()
 
         @JvmField
-        val REGISTRY: Map<String, HTPropertyKey<*>> = map
+        val REGISTRY: ApiProviderMap<String, HTPropertyKey<*>> = ApiProviderMap.create()
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
-        fun <T : HTMaterialProperty<T>> get(name: String): T? = map[name] as? T
+        fun <T : HTMaterialProperty<T>> getKey(name: String): T? = REGISTRY[name] as? T
 
         //    Keys    //
 
         @JvmField
         val FLUID: HTPropertyKey<HTFluidProperty> = create("fluid")
-
-        @JvmField
-        val SOLID: HTPropertyKey<HTSolidProperty> = create("solid")
 
         @JvmField
         val GEM: HTPropertyKey<HTGemProperty> = create("gem")

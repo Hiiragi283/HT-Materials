@@ -1,7 +1,7 @@
 package io.github.hiiragi283.material.compat.rei
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
 import me.shedaniel.rei.api.common.category.CategoryIdentifier
 import me.shedaniel.rei.api.common.display.Display
@@ -11,7 +11,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks
 import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
 
-class HTMaterialDisplay(val material: HTMaterial) : Display {
+class HTMaterialDisplay(val material: HTMaterialNew) : Display {
 
     private val entries: EntryIngredient = EntryIngredient.of(getEntries())
 

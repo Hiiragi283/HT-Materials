@@ -1,10 +1,9 @@
 package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.mixin.TagBuilderMixin
 import io.github.hiiragi283.material.util.*
 import net.minecraft.fluid.Fluid
@@ -49,7 +48,7 @@ internal object HTTagLoaderMixin {
     @JvmStatic
     fun fluidTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Tags from HTFluidManager
-        HTFluidManager.getMaterialToFluidsMap().forEach { material: HTMaterial, fluid: Fluid ->
+        HTFluidManager.getMaterialToFluidsMap().forEach { material: HTMaterialNew, fluid: Fluid ->
             registerTag(
                 getOrCreateBuilder(map, commonId(material.getName())),
                 Registry.FLUID,
@@ -61,7 +60,8 @@ internal object HTTagLoaderMixin {
     @JvmStatic
     fun itemTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Tags from HTPartManager
-        HTPartManager.getPartToItemTable().forEach { (material: HTMaterial, shape: HTShape, items: Collection<Item>) ->
+        HTPartManager.getPartToItemTable()
+            .forEach { (material: HTMaterialNew, shape: HTShape, items: Collection<Item>) ->
             items.forEach { item: Item ->
                 registerTag(
                     getOrCreateBuilder(map, shape.getCommonTag(material).id),
@@ -72,8 +72,8 @@ internal object HTTagLoaderMixin {
         }
         HTMixinLogger.INSTANCE.info("Registered Tags for HTPartManager's Entries!")
         //Sync ForgeTag and CommonTag entries
-        HTMaterial.REGISTRY.forEach { material ->
-            HTShapes.REGISTRY.forEach shape@{ shape ->
+        HTMaterialNew.REGISTRY.forEach { material ->
+            HTShape.REGISTRY.forEach shape@{ shape ->
                 val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(material))
                 val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(material))
                 syncBuilder(commonBuilder, forgeBuilder)

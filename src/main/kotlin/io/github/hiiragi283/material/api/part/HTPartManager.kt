@@ -3,18 +3,12 @@ package io.github.hiiragi283.material.api.part
 import com.google.common.collect.HashBasedTable
 import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
-import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.materials.HTElementMaterials
-import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.computeIfAbsent
-import io.github.hiiragi283.material.util.getEntries
 import io.github.hiiragi283.material.util.isAir
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents
 import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
-import net.minecraft.item.Items
 import net.minecraft.util.registry.Registry
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -36,33 +30,34 @@ object HTPartManager {
     @JvmStatic
     fun hasPart(itemConvertible: ItemConvertible): Boolean = itemConvertible.asItem() in itemToPart
 
-    //    HTMaterial, HTShape -> Item    //
+    //    HTMaterialNew, HTShape -> Item    //
 
-    private val partToItem: Table<HTMaterial, HTShape, Item> = HashBasedTable.create()
-
-    @JvmStatic
-    fun getDefaultItemTable(): ImmutableTable<HTMaterial, HTShape, Item> = ImmutableTable.copyOf(partToItem)
+    private val partToItem: Table<HTMaterialNew, HTShape, Item> = HashBasedTable.create()
 
     @JvmStatic
-    fun getDefaultItem(material: HTMaterial, shape: HTShape): Item? = partToItem.get(material, shape)
+    fun getDefaultItemTable(): ImmutableTable<HTMaterialNew, HTShape, Item> = ImmutableTable.copyOf(partToItem)
 
     @JvmStatic
-    fun hasDefaultItem(material: HTMaterial, shape: HTShape): Boolean = partToItem.contains(material, shape)
-
-    //    HTMaterial, HTShape -> Collection<Item>    //
-
-    private val partToItems: Table<HTMaterial, HTShape, MutableSet<Item>> = HashBasedTable.create()
+    fun getDefaultItem(material: HTMaterialNew, shape: HTShape): Item? = partToItem.get(material, shape)
 
     @JvmStatic
-    fun getPartToItemTable(): ImmutableTable<HTMaterial, HTShape, Collection<Item>> =
+    fun hasDefaultItem(material: HTMaterialNew, shape: HTShape): Boolean = partToItem.contains(material, shape)
+
+    //    HTMaterialNew, HTShape -> Collection<Item>    //
+
+    private val partToItems: Table<HTMaterialNew, HTShape, MutableSet<Item>> = HashBasedTable.create()
+
+    @JvmStatic
+    fun getPartToItemTable(): ImmutableTable<HTMaterialNew, HTShape, Collection<Item>> =
         ImmutableTable.copyOf(partToItems)
 
     @JvmStatic
-    fun getItems(material: HTMaterial, shape: HTShape): Collection<Item> = partToItems.get(material, shape) ?: setOf()
+    fun getItems(material: HTMaterialNew, shape: HTShape): Collection<Item> =
+        partToItems.get(material, shape) ?: setOf()
 
     //    Initialization    //
 
-    init {
+    /*init {
         //Amethyst
         forceRegister(HTVanillaMaterials.AMETHYST, HTShapes.BLOCK, Items.AMETHYST_BLOCK)
         forceRegister(HTVanillaMaterials.AMETHYST, HTShapes.GEM, Items.AMETHYST_SHARD)
@@ -179,8 +174,8 @@ object HTPartManager {
             itemToPart.clear()
             partToItems.clear()
 
-            HTMaterial.REGISTRY.forEach { material ->
-                HTShapes.REGISTRY.forEach { shape ->
+            HTMaterialNew.REGISTRY.forEach { material ->
+                HTShape.REGISTRY.forEach { shape ->
                     shape.getCommonTag(material)
                         .getEntries(Registry.ITEM)
                         .forEach { item -> register(material, shape, item) }
@@ -188,7 +183,7 @@ object HTPartManager {
             }
 
         }
-    }
+    }*/
 
     //    Registration    //
 
@@ -198,7 +193,7 @@ object HTPartManager {
 
     @JvmStatic
     @JvmSynthetic
-    fun register(material: HTMaterial, shape: HTShape, itemConvertible: ItemConvertible) {
+    fun register(material: HTMaterialNew, shape: HTShape, itemConvertible: ItemConvertible) {
         //Check if the itemConvertible has non-air item
         val item: Item = checkItemNotAir(itemConvertible)
         //ItemConvertible -> HTPart
@@ -215,7 +210,7 @@ object HTPartManager {
     }
 
     @JvmSynthetic
-    internal fun forceRegister(material: HTMaterial, shape: HTShape, itemConvertible: ItemConvertible) {
+    internal fun forceRegister(material: HTMaterialNew, shape: HTShape, itemConvertible: ItemConvertible) {
         //Check if the itemConvertible has non-air item
         val item: Item = checkItemNotAir(itemConvertible)
         //ItemConvertible -> HTPart

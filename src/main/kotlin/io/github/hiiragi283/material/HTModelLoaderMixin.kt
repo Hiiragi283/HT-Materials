@@ -2,7 +2,7 @@ package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialItem
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
@@ -58,7 +58,7 @@ object HTModelLoaderMixin {
 
     @JvmStatic
     private fun getMaterialItemId(item: HTMaterialItem): Identifier? {
-        val (material: HTMaterial, shape: HTShape) = item
+        val (material: HTMaterialNew, shape: HTShape) = item
         return if (shape == HTShapes.GEM) {
             material.getProperty(HTPropertyKey.GEM)?.type?.let { "${it.name.lowercase()}_gem" }?.let {
                 HTMaterialsCommon.id("models/item/$it.json")

@@ -3,7 +3,7 @@ package io.github.hiiragi283.material
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialItem
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.util.getTransaction
 import net.fabricmc.api.ClientModInitializer
@@ -70,7 +70,7 @@ object HTMaterialsClient : ClientModInitializer {
     }*/
 
     private fun registerFluidRenderHandler() {
-        HTMaterial.REGISTRY.forEach { material: HTMaterial ->
+        HTMaterialNew.REGISTRY.forEach { material: HTMaterialNew ->
             val fluid: HTMaterialFluid = HTMaterialFluid.getFluid(material) ?: return@forEach
             val flowing: Fluid = fluid.flowing
             val still: Fluid = fluid.still
@@ -79,7 +79,7 @@ object HTMaterialsClient : ClientModInitializer {
                 still, flowing, SimpleFluidRenderHandler(
                     Identifier("minecraft:block/white_concrete"),
                     Identifier("minecraft:block/white_concrete"),
-                    material.asColor().rgb
+                    material.info.color.rgb
                 )
             )
             //Register Translucent Layer
@@ -111,7 +111,7 @@ object HTMaterialsClient : ClientModInitializer {
             .filterIsInstance<HTMaterialItem>()
             .forEach { item: HTMaterialItem ->
                 ColorProviderRegistry.ITEM.register(
-                    ItemColorProvider { _, tintIndex: Int -> if (tintIndex == 0) item.materialHT.asColor().rgb else -1 },
+                    ItemColorProvider { _, tintIndex: Int -> if (tintIndex == 0) item.materialHT.info.color.rgb else -1 },
                     item
                 )
             }

@@ -1,7 +1,7 @@
 package io.github.hiiragi283.material.api.fluid
 
 import io.github.hiiragi283.material.HTMaterialsCommon
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.util.prefix
@@ -25,15 +25,15 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.WorldAccess
 import net.minecraft.world.WorldView
 
-abstract class HTMaterialFluid private constructor(val material: HTMaterial) : FlowableFluid() {
+abstract class HTMaterialFluid private constructor(val material: HTMaterialNew) : FlowableFluid() {
 
     companion object {
 
-        private val fluidFlowing: MutableMap<HTMaterial, Flowing> = mutableMapOf()
+        private val fluidFlowing: MutableMap<HTMaterialNew, Flowing> = mutableMapOf()
 
-        private val fluidStill: MutableMap<HTMaterial, Still> = mutableMapOf()
+        private val fluidStill: MutableMap<HTMaterialNew, Still> = mutableMapOf()
 
-        private val fluidBucket: MutableMap<HTMaterial, Bucket> = mutableMapOf()
+        private val fluidBucket: MutableMap<HTMaterialNew, Bucket> = mutableMapOf()
 
         @JvmStatic
         fun getFluids(): Collection<HTMaterialFluid> = HTFluidManager.getDefaultFluidMap().values.filterIsInstance<HTMaterialFluid>()
@@ -42,10 +42,10 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
         fun getBuckets(): Collection<Bucket> = getFluids().map(HTMaterialFluid::getBucketItem).filterIsInstance<Bucket>()
 
         @JvmStatic
-        fun getFluid(material: HTMaterial): HTMaterialFluid? = fluidStill[material]
+        fun getFluid(material: HTMaterialNew): HTMaterialFluid? = fluidStill[material]
 
         @JvmStatic
-        fun getBucket(material: HTMaterial): Bucket? = fluidBucket[material]
+        fun getBucket(material: HTMaterialNew): Bucket? = fluidBucket[material]
 
         private val blockSettings = FabricBlockSettings.copyOf(Blocks.WATER)
 
@@ -92,7 +92,7 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
 
     //    Flowing    //
 
-    class Flowing internal constructor(material: HTMaterial) : HTMaterialFluid(material) {
+    class Flowing internal constructor(material: HTMaterialNew) : HTMaterialFluid(material) {
 
         init {
             fluidFlowing.putIfAbsent(material, this)
@@ -117,7 +117,7 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterial) : F
 
     //    Still    //
 
-    class Still internal constructor(material: HTMaterial) : HTMaterialFluid(material) {
+    class Still internal constructor(material: HTMaterialNew) : HTMaterialFluid(material) {
 
         init {
             fluidStill.putIfAbsent(material, this)

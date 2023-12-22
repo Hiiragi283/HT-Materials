@@ -1,8 +1,6 @@
 package io.github.hiiragi283.material.api.material.property
 
-import io.github.hiiragi283.material.api.material.HTMaterial
-import net.minecraft.block.Block
-import net.minecraft.tag.TagKey
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 import java.util.function.Consumer
 
 class HTMaterialProperties : MutableMap<HTPropertyKey<*>, HTMaterialProperty<*>> by hashMapOf() {
@@ -17,7 +15,7 @@ class HTMaterialProperties : MutableMap<HTPropertyKey<*>, HTMaterialProperty<*>>
         this.putIfAbsent(property.key, property)
     }
 
-    fun verify(material: HTMaterial) {
+    fun verify(material: HTMaterialNew) {
         this.values.forEach { it.verify(material) }
     }
 
@@ -28,35 +26,29 @@ class HTMaterialProperties : MutableMap<HTPropertyKey<*>, HTMaterialProperty<*>>
     }
 
     fun setGem(type: HTGemProperty.Type) {
-        //this.add(HTSolidProperty.createGem())
         this.add(HTGemProperty(type))
     }
 
     fun setMetal() {
-        //this.add(HTSolidProperty.createMetal())
         this.add(HTMetalProperty())
     }
 
     fun setSolid() {
-        //this.add(HTSolidProperty.createSolid())
+
     }
 
     fun setStone() {
-        //this.add(HTSolidProperty.createStone())
+
         this.add(HTMetalProperty())
     }
 
     fun setWood() {
-        //this.add(HTSolidProperty.createWood())
+
         this.add(HTMetalProperty())
     }
 
     fun setHarvestLevel(level: Int) {
-        getAs(HTPropertyKey.SOLID)?.harvestLevel = level
-    }
 
-    fun setHarvestTool(tool: TagKey<Block>) {
-        getAs(HTPropertyKey.SOLID)?.harvestTool = tool
     }
 
     //    Any    //
