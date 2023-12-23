@@ -1,42 +1,22 @@
 package io.github.hiiragi283.material.api.material
 
-import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagsNew
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertiesNew
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapes
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
-import net.minecraft.client.resource.language.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
-import net.minecraft.text.TranslatableText
-import net.minecraft.util.Identifier
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
-class HTMaterialNew internal constructor(
+class HTMaterialNew private constructor(
     val info: HTMaterialInfo,
     val properties: HTMaterialPropertiesNew,
     val flags: HTMaterialFlagsNew
 ) {
-
-    init {
-        registry.putIfAbsent(info.name, this)
-    }
-
-    //    Info    //
-
-    fun getName(): String = info.name
-
-    fun getIdentifier(namespace: String = HTMaterialsCommon.MOD_ID): Identifier = Identifier(namespace, getName())
-
-    @Environment(EnvType.CLIENT)
-    fun getTranslatedName(): String = I18n.translate(info.translationKey)
-
-    fun getTranslatedText(): TranslatableText = TranslatableText(info.translationKey)
 
     //    Properties    //
 
@@ -67,19 +47,37 @@ class HTMaterialNew internal constructor(
 
     operator fun component3() = flags
 
-    override fun toString(): String = info.name
+    override fun toString(): String = getKey(this).name
 
     companion object {
 
+        private val LOGGER: Logger = LoggerFactory.getLogger(HTMaterialNew::class.java)
+
         //    Registry    //
 
-        private val registry: MutableMap<String, HTMaterialNew> = linkedMapOf()
+        private val registry: MutableMap<HTMaterialKey, HTMaterialNew> = linkedMapOf()
 
         @JvmField
-        val REGISTRY: Collection<HTMaterialNew> = registry.values
+        val REGISTRY: Map<HTMaterialKey, HTMaterialNew> = registry
 
         @JvmStatic
-        fun getMaterial(name: String): HTMaterialNew? = registry[name]
+        fun getMaterial(key: HTMaterialKey): HTMaterialNew =
+            registry[key] ?: throw IllegalStateException("Material: $key is not registered!")
+
+        @JvmStatic
+        fun getKey(material: HTMaterialNew): HTMaterialKey = registry.map { it.value to it.key }.toMap()[material]
+            ?: throw IllegalStateException("Material key not found!!")
+
+        @JvmStatic
+        internal fun create(
+            key: HTMaterialKey,
+            info: HTMaterialInfo,
+            properties: HTMaterialPropertiesNew,
+            flags: HTMaterialFlagsNew
+        ): HTMaterialNew = HTMaterialNew(info, properties, flags).also {
+            registry.putIfAbsent(key, it)
+            LOGGER.info("Material: $key registered!")
+        }
 
         private val FLUID = object : HTShape("fluid") {
 
@@ -87,13 +85,13 @@ class HTMaterialNew internal constructor(
 
             override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-            override fun getIdPath(material: HTMaterialNew): String = material.getName()
+            override fun getIdPath(material: HTMaterialKey): String = material.name
 
-            override fun getForgePath(material: HTMaterialNew): String {
+            override fun getForgePath(material: HTMaterialKey): String {
                 throw UnsupportedOperationException()
             }
 
-            override fun getCommonPath(material: HTMaterialNew): String {
+            override fun getCommonPath(material: HTMaterialKey): String {
                 throw UnsupportedOperationException()
             }
 
@@ -102,7 +100,7 @@ class HTMaterialNew internal constructor(
     }
 
     fun appendFluidTooltip(stack: ItemStack, lines: MutableList<Text>) {
-        HTPart(this, FLUID).appendTooltip(stack, lines)
+        //HTPart(getRegistry().inverse().get(this), FLUID).appendTooltip(stack, lines)
     }
 
 }

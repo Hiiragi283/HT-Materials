@@ -1,13 +1,6 @@
 package io.github.hiiragi283.material;
 
-import io.github.hiiragi283.material.api.HTMaterialsAPI;
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddon;
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag;
-import io.github.hiiragi283.material.api.material.materials.HTElementMaterials;
-import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials;
-import io.github.hiiragi283.material.api.material.property.HTWoodProperty;
-import io.github.hiiragi283.material.api.shape.HTShapes;
-import net.minecraft.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 public class HTTestAddon implements HTMaterialsAddon {
@@ -19,13 +12,18 @@ public class HTTestAddon implements HTMaterialsAddon {
     }
 
     @Override
+    public int getPriority() {
+        return 0;
+    }
+
+    /*@Override
     public void registerShapes() {
         /*HTMaterialsAPI.createShape("double_plate", builder -> {
             builder.idFormat = "%s_double_plate";
             builder.forgeTag = "plates/double/%s";
             builder.commonTag = "%s_double_plates";
             builder.itemPredicate = material -> material.hasFlag(HTMaterialFlag.GENERATE_PLATE);
-        });*/
+        });
     }
 
     @Override
@@ -37,6 +35,6 @@ public class HTTestAddon implements HTMaterialsAddon {
     @Override
     public void commonSetup() {
         HTMaterialsAPI.registerItemToPart(HTVanillaMaterials.CALCITE, HTShapes.ROD, Items.BONE);
-    }
+    }*/
 
 }

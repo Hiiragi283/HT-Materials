@@ -1,15 +1,6 @@
 package io.github.hiiragi283.material.api.material.materials
 
-import io.github.hiiragi283.material.api.material.ColorConvertible
-import io.github.hiiragi283.material.api.material.FormulaConvertible
-import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.MolarMassConvertible
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
-import io.github.hiiragi283.material.util.HTColor
-import java.awt.Color
-
-object HTElementMaterials {
+object HTElementMaterials /*{
 
     //    1st Period    //
 
@@ -532,5 +523,4 @@ object HTElementMaterials {
         modifyProperties(HTMaterialProperties::setMetal)
     }
 
-
-}
+}*/

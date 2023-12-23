@@ -1,6 +1,8 @@
 package io.github.hiiragi283.material.api.material.property
 
+import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPart
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
@@ -19,8 +21,6 @@ import java.util.*
 @Suppress("UnstableApiUsage")
 class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
-    lateinit var fluid: Fluid
-
     var temperature: Int = FluidConstants.WATER_TEMPERATURE
     var viscosity: Int = FluidConstants.WATER_VISCOSITY
     var isGas: Boolean = false
@@ -31,14 +31,13 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
     }
 
+    private lateinit var fluid: Fluid
+
     private val fluidVariant: FluidVariant by lazy { FluidVariant.of(fluid) }
 
-    private lateinit var handlerCache: FluidVariantAttributeHandler
+    private val handlerCache: FluidVariantAttributeHandler by lazy { FluidVariantAttributes.getHandlerOrDefault(fluid) }
 
     override fun appendTooltip(part: HTPart, stack: ItemStack, lines: MutableList<Text>) {
-        if (!::handlerCache.isInitialized) {
-            handlerCache = FluidVariantAttributes.getHandlerOrDefault(fluid)
-        }
         //Luminance
         handlerCache.getLuminance(fluidVariant).run {
             lines.add(TranslatableText("tooltip.ht_materials.material.luminance", this))
@@ -57,14 +56,14 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
         lines.add(TranslatableText("tooltip.ht_materials.material.state", TranslatableText(key)))
     }
 
-    internal fun init(material: HTMaterialNew) {
+    internal fun init(key: HTMaterialKey) {
         if (this::fluid.isInitialized) return
-        HTMaterialFluid.Flowing(material)
-        HTMaterialFluid.Still(material).run {
+        HTMaterialFluid.Flowing(key)
+        HTMaterialFluid.Still(key).run {
             HTMaterialFluid.Bucket(this)
             FluidVariantAttributes.register(this, object : FluidVariantAttributeHandler {
 
-                override fun getName(fluidVariant: FluidVariant): Text = material.getTranslatedText()
+                override fun getName(fluidVariant: FluidVariant): Text = key.getTranslatedText()
 
                 override fun getFillSound(variant: FluidVariant): Optional<SoundEvent> =
                     Optional.of(SoundEvents.ITEM_BUCKET_FILL_LAVA)
@@ -81,7 +80,7 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
                 override fun isLighterThanAir(variant: FluidVariant): Boolean = isGas
 
             })
-            fluid = this
+            fluid = HTFluidManager.getDefaultFluid(key) ?: this
         }
     }
 

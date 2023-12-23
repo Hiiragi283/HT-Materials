@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.api.material.flag
 
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialNew
 
 class HTMaterialFlags : MutableCollection<HTMaterialFlag> by mutableSetOf() {
 
@@ -12,7 +12,7 @@ class HTMaterialFlags : MutableCollection<HTMaterialFlag> by mutableSetOf() {
         flag.forEach(this::remove)
     }
 
-    fun verify(material: HTMaterial) {
+    fun verify(material: HTMaterialNew) {
         this.forEach { it.verify(material) }
     }
 

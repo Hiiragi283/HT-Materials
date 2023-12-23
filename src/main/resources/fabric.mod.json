@@ -47,6 +47,14 @@
       {
         "adapter": "kotlin",
         "value": "io.github.hiiragi283.material.addon.HMTRAddon"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.material.materials.HTElementMaterialsNew"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.material.materials.HTCommonMaterialsNew"
       }
     ],
     "rei_client": [

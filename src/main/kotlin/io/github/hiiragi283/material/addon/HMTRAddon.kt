@@ -2,9 +2,12 @@ package io.github.hiiragi283.material.addon
 
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddon
 
+@Suppress("unused")
 object HMTRAddon : HTMaterialsAddon {
 
     override val modId: String = "techreborn"
+
+    override val priority: Int = 0
 
     override fun commonSetup() {
         /*HTPartManager.register(HTCommonMaterials.RUBY, HTShapes.GEM, TRContent.Gems.RUBY)

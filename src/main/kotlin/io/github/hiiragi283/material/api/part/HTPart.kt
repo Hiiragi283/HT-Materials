@@ -1,30 +1,30 @@
 package io.github.hiiragi283.material.api.part
 
 import io.github.hiiragi283.material.HTMaterialsCommon
-import io.github.hiiragi283.material.api.item.HTMaterialItemConvertible
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.shape.HTShape
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.resource.language.I18n
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 
-data class HTPart(override val materialHT: HTMaterialNew, override val shapeHT: HTShape) : HTMaterialItemConvertible {
+data class HTPart(val materialKey: HTMaterialKey, val shapeHT: HTShape) {
+
+    val materialHT: HTMaterialNew = materialKey.getMaterial()
 
     @Environment(EnvType.CLIENT)
     fun getTranslatedName(): String =
-        I18n.translate("ht_shape.${shapeHT.name}", materialHT.getTranslatedName())
+        I18n.translate("ht_shape.${shapeHT.name}", materialKey.getTranslatedName())
 
     fun getTranslatedText(): TranslatableText =
-        TranslatableText("ht_shape.${shapeHT.name}", materialHT.getTranslatedName())
+        TranslatableText("ht_shape.${shapeHT.name}", materialKey.getTranslatedName())
 
     fun getIdentifier(namespace: String = HTMaterialsCommon.MOD_ID): Identifier =
-        shapeHT.getIdentifier(materialHT, namespace)
+        shapeHT.getIdentifier(materialKey, namespace)
 
     fun appendTooltip(stack: ItemStack, lines: MutableList<Text>) {
         //Title
@@ -42,11 +42,5 @@ data class HTPart(override val materialHT: HTMaterialNew, override val shapeHT: 
         //Tooltip from Properties
         materialHT.properties.values.forEach { it.appendTooltip(this, stack, lines) }
     }
-
-    //    HTMaterialItemConvertible    //
-
-    override val part: HTPart = this
-
-    override fun asItem(): Item = HTPartManager.getDefaultItem(materialHT, shapeHT) ?: Items.AIR
 
 }

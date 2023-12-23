@@ -5,8 +5,6 @@ import java.util.function.Consumer
 
 class HTMaterialProperties : MutableMap<HTPropertyKey<*>, HTMaterialProperty<*>> by hashMapOf() {
 
-    fun <T : HTMaterialProperty<T>> getAs(key: HTPropertyKey<T>): T? = key.clazz.cast(this[key])
-
     private operator fun <T : HTMaterialProperty<T>> plusAssign(property: T) {
         this.add(property)
     }

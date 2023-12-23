@@ -1,17 +1,6 @@
 package io.github.hiiragi283.material.api.material.materials
 
-import io.github.hiiragi283.material.api.material.ColorConvertible
-import io.github.hiiragi283.material.api.material.FormulaConvertible
-import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.MolarMassConvertible
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
-import io.github.hiiragi283.material.api.material.property.HTGemProperty
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
-import io.github.hiiragi283.material.util.HTColor
-import net.minecraft.fluid.Fluids
-import java.awt.Color
-
-object HTVanillaMaterials {
+object HTVanillaMaterials /*{
 
     //    Fluids    //
 
@@ -22,9 +11,6 @@ object HTVanillaMaterials {
             formula = FormulaConvertible.of(HTElementMaterials.HYDROGEN to 2, HTElementMaterials.OXYGEN to 1)
             molarMass = MolarMassConvertible.of(HTElementMaterials.HYDROGEN to 2, HTElementMaterials.OXYGEN to 1)
         }
-        modifyProperties {
-            setFluid { it.fluid = Fluids.WATER }
-        }
     }
 
     @JvmField
@@ -33,9 +19,6 @@ object HTVanillaMaterials {
             color = ColorConvertible.ofColor(HTColor.DARK_RED, HTColor.GOLD)
             formula = FormulaConvertible.of(*HTAtomicGroups.SILICON_OXIDE)
             molarMass = MolarMassConvertible.of(*HTAtomicGroups.SILICON_OXIDE)
-        }
-        modifyProperties {
-            setFluid { it.fluid = Fluids.LAVA }
         }
     }
 
@@ -523,4 +506,4 @@ object HTVanillaMaterials {
         modifyProperties(HTMaterialProperties::setWood)
     }
 
-}
+}*/

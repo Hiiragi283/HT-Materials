@@ -1,6 +1,7 @@
 package io.github.hiiragi283.material.api.shape
 
 import io.github.hiiragi283.material.HTMaterialsCommon
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.util.commonId
@@ -21,22 +22,22 @@ abstract class HTShape(val name: String) {
 
     //    Identifier    //
 
-    fun getIdentifier(material: HTMaterialNew, namespace: String = HTMaterialsCommon.MOD_ID): Identifier =
+    fun getIdentifier(material: HTMaterialKey, namespace: String = HTMaterialsCommon.MOD_ID): Identifier =
         Identifier(namespace, getIdPath(material))
 
-    abstract fun getIdPath(material: HTMaterialNew): String
+    abstract fun getIdPath(material: HTMaterialKey): String
 
     //    TagKey    //
 
-    fun getForgeTag(material: HTMaterialNew): TagKey<Item> =
+    fun getForgeTag(material: HTMaterialKey): TagKey<Item> =
         TagKey.of(Registry.ITEM_KEY, commonId(getForgePath(material)))
 
-    abstract fun getForgePath(material: HTMaterialNew): String
+    abstract fun getForgePath(material: HTMaterialKey): String
 
-    fun getCommonTag(material: HTMaterialNew): TagKey<Item> =
+    fun getCommonTag(material: HTMaterialKey): TagKey<Item> =
         TagKey.of(Registry.ITEM_KEY, commonId(getCommonPath(material)))
 
-    abstract fun getCommonPath(material: HTMaterialNew): String
+    abstract fun getCommonPath(material: HTMaterialKey): String
 
     //    Any    //
 
@@ -59,18 +60,18 @@ abstract class HTShape(val name: String) {
         override fun canGenerateItem(material: HTMaterialNew): Boolean =
             HTMaterialFlag.getFlag("generate_$name")?.let(material::hasFlag) ?: false
 
-        override fun getIdPath(material: HTMaterialNew): String = "${material.getName()}_$name"
+        override fun getIdPath(material: HTMaterialKey): String = "${material.name}_$name"
 
-        override fun getForgePath(material: HTMaterialNew): String {
+        override fun getForgePath(material: HTMaterialKey): String {
             val split: List<String> = name.split("_")
             return when (split.size) {
-                1 -> "${name}s/${material.getName()}"
-                2 -> "${split[0]}s/${split[1]}/${material.getName()}"
+                1 -> "${name}s/${material.name}"
+                2 -> "${split[0]}s/${split[1]}/${material.name}"
                 else -> throw IllegalStateException("Cannot decompose name: $name into Forge Tag format!")
             }
         }
 
-        override fun getCommonPath(material: HTMaterialNew): String = "${material.getName()}_${name}s"
+        override fun getCommonPath(material: HTMaterialKey): String = "${material.name}_${name}s"
 
     }
 
@@ -97,7 +98,7 @@ abstract class HTShape(val name: String) {
         @JvmStatic
         fun register(shape: HTShape): HTShape = shape.also {
             map.putIfAbsent(it.name, shape)
-            LOGGER.info("The Shape: ${it.name} registered!")
+            LOGGER.info("Shape: $it registered!")
         }
 
     }

@@ -1,7 +1,8 @@
 package io.github.hiiragi283.material
 
-import io.github.hiiragi283.material.api.addon.HTMaterialsAddons
+import io.github.hiiragi283.material.api.addon.HTMaterialsAddonManager
 import io.github.hiiragi283.material.api.item.HTMaterialItem
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPartManager
@@ -40,76 +41,41 @@ object HTMaterialsCommon : ModInitializer {
     }
 
     override fun onInitialize() {
-
-        //Collect Addons
-        HTMaterialsAddons
-
+        //Bind Game Objects to HTPart
+        HTMaterialsAddonManager.bindItemToPart()
+        HTMaterialsAddonManager.bindFluidToPart()
+        //Initialize Game Objects
         ITEM_GROUP
         ICON
-        //Register Materials and Shapes
-        HTMaterialsAddons.registerShapes()
-        LOGGER.info("HTShape loaded!")
-        HTMaterialsAddons.registerMaterials()
-        LOGGER.info("HTMaterial loaded!")
-
-        //Modify and Verify Material Properties and Flags
-        HTMaterialsAddons.modifyMaterials()
-        LOGGER.info("All Materials Verified!")
-
-        //Initialize Game Objects
-        //registerMaterialBlocks()
-        //LOGGER.info("All Material Blocks Registered!")
         registerMaterialFluids()
         LOGGER.info("All Material Fluids Registered!")
         registerMaterialItems()
         LOGGER.info("All Material Items Registered!")
-
     }
 
     @JvmStatic
     fun id(path: String) = Identifier(MOD_ID, path)
 
-    /*private fun registerMaterialBlocks() {
-        HTShapes.REGISTRY
-            .forEach { shape: HTShape ->
-            HTMaterial.REGISTRY
-                .filter { it.hasProperty(HTPropertyKey.SOLID) }
-                .filter(shape::canGenerateBlock)
-                .forEach material@{ material: HTMaterial ->
-                    val identifier: Identifier = shape.getIdentifier(material)
-                    val settings: FabricBlockSettings =
-                        material.getProperty(HTPropertyKey.SOLID)?.blockSettings ?: return@material
-                    val block = HTMaterialBlock(material, shape, settings)
-                    //Register Block
-                    Registry.register(Registry.BLOCK, identifier, block)
-                    //Register BlockItem
-                    HTMaterialBlockItem(block).run {
-                        Registry.register(Registry.ITEM, identifier, this)
-                        //Register as Default Item
-                        HTPartManager.forceRegister(material, shape, this)
-                    }
-                }
+    private fun registerMaterialFluids() {
+        HTMaterialNew.REGISTRY.forEach { (key: HTMaterialKey, material: HTMaterialNew) ->
+            material.getProperty(HTPropertyKey.FLUID)?.init(key)
         }
-    }*/
+    }
 
     private fun registerMaterialItems() {
         HTShape.REGISTRY.forEach { shape: HTShape ->
             HTMaterialNew.REGISTRY
-                .filter(shape::canGenerateItem)
-                .forEach { material: HTMaterialNew ->
-                    val identifier: Identifier = shape.getIdentifier(material)
+                .filter { shape.canGenerateItem(it.value) }
+                .keys
+                .forEach { key: HTMaterialKey ->
                     //Register Item
-                    HTMaterialItem(material, shape).run {
-                        Registry.register(Registry.ITEM, identifier, this)
+                    HTMaterialItem(key, shape).run {
+                        Registry.register(Registry.ITEM, shape.getIdentifier(key), this)
                         //Register as Default Item
-                        HTPartManager.forceRegister(material, shape, this)
+                        HTPartManager.forceRegister(key, shape, this)
                     }
                 }
         }
-    }
-
-    private fun registerMaterialFluids() {
-        HTMaterialNew.REGISTRY.forEach { material -> material.getProperty(HTPropertyKey.FLUID)?.init(material) }
     }
 
 }

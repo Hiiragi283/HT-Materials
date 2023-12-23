@@ -1,5 +1,6 @@
 package io.github.hiiragi283.material.api.shape
 
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 
@@ -14,11 +15,11 @@ object HTShapes {
 
         override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterialNew): String = "${material.getName()}_block"
+        override fun getIdPath(material: HTMaterialKey): String = "${material.name}_block"
 
-        override fun getForgePath(material: HTMaterialNew): String = "storage_blocks/${material.getName()}"
+        override fun getForgePath(material: HTMaterialKey): String = "storage_blocks/${material.name}"
 
-        override fun getCommonPath(material: HTMaterialNew): String = "${material.getName()}_blocks"
+        override fun getCommonPath(material: HTMaterialKey): String = "${material.name}_blocks"
 
     })
 
@@ -29,11 +30,11 @@ object HTShapes {
 
         override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterialNew): String = "${material.getName()}_ore"
+        override fun getIdPath(material: HTMaterialKey): String = "${material.name}_ore"
 
-        override fun getForgePath(material: HTMaterialNew): String = "ores/${material.getName()}"
+        override fun getForgePath(material: HTMaterialKey): String = "ores/${material.name}"
 
-        override fun getCommonPath(material: HTMaterialNew): String = "${material.getName()}_ores"
+        override fun getCommonPath(material: HTMaterialKey): String = "${material.name}_ores"
 
     })
 
@@ -44,11 +45,11 @@ object HTShapes {
 
         override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterialNew): String = "raw_${material.getName()}_block"
+        override fun getIdPath(material: HTMaterialKey): String = "raw_${material.name}_block"
 
-        override fun getForgePath(material: HTMaterialNew): String = "storage_blocks/raw_${material.getName()}"
+        override fun getForgePath(material: HTMaterialKey): String = "storage_blocks/raw_${material.name}"
 
-        override fun getCommonPath(material: HTMaterialNew): String = "raw_${material.getName()}_blocks"
+        override fun getCommonPath(material: HTMaterialKey): String = "raw_${material.name}_blocks"
 
     })
 
@@ -106,11 +107,11 @@ object HTShapes {
 
         override fun canGenerateItem(material: HTMaterialNew): Boolean = false
 
-        override fun getIdPath(material: HTMaterialNew): String = "raw_${material.getName()}_block"
+        override fun getIdPath(material: HTMaterialKey): String = "raw_${material.name}_block"
 
-        override fun getForgePath(material: HTMaterialNew): String = "raw_materials/${material.getName()}"
+        override fun getForgePath(material: HTMaterialKey): String = "raw_materials/${material.name}"
 
-        override fun getCommonPath(material: HTMaterialNew): String = "raw_${material.getName()}_ores"
+        override fun getCommonPath(material: HTMaterialKey): String = "raw_${material.name}_ores"
 
     }
 
