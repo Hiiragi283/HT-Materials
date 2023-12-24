@@ -1,8 +1,8 @@
 package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.mixin.TagBuilderMixin
@@ -52,7 +52,7 @@ internal object HTTagLoaderMixin {
         }
         HTMixinLogger.INSTANCE.info("Registered Tags for HTPartManager's Entries!")
         //Sync ForgeTag and CommonTag entries
-        HTMaterialNew.REGISTRY.keys.forEach { key ->
+        HTMaterial.REGISTRY.keys.forEach { key ->
             HTShape.REGISTRY.forEach shape@{ shape ->
                 val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(key))
                 val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(key))

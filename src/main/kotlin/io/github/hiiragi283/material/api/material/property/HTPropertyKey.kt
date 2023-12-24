@@ -1,8 +1,12 @@
 package io.github.hiiragi283.material.api.material.property
 
+import io.github.hiiragi283.material.api.registry.HTObjectKey
 import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap
 
-data class HTPropertyKey<T : HTMaterialProperty<T>>(val name: String, val clazz: Class<T>) {
+data class HTPropertyKey<T : HTMaterialProperty<T>>(
+    override val name: String,
+    override val objClass: Class<T>
+) : HTObjectKey<T> {
 
     init {
         REGISTRY.putIfAbsent(name, this)

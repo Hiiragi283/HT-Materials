@@ -1,8 +1,8 @@
 package io.github.hiiragi283.material.api.shape
 
 import io.github.hiiragi283.material.HTMaterialsCommon
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.util.commonId
 import net.minecraft.item.Item
@@ -16,9 +16,7 @@ abstract class HTShape(val name: String) {
 
     //    Predicate    //
 
-    abstract fun canGenerateBlock(material: HTMaterialNew): Boolean
-
-    abstract fun canGenerateItem(material: HTMaterialNew): Boolean
+    abstract fun canGenerateItem(material: HTMaterial): Boolean
 
     //    Identifier    //
 
@@ -55,9 +53,7 @@ abstract class HTShape(val name: String) {
 
     private class Impl(name: String) : HTShape(name) {
 
-        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
-
-        override fun canGenerateItem(material: HTMaterialNew): Boolean =
+        override fun canGenerateItem(material: HTMaterial): Boolean =
             HTMaterialFlag.getFlag("generate_$name")?.let(material::hasFlag) ?: false
 
         override fun getIdPath(material: HTMaterialKey): String = "${material.name}_$name"

@@ -3,7 +3,7 @@ package io.github.hiiragi283.material.compat.rei
 import dev.architectury.fluid.FluidStack
 import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
-import io.github.hiiragi283.material.api.material.HTMaterialNew
+import io.github.hiiragi283.material.api.material.HTMaterial
 import me.shedaniel.rei.api.client.entry.renderer.EntryRendererRegistry
 import me.shedaniel.rei.api.client.gui.widgets.Tooltip
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin
@@ -40,7 +40,7 @@ object HMReiPlugin : REIClientPlugin {
     }
 
     override fun registerDisplays(registry: DisplayRegistry) {
-        HTMaterialNew.REGISTRY
+        HTMaterial.REGISTRY
             .map(::HTMaterialDisplay)
             .filterNot { it.getEntries().isEmpty() }
             .forEach(registry::add)

@@ -1,8 +1,8 @@
 package io.github.hiiragi283.material.api.part
 
 import io.github.hiiragi283.material.HTMaterialsCommon
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.shape.HTShape
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier
 
 data class HTPart(val materialKey: HTMaterialKey, val shapeHT: HTShape) {
 
-    val materialHT: HTMaterialNew = materialKey.getMaterial()
+    val materialHT: HTMaterial = materialKey.getMaterial()
 
     @Environment(EnvType.CLIENT)
     fun getTranslatedName(): String =

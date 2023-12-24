@@ -1,15 +1,17 @@
 package io.github.hiiragi283.material.api.addon
 
+import com.google.common.collect.HashMultimap
+import com.google.common.collect.Multimap
 import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.HTRecipeManager
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.*
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagsNew
-import io.github.hiiragi283.material.api.material.property.HTMaterialPropertiesNew
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
+import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.registry.HTDefaultedMap
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet
-import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.isModLoaded
 import io.github.hiiragi283.material.util.suffix
@@ -36,28 +38,27 @@ object HTMaterialsAddonManager {
 
     //    Pre Launch    //
 
-    private val shapeKeySet: HTObjectKeySet<HTShape> = HTObjectKeySet.create()
+    private val shapeKeySet: HTObjectKeySet<HTShapeKey> = HTObjectKeySet.create()
 
     fun registerShape() {
         HTShapes
         cache.forEach { it.registerShape(shapeKeySet) }
     }
 
-    private val materialKeySet: HTMaterialKeySet = HTMaterialKeySet()
+    private val materialKeySet: HTObjectKeySet<HTMaterialKey> = HTObjectKeySet.create()
 
     fun registerMaterialKey() {
         cache.forEach { it.registerMaterialKey(materialKeySet) }
     }
 
-    private val propertyMap: HTDefaultedMap<HTMaterialKey, HTMaterialPropertiesNew.Builder> =
-        HTDefaultedMap.create { HTMaterialPropertiesNew.Builder() }
+    private val propertyMap: HTDefaultedMap<HTMaterialKey, HTMaterialProperties.Builder> =
+        HTDefaultedMap.create { HTMaterialProperties.Builder() }
 
     fun modifyMaterialProperty() {
         cache.forEach { it.modifyMaterialProperty(propertyMap) }
     }
 
-    private val flagMap: HTDefaultedMap<HTMaterialKey, HTMaterialFlagsNew.Builder> =
-        HTDefaultedMap.create { HTMaterialFlagsNew.Builder() }
+    private val flagMap: Multimap<HTMaterialKey, HTMaterialFlag> = HashMultimap.create()
 
     fun modifyMaterialFlag() {
         cache.forEach { it.modifyMaterialFlag(flagMap) }
@@ -83,18 +84,18 @@ object HTMaterialsAddonManager {
 
     fun createMaterial() {
         materialKeySet.forEach { key: HTMaterialKey ->
-            val property: HTMaterialPropertiesNew = propertyMap.getOrCreate(key).build()
-            val flags: HTMaterialFlagsNew = flagMap.getOrCreate(key).build()
+            val property: HTMaterialProperties = propertyMap.getOrCreate(key).build()
+            val flags: Collection<HTMaterialFlag> = flagMap.get(key)
             val color: Color = colorMap.getOrDefault(key, ColorConvertible.EMPTY).asColor()
             val formula: String = formulaMap.getOrDefault(key, FormulaConvertible.EMPTY).asFormula()
             val molar: Double = molarMap.getOrDefault(key, MolarMassConvertible.EMPTY).asMolarMass()
             val info = HTMaterialInfo(color, formula, molar)
-            HTMaterialNew.create(key, info, property, flags)
+            HTMaterial.create(key, info, property, flags)
         }
     }
 
     fun verifyMaterial() {
-        HTMaterialNew.REGISTRY.values.forEach(HTMaterialNew::verify)
+        HTMaterial.REGISTRY.values.forEach(HTMaterial::verify)
     }
 
     //    Initialization    //
@@ -120,7 +121,7 @@ object HTMaterialsAddonManager {
     }
 
     private fun registerRecipes() {
-        HTMaterialNew.REGISTRY.keys.forEach { key ->
+        HTMaterial.REGISTRY.keys.forEach { key: HTMaterialKey ->
             HTPartManager.getDefaultItem(key, HTShapes.INGOT)?.let { ingotRecipe(key, it) }
             HTPartManager.getDefaultItem(key, HTShapes.NUGGET)?.let { nuggetRecipe(key, it) }
         }

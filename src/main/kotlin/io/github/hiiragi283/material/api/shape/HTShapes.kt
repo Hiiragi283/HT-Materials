@@ -1,8 +1,7 @@
 package io.github.hiiragi283.material.api.shape
 
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 
 object HTShapes {
 
@@ -11,9 +10,7 @@ object HTShapes {
     @JvmField
     val BLOCK: HTShape = HTShape.register(object : HTShape("block") {
 
-        override fun canGenerateBlock(material: HTMaterialNew): Boolean = material.hasFlag(HTMaterialFlag.GENERATE_BLOCk)
-
-        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
+        override fun canGenerateItem(material: HTMaterial): Boolean = false
 
         override fun getIdPath(material: HTMaterialKey): String = "${material.name}_block"
 
@@ -26,9 +23,7 @@ object HTShapes {
     @JvmField
     val ORE: HTShape = HTShape.register(object : HTShape("ore") {
 
-        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
-
-        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
+        override fun canGenerateItem(material: HTMaterial): Boolean = false
 
         override fun getIdPath(material: HTMaterialKey): String = "${material.name}_ore"
 
@@ -41,9 +36,7 @@ object HTShapes {
     @JvmField
     val RAW_BLOCK: HTShape = HTShape.register(object : HTShape("raw_block") {
 
-        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
-
-        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
+        override fun canGenerateItem(material: HTMaterial): Boolean = false
 
         override fun getIdPath(material: HTMaterialKey): String = "raw_${material.name}_block"
 
@@ -103,9 +96,7 @@ object HTShapes {
     @JvmField
     val RAW_ORE: HTShape = object : HTShape("raw_ore") {
 
-        override fun canGenerateBlock(material: HTMaterialNew): Boolean = false
-
-        override fun canGenerateItem(material: HTMaterialNew): Boolean = false
+        override fun canGenerateItem(material: HTMaterial): Boolean = false
 
         override fun getIdPath(material: HTMaterialKey): String = "raw_${material.name}_block"
 

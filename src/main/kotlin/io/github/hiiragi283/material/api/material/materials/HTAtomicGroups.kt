@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.api.material.materials
 
-object HTAtomicGroups /*{
+object HTAtomicGroups {
 
     //CO3
     @JvmField
@@ -18,4 +18,4 @@ object HTAtomicGroups /*{
     @JvmField
     val SILICON_OXIDE = arrayOf(HTElementMaterials.SILICON to 1, HTElementMaterials.OXYGEN to 2)
 
-}*/
+}

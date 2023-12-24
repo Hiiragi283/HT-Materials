@@ -1,8 +1,8 @@
 package io.github.hiiragi283.material.addon
 
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddon
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.util.isAir
@@ -17,7 +17,7 @@ object HMMIAddon : HTMaterialsAddon {
 
     override fun commonSetup() {
         //Register Tags for ALL MI Material Items
-        HTMaterialNew.REGISTRY.keys.forEach { key: HTMaterialKey ->
+        HTMaterial.REGISTRY.keys.forEach { key: HTMaterialKey ->
             HTShape.REGISTRY.forEach { shape ->
                 Registry.ITEM.get(shape.getIdentifier(key, modId)).run {
                     if (!this.isAir()) {

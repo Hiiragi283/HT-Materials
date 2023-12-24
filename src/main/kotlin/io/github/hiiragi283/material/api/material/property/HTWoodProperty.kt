@@ -1,12 +1,12 @@
 package io.github.hiiragi283.material.api.material.property
 
-import io.github.hiiragi283.material.api.material.HTMaterialNew
+import io.github.hiiragi283.material.api.material.HTMaterial
 
-class HTWoodProperty : HTMaterialProperty<HTWoodProperty> {
+object HTWoodProperty : HTMaterialProperty<HTWoodProperty> {
 
     override val key: HTPropertyKey<HTWoodProperty> = HTPropertyKey.WOOD
 
-    override fun verify(material: HTMaterialNew) {
+    override fun verify(material: HTMaterial) {
 
     }
 

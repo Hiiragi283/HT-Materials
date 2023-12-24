@@ -1,8 +1,7 @@
 package io.github.hiiragi283.material.api.material.flag
 
-import io.github.hiiragi283.material.api.material.HTMaterialNew
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap
 
 class HTMaterialFlag private constructor(
     val name: String,
@@ -11,10 +10,10 @@ class HTMaterialFlag private constructor(
 ) {
 
     init {
-        REGISTRY.putIfAbsent(name, this)
+        registry.putIfAbsent(name, this)
     }
 
-    fun verify(material: HTMaterialNew) {
+    fun verify(material: HTMaterial) {
         requiredProperties.forEach { key: HTPropertyKey<*> ->
             if (!material.hasProperty(key)) {
                 throw IllegalStateException("The material: $material has no property: ${key.name} but required for ${this.name}!")
@@ -57,10 +56,10 @@ class HTMaterialFlag private constructor(
 
         //    Registry    //
 
-        private val REGISTRY: ApiProviderMap<String, HTMaterialFlag> = ApiProviderMap.create()
+        private val registry: MutableMap<String, HTMaterialFlag> = hashMapOf()
 
         @JvmStatic
-        fun getFlag(key: String): HTMaterialFlag? = REGISTRY.get(key)
+        fun getFlag(key: String): HTMaterialFlag? = registry[key]
 
         //    Builder    //
 

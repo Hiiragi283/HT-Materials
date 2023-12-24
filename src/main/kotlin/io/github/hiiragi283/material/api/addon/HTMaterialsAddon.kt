@@ -1,11 +1,15 @@
 package io.github.hiiragi283.material.api.addon
 
-import io.github.hiiragi283.material.api.material.*
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagsNew
-import io.github.hiiragi283.material.api.material.property.HTMaterialPropertiesNew
+import com.google.common.collect.Multimap
+import io.github.hiiragi283.material.api.material.ColorConvertible
+import io.github.hiiragi283.material.api.material.FormulaConvertible
+import io.github.hiiragi283.material.api.material.HTMaterialKey
+import io.github.hiiragi283.material.api.material.MolarMassConvertible
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
+import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
 import io.github.hiiragi283.material.api.registry.HTDefaultedMap
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet
-import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 
@@ -18,13 +22,13 @@ interface HTMaterialsAddon {
 
     //    Pre Launch    //
 
-    fun registerShape(registry: HTObjectKeySet<HTShape>) {}
+    fun registerShape(registry: HTObjectKeySet<HTShapeKey>) {}
 
-    fun registerMaterialKey(registry: HTMaterialKeySet) {}
+    fun registerMaterialKey(registry: HTObjectKeySet<HTMaterialKey>) {}
 
-    fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialPropertiesNew.Builder>) {}
+    fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialProperties.Builder>) {}
 
-    fun modifyMaterialFlag(registry: HTDefaultedMap<HTMaterialKey, HTMaterialFlagsNew.Builder>) {}
+    fun modifyMaterialFlag(registry: Multimap<HTMaterialKey, HTMaterialFlag>) {}
 
     fun modifyMaterialColor(registry: HashMap<HTMaterialKey, ColorConvertible>) {}
 

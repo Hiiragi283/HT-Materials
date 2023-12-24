@@ -50,11 +50,15 @@
       },
       {
         "adapter": "kotlin",
-        "value": "io.github.hiiragi283.material.api.material.materials.HTElementMaterialsNew"
+        "value": "io.github.hiiragi283.material.api.material.materials.HTCommonMaterials"
       },
       {
         "adapter": "kotlin",
-        "value": "io.github.hiiragi283.material.api.material.materials.HTCommonMaterialsNew"
+        "value": "io.github.hiiragi283.material.api.material.materials.HTElementMaterials"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.material.materials.HTVanillaMaterialsNew"
       }
     ],
     "rei_client": [

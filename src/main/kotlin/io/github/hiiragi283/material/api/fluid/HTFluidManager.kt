@@ -3,8 +3,9 @@ package io.github.hiiragi283.material.api.fluid
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
+import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterialsNew
 import io.github.hiiragi283.material.util.getAllModId
 import net.minecraft.fluid.FlowableFluid
 import net.minecraft.fluid.Fluid
@@ -103,19 +104,19 @@ object HTFluidManager {
 
     //    Initialization    //
 
-    /*init {
+    init {
         //Water
-        forceRegister(HTVanillaMaterials.WATER, Fluids.WATER)
-        forceRegister(HTVanillaMaterials.WATER, Fluids.FLOWING_WATER)
+        forceRegister(HTVanillaMaterialsNew.WATER, Fluids.WATER)
+        forceRegister(HTVanillaMaterialsNew.WATER, Fluids.FLOWING_WATER)
         //Lava
-        forceRegister(HTVanillaMaterials.LAVA, Fluids.LAVA)
-        forceRegister(HTVanillaMaterials.LAVA, Fluids.FLOWING_LAVA)
-    }*/
+        forceRegister(HTVanillaMaterialsNew.LAVA, Fluids.LAVA)
+        forceRegister(HTVanillaMaterialsNew.LAVA, Fluids.FLOWING_LAVA)
+    }
 
     @JvmStatic
     internal fun registerAllFluids() {
         getAllModId().forEach { modid: String ->
-            HTMaterialNew.REGISTRY.keys.forEach { key ->
+            HTMaterial.REGISTRY.keys.forEach { key ->
                 Registry.FLUID.get(Identifier(modid, key.name)).run {
                     if (this != Fluids.EMPTY) {
                         register(key, this)

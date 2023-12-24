@@ -2,8 +2,8 @@ package io.github.hiiragi283.material.api.material.property
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPart
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
@@ -27,7 +27,7 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
     override val key: HTPropertyKey<HTFluidProperty> = HTPropertyKey.FLUID
 
-    override fun verify(material: HTMaterialNew) {
+    override fun verify(material: HTMaterial) {
 
     }
 

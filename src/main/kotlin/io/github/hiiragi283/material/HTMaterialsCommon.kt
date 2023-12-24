@@ -2,8 +2,8 @@ package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.addon.HTMaterialsAddonManager
 import io.github.hiiragi283.material.api.item.HTMaterialItem
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
@@ -57,14 +57,14 @@ object HTMaterialsCommon : ModInitializer {
     fun id(path: String) = Identifier(MOD_ID, path)
 
     private fun registerMaterialFluids() {
-        HTMaterialNew.REGISTRY.forEach { (key: HTMaterialKey, material: HTMaterialNew) ->
+        HTMaterial.REGISTRY.forEach { (key: HTMaterialKey, material: HTMaterial) ->
             material.getProperty(HTPropertyKey.FLUID)?.init(key)
         }
     }
 
     private fun registerMaterialItems() {
         HTShape.REGISTRY.forEach { shape: HTShape ->
-            HTMaterialNew.REGISTRY
+            HTMaterial.REGISTRY
                 .filter { shape.canGenerateItem(it.value) }
                 .keys
                 .forEach { key: HTMaterialKey ->

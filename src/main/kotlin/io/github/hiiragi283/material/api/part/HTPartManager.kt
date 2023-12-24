@@ -3,8 +3,8 @@ package io.github.hiiragi283.material.api.part
 import com.google.common.collect.HashBasedTable
 import com.google.common.collect.ImmutableTable
 import com.google.common.collect.Table
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.util.computeIfAbsent
 import io.github.hiiragi283.material.util.getEntries
@@ -41,10 +41,10 @@ object HTPartManager {
     fun getDefaultItemTable(): ImmutableTable<HTMaterialKey, HTShape, Item> = ImmutableTable.copyOf(partToItem)
 
     @JvmStatic
-    fun getDefaultItem(material: HTMaterialKey, shape: HTShape): Item? = partToItem.get(material, shape)
+    fun getDefaultItem(materialKey: HTMaterialKey, shape: HTShape): Item? = partToItem.get(materialKey, shape)
 
     @JvmStatic
-    fun hasDefaultItem(material: HTMaterialKey, shape: HTShape): Boolean = partToItem.contains(material, shape)
+    fun hasDefaultItem(materialKey: HTMaterialKey, shape: HTShape): Boolean = partToItem.contains(materialKey, shape)
 
     //    HTMaterialKey, HTShape -> Collection<Item>    //
 
@@ -55,8 +55,8 @@ object HTPartManager {
         ImmutableTable.copyOf(partToItems)
 
     @JvmStatic
-    fun getItems(material: HTMaterialKey, shape: HTShape): Collection<Item> =
-        partToItems.get(material, shape) ?: setOf()
+    fun getItems(materialKey: HTMaterialKey, shape: HTShape): Collection<Item> =
+        partToItems.get(materialKey, shape) ?: setOf()
 
     //    Initialization    //
 
@@ -178,7 +178,7 @@ object HTPartManager {
             itemToPart.clear()
             partToItems.clear()
 
-            HTMaterialNew.REGISTRY.keys.forEach { key: HTMaterialKey ->
+            HTMaterial.REGISTRY.keys.forEach { key: HTMaterialKey ->
                 HTShape.REGISTRY.forEach { shape: HTShape ->
                     shape.getCommonTag(key)
                         .getEntries(Registry.ITEM)

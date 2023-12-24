@@ -3,9 +3,10 @@ package io.github.hiiragi283.material
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialItem
+import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.HTMaterialNew
 import io.github.hiiragi283.material.api.part.HTPartManager
+import io.github.hiiragi283.material.util.getTransaction
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -14,6 +15,10 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.fluid.Fluid
@@ -23,7 +28,7 @@ import net.minecraft.util.Identifier
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-@Suppress("unused")
+@Suppress("unused", "UnstableApiUsage")
 @Environment(EnvType.CLIENT)
 object HTMaterialsClient : ClientModInitializer {
 
@@ -46,7 +51,7 @@ object HTMaterialsClient : ClientModInitializer {
     }
 
     private fun registerFluidRenderHandler() {
-        HTMaterialNew.REGISTRY.forEach { (key: HTMaterialKey, material: HTMaterialNew) ->
+        HTMaterial.REGISTRY.forEach { (key: HTMaterialKey, material: HTMaterial) ->
             val fluid: HTMaterialFluid = HTMaterialFluid.getFluid(key) ?: return@forEach
             val flowing: Fluid = fluid.flowing
             val still: Fluid = fluid.still
@@ -91,12 +96,13 @@ object HTMaterialsClient : ClientModInitializer {
 
             HTPartManager.getPart(stack.item)?.appendTooltip(stack, lines)
 
-            /*FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack))
+            FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack))
                 ?.iterable(getTransaction())
                 ?.map(StorageView<FluidVariant>::getResource)
                 ?.map(FluidVariant::getFluid)
                 ?.mapNotNull(HTFluidManager::getMaterialKey)
-                ?.forEach { it.appendFluidTooltip(stack, lines) }*/
+                ?.map(HTMaterialKey::getMaterial)
+                ?.forEach { it.appendFluidTooltip(stack, lines) }
 
         }
 
