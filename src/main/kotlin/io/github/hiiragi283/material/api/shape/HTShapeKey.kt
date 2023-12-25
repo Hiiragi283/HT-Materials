@@ -17,7 +17,7 @@ data class HTShapeKey(
     override val name: String,
     val idPath: String = "%s_$name",
     val forgePath: String = getForgePath(name),
-    val commonPath: String = idPath
+    val commonPath: String = "${idPath}s"
 ) : HTObjectKey<HTShape> {
 
     override val objClass: Class<HTShape> = HTShape::class.java

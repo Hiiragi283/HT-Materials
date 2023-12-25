@@ -17,7 +17,11 @@ object HTShapes : HTMaterialsAddon {
     val ORE = HTShapeKey("ore")
 
     @JvmField
-    val RAW_BLOCK = HTShapeKey("raw_block", forgePath = "storage_blocks/raw_%s")
+    val RAW_BLOCK = HTShapeKey(
+        "raw_block",
+        idPath = "raw_%s_block",
+        forgePath = "storage_blocks/raw_%s"
+    )
 
     //    Item    //
 
@@ -42,7 +46,7 @@ object HTShapes : HTMaterialsAddon {
     @JvmField
     val RAW_ORE = HTShapeKey(
         "raw_ore",
-        idPath = "raw_%s_ores",
+        idPath = "raw_%s_ore",
         forgePath = "raw_materials/%s"
     )
 
