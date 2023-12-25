@@ -5,6 +5,7 @@ import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.mixin.TagBuilderMixin
 import io.github.hiiragi283.material.util.*
 import net.minecraft.fluid.Fluid
@@ -41,10 +42,10 @@ internal object HTTagLoaderMixin {
     fun itemTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Tags from HTPartManager
         HTPartManager.getPartToItemTable()
-            .forEach { (key: HTMaterialKey, shape: HTShape, items: Collection<Item>) ->
+            .forEach { (material: HTMaterialKey, shape: HTShapeKey, items: Collection<Item>) ->
             items.forEach { item: Item ->
                 registerTag(
-                    getOrCreateBuilder(map, shape.getCommonTag(key).id),
+                    getOrCreateBuilder(map, shape.getCommonTag(material).id),
                     Registry.ITEM,
                     item
                 )
@@ -52,10 +53,10 @@ internal object HTTagLoaderMixin {
         }
         HTMixinLogger.INSTANCE.info("Registered Tags for HTPartManager's Entries!")
         //Sync ForgeTag and CommonTag entries
-        HTMaterial.REGISTRY.keys.forEach { key ->
-            HTShape.REGISTRY.forEach shape@{ shape ->
-                val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(key))
-                val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(key))
+        HTMaterial.REGISTRY.keys.forEach { material: HTMaterialKey ->
+            HTShape.REGISTRY.keys.forEach shape@{ shape: HTShapeKey ->
+                val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(material))
+                val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(material))
                 syncBuilder(commonBuilder, forgeBuilder)
                 syncBuilder(forgeBuilder, commonBuilder)
             }

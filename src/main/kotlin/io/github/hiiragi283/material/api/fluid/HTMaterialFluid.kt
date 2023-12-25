@@ -2,8 +2,7 @@ package io.github.hiiragi283.material.api.fluid
 
 import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.part.HTPart
-import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.util.prefix
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -25,7 +24,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.WorldAccess
 import net.minecraft.world.WorldView
 
-abstract class HTMaterialFluid private constructor(val material: HTMaterialKey) : FlowableFluid() {
+abstract class HTMaterialFluid private constructor(val materialKey: HTMaterialKey) : FlowableFluid() {
 
     companion object {
 
@@ -82,13 +81,13 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterialKey) 
 
     override fun getBlastResistance(): Float = 100.0f
 
-    override fun getStill(): Fluid = fluidStill[material]!!
+    override fun getStill(): Fluid = fluidStill[materialKey]!!
 
-    override fun getFlowing(): Fluid = fluidFlowing[material]!!
+    override fun getFlowing(): Fluid = fluidFlowing[materialKey]!!
 
     override fun toBlockState(state: FluidState): BlockState = Blocks.AIR.defaultState
 
-    override fun getBucketItem(): Item = fluidBucket[material]!!
+    override fun getBucketItem(): Item = fluidBucket[materialKey]!!
 
     //    Flowing    //
 
@@ -139,20 +138,20 @@ abstract class HTMaterialFluid private constructor(val material: HTMaterialKey) 
 
     class Bucket internal constructor(fluid: Still) : BucketItem(fluid, itemSettings) {
 
-        companion object {
-            private val shape: HTShape = HTShape.create("bucket")
-        }
+        private val materialKey = fluid.materialKey
 
-        private val part: HTPart = HTPart(fluid.material, shape)
+        companion object {
+            private val shapeKey = HTShapeKey("bucket")
+        }
 
         init {
-            fluidBucket.putIfAbsent(fluid.material, this)
-            Registry.register(Registry.ITEM, part.getIdentifier(), this)
+            fluidBucket.putIfAbsent(fluid.materialKey, this)
+            Registry.register(Registry.ITEM, shapeKey.getIdentifier(fluid.materialKey), this)
         }
 
-        override fun getName(): Text = part.getTranslatedText()
+        override fun getName(): Text = shapeKey.getTranslatedText(materialKey)
 
-        override fun getName(stack: ItemStack): Text = part.getTranslatedText()
+        override fun getName(stack: ItemStack): Text = shapeKey.getTranslatedText(materialKey)
 
     }
 

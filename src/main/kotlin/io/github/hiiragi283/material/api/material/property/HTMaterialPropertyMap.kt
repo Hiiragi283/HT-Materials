@@ -2,7 +2,7 @@ package io.github.hiiragi283.material.api.material.property
 
 import io.github.hiiragi283.material.api.material.HTMaterial
 
-class HTMaterialProperties private constructor(
+class HTMaterialPropertyMap private constructor(
     map: Map<HTPropertyKey<*>, HTMaterialProperty<*>>
 ) : Map<HTPropertyKey<*>, HTMaterialProperty<*>> by map {
 
@@ -27,7 +27,7 @@ class HTMaterialProperties private constructor(
             this[property.key] = property.apply(action)
         }
 
-        internal fun build(): HTMaterialProperties = HTMaterialProperties(this)
+        internal fun build(): HTMaterialPropertyMap = HTMaterialPropertyMap(this)
 
     }
 

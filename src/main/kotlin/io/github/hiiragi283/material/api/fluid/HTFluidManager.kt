@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterialsNew
+import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
 import io.github.hiiragi283.material.util.getAllModId
 import net.minecraft.fluid.FlowableFluid
 import net.minecraft.fluid.Fluid
@@ -19,7 +19,7 @@ object HTFluidManager {
 
     private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
 
-    //    Fluid -> HTMaterial    //
+    //    Fluid -> HTMaterialKey    //
 
     private val fluidToMaterial: MutableMap<Fluid, HTMaterialKey> = mutableMapOf()
 
@@ -63,7 +63,8 @@ object HTFluidManager {
     }
 
     @JvmStatic
-    fun register(material: HTMaterialKey, fluid: Fluid) {
+    @JvmSynthetic
+    internal fun register(material: HTMaterialKey, fluid: Fluid) {
         checkFluidNotEmpty(fluid)
         if (fluid is FlowableFluid) {
             registerInternal(material, fluid.still)
@@ -106,11 +107,11 @@ object HTFluidManager {
 
     init {
         //Water
-        forceRegister(HTVanillaMaterialsNew.WATER, Fluids.WATER)
-        forceRegister(HTVanillaMaterialsNew.WATER, Fluids.FLOWING_WATER)
+        forceRegister(HTVanillaMaterials.WATER, Fluids.WATER)
+        forceRegister(HTVanillaMaterials.WATER, Fluids.FLOWING_WATER)
         //Lava
-        forceRegister(HTVanillaMaterialsNew.LAVA, Fluids.LAVA)
-        forceRegister(HTVanillaMaterialsNew.LAVA, Fluids.FLOWING_LAVA)
+        forceRegister(HTVanillaMaterials.LAVA, Fluids.LAVA)
+        forceRegister(HTVanillaMaterials.LAVA, Fluids.FLOWING_LAVA)
     }
 
     @JvmStatic

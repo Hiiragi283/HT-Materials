@@ -21,19 +21,20 @@ fun interface MolarMassConvertible {
             "%.1f".format(result).toDouble()
         }
 
-        @JvmStatic
-        fun of(registry: Map<HTMaterialKey, MolarMassConvertible>, vararg pair: Pair<HTMaterialKey, Int>) =
-            of(registry, pair.toMap())
+    }
 
-        @JvmStatic
-        fun of(registry: Map<HTMaterialKey, MolarMassConvertible>, map: Map<HTMaterialKey, Int>) =
-            MolarMassConvertible {
-                var result = 0.0
-                for ((key: HTMaterialKey, weight: Int) in map) {
-                    result += registry.getOrDefault(key, EMPTY).asMolarMass() * weight
-                }
-                "%.1f".format(result).toDouble()
+    class Child(val map: Map<HTMaterialKey, Int>) : MolarMassConvertible {
+
+        constructor(vararg pair: Pair<HTMaterialKey, Int>) : this(pair.toMap())
+
+        override fun asMolarMass(): Double {
+            var result = 0.0
+            for ((key: HTMaterialKey, weight: Int) in map) {
+                val molar: Double = HTMaterial.getMaterialOrNull(key)?.info?.molarMass ?: 0.0
+                result += molar * weight
             }
+            return "%.1f".format(result).toDouble()
+        }
 
     }
 

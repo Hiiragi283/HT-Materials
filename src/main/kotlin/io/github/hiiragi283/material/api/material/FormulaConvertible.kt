@@ -31,15 +31,16 @@ fun interface FormulaConvertible {
             builder.toString()
         }
 
-        @JvmStatic
-        fun of(registry: Map<HTMaterialKey, FormulaConvertible>, vararg pair: Pair<HTMaterialKey, Int>) =
-            of(registry, pair.toMap())
+    }
 
-        @JvmStatic
-        fun of(registry: Map<HTMaterialKey, FormulaConvertible>, map: Map<HTMaterialKey, Int>) = FormulaConvertible {
+    class Child(val map: Map<HTMaterialKey, Int>) : FormulaConvertible {
+
+        constructor(vararg pair: Pair<HTMaterialKey, Int>) : this(pair.toMap())
+
+        override fun asFormula(): String {
             val builder = StringBuilder()
             for ((key: HTMaterialKey, weight: Int) in map) {
-                builder.append(registry[key]?.asFormula() ?: "X")
+                builder.append(HTMaterial.getMaterialOrNull(key)?.info?.formula ?: "X")
                 //値が1の場合はパス
                 if (weight == 1) continue
                 //化学式の下付き数字の桁数調整
@@ -51,7 +52,7 @@ fun interface FormulaConvertible {
                     this.append(subscript1)
                 })
             }
-            builder.toString()
+            return builder.toString()
         }
 
     }

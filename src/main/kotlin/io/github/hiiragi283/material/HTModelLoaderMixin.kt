@@ -4,7 +4,7 @@ import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.modify
 import net.minecraft.client.render.model.json.JsonUnbakedModel
@@ -50,7 +50,7 @@ object HTModelLoaderMixin {
 
     @JvmStatic
     private fun getMaterialItemId(item: HTMaterialItem): Identifier? {
-        val (key: HTMaterialKey, shape: HTShape) = item
+        val (key: HTMaterialKey, shape: HTShapeKey) = item
         return if (shape == HTShapes.GEM) {
             key.getMaterial().getProperty(HTPropertyKey.GEM)?.let { "${it.name.lowercase()}_gem" }?.let {
                 HTMaterialsCommon.id("models/item/$it.json")

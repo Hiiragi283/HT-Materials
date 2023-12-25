@@ -1,12 +1,5 @@
 package io.github.hiiragi283.material
 
-import io.github.hiiragi283.material.api.addon.HTMaterialsAddonManager
-import io.github.hiiragi283.material.api.item.HTMaterialItem
-import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.part.HTPartManager
-import io.github.hiiragi283.material.api.shape.HTShape
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
@@ -32,50 +25,19 @@ object HTMaterialsCommon : ModInitializer {
     }
 
     @get:JvmName("ICON")
-    val ICON: Item by lazy {
-        Registry.register(
-            Registry.ITEM,
-            id("icon"),
-            Item(FabricItemSettings().group(ITEM_GROUP).rarity(Rarity.EPIC))
-        )
-    }
+    val ICON: Item by lazy { Item(FabricItemSettings().group(ITEM_GROUP).rarity(Rarity.EPIC)) }
 
     override fun onInitialize() {
-        //Bind Game Objects to HTPart
-        HTMaterialsAddonManager.bindItemToPart()
-        HTMaterialsAddonManager.bindFluidToPart()
         //Initialize Game Objects
         ITEM_GROUP
-        ICON
-        registerMaterialFluids()
+        Registry.register(Registry.ITEM, id("icon"), ICON)
+        HTMaterialsCore.registerMaterialFluids()
         LOGGER.info("All Material Fluids Registered!")
-        registerMaterialItems()
+        HTMaterialsCore.registerMaterialItems()
         LOGGER.info("All Material Items Registered!")
     }
 
     @JvmStatic
     fun id(path: String) = Identifier(MOD_ID, path)
-
-    private fun registerMaterialFluids() {
-        HTMaterial.REGISTRY.forEach { (key: HTMaterialKey, material: HTMaterial) ->
-            material.getProperty(HTPropertyKey.FLUID)?.init(key)
-        }
-    }
-
-    private fun registerMaterialItems() {
-        HTShape.REGISTRY.forEach { shape: HTShape ->
-            HTMaterial.REGISTRY
-                .filter { shape.canGenerateItem(it.value) }
-                .keys
-                .forEach { key: HTMaterialKey ->
-                    //Register Item
-                    HTMaterialItem(key, shape).run {
-                        Registry.register(Registry.ITEM, shape.getIdentifier(key), this)
-                        //Register as Default Item
-                        HTPartManager.forceRegister(key, shape, this)
-                    }
-                }
-        }
-    }
 
 }

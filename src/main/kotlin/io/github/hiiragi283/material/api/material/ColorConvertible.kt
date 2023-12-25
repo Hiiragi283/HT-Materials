@@ -44,31 +44,31 @@ fun interface ColorConvertible {
             } else Color.WHITE
         }
 
-        @JvmStatic
-        fun of(registry: Map<HTMaterialKey, ColorConvertible>, vararg pair: Pair<HTMaterialKey, Int>) =
-            of(registry, pair.toMap())
+    }
 
-        @JvmStatic
-        fun of(registry: Map<HTMaterialKey, ColorConvertible>, map: Map<HTMaterialKey, Int>) = ColorConvertible {
+    class Child(val map: Map<HTMaterialKey, Int>) : ColorConvertible {
+
+        constructor(vararg pair: Pair<HTMaterialKey, Int>) : this(pair.toMap())
+
+        override fun asColor(): Color {
             var redSum = 0
             var greenSum = 0
             var blueSum = 0
             var weightSum = 0
             map.forEach { (key: HTMaterialKey, weight: Int) ->
                 //RGB値にweightをかけた値を加算していく
-                registry.getOrDefault(key, EMPTY).asColor().run {
+                HTMaterial.getMaterialOrNull(key)?.info?.color?.run {
                     redSum += this.red * weight
                     greenSum += this.green * weight
                     blueSum += this.blue * weight
                 }
                 weightSum += weight
             }
-            if (weightSum > 0) {
+            return if (weightSum > 0) {
                 Color(redSum / weightSum, greenSum / weightSum, blueSum / weightSum)
             } else Color.WHITE
         }
 
     }
-
 
 }

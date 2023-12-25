@@ -15,6 +15,8 @@ data class HTMaterialKey(override val name: String) : HTObjectKey<HTMaterial> {
 
     fun getMaterial(): HTMaterial = HTMaterial.getMaterial(this)
 
+    fun getMaterialOrNull(): HTMaterial? = HTMaterial.getMaterialOrNull(this)
+
     //    Identifier    //
 
     fun getIdentifier(namespace: String = HTMaterialsCommon.MOD_ID): Identifier = Identifier(namespace, name)

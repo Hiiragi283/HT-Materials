@@ -1,15 +1,15 @@
 package io.github.hiiragi283.material.api.material.materials
 
-import com.google.common.collect.Multimap
 import io.github.hiiragi283.material.HTMaterialsCommon
-import io.github.hiiragi283.material.api.addon.HTMaterialsAddon
+import io.github.hiiragi283.material.api.HTMaterialsAddon
 import io.github.hiiragi283.material.api.material.ColorConvertible
 import io.github.hiiragi283.material.api.material.FormulaConvertible
 import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.MolarMassConvertible
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
 import io.github.hiiragi283.material.api.material.property.HTGemProperty
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
+import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
 import io.github.hiiragi283.material.api.material.property.HTMetalProperty
 import io.github.hiiragi283.material.api.material.property.HTStoneProperty
 import io.github.hiiragi283.material.api.registry.HTDefaultedMap
@@ -120,7 +120,7 @@ object HTCommonMaterials : HTMaterialsAddon {
         //Woods
     }
 
-    override fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialProperties.Builder>) {
+    override fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialPropertyMap.Builder>) {
         //Fluids
         //Gems
         registry.getOrCreate(CINNABAR).add(HTGemProperty.EMERALD)
@@ -146,39 +146,39 @@ object HTCommonMaterials : HTMaterialsAddon {
         //Woods
     }
 
-    override fun modifyMaterialFlag(registry: Multimap<HTMaterialKey, HTMaterialFlag>) {
+    override fun modifyMaterialFlag(registry: HTDefaultedMap<HTMaterialKey, HTMaterialFlagSet.Builder>) {
         //Fluids
         //Gems
-        registry.get(CINNABAR).apply {
+        registry.getOrCreate(CINNABAR).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEM)
         }
-        registry.get(COKE).apply {
+        registry.getOrCreate(COKE).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEM)
         }
-        registry.get(OLIVINE).apply {
+        registry.getOrCreate(OLIVINE).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEM)
         }
-        registry.get(PERIDOT).apply {
-            add(HTMaterialFlag.GENERATE_BLOCk)
-            add(HTMaterialFlag.GENERATE_DUST)
-            add(HTMaterialFlag.GENERATE_GEM)
-            add(HTMaterialFlag.GENERATE_PLATE)
-            add(HTMaterialFlag.GENERATE_ROD)
-        }
-        registry.get(RUBY).apply {
+        registry.getOrCreate(PERIDOT).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEM)
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(SALT).apply {
+        registry.getOrCreate(RUBY).apply {
+            add(HTMaterialFlag.GENERATE_BLOCk)
+            add(HTMaterialFlag.GENERATE_DUST)
+            add(HTMaterialFlag.GENERATE_GEM)
+            add(HTMaterialFlag.GENERATE_PLATE)
+            add(HTMaterialFlag.GENERATE_ROD)
+        }
+        registry.getOrCreate(SALT).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEM)
@@ -186,7 +186,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
 
-        registry.get(SAPPHIRE).apply {
+        registry.getOrCreate(SAPPHIRE).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEM)
@@ -194,7 +194,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
         //Metals
-        registry.get(BRASS).apply {
+        registry.getOrCreate(BRASS).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -203,7 +203,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(BRONZE).apply {
+        registry.getOrCreate(BRONZE).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -212,7 +212,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(ELECTRUM).apply {
+        registry.getOrCreate(ELECTRUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -221,7 +221,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(INVAR).apply {
+        registry.getOrCreate(INVAR).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -230,7 +230,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(STAINLESS_STEEL).apply {
+        registry.getOrCreate(STAINLESS_STEEL).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -239,7 +239,7 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(STEEl).apply {
+        registry.getOrCreate(STEEl).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -249,13 +249,13 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
         //Solids
-        registry.get(ASHES).apply {
+        registry.getOrCreate(ASHES).apply {
             add(HTMaterialFlag.GENERATE_DUST)
         }
-        registry.get(BAUXITE).apply {
+        registry.getOrCreate(BAUXITE).apply {
             add(HTMaterialFlag.GENERATE_DUST)
         }
-        registry.get(RUBBER).apply {
+        registry.getOrCreate(RUBBER).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_INGOT)
@@ -263,13 +263,13 @@ object HTCommonMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
         //Stones
-        registry.get(MARBLE).apply {
+        registry.getOrCreate(MARBLE).apply {
             add(HTMaterialFlag.GENERATE_DUST)
         }
         //Woods
     }
 
-    override fun modifyMaterialColor(registry: HashMap<HTMaterialKey, ColorConvertible>) {
+    override fun modifyMaterialColor(registry: MutableMap<HTMaterialKey, ColorConvertible>) {
         //Fluids
         //Gems
         registry[CINNABAR] = ColorConvertible { HTColor.RED }
@@ -281,7 +281,7 @@ object HTCommonMaterials : HTMaterialsAddon {
         registry[SAPPHIRE] = ColorConvertible { HTColor.BLUE }
         //Metals
         registry[BRASS] = ColorConvertible { HTColor.GOLD }
-        registry[BRONZE] = ColorConvertible.of(registry, HTElementMaterials.COPPER to 3, HTElementMaterials.TIN to 1)
+        registry[BRONZE] = ColorConvertible.Child(HTElementMaterials.COPPER to 3, HTElementMaterials.TIN to 1)
         registry[ELECTRUM] = ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW, HTColor.WHITE)
         registry[INVAR] = ColorConvertible.ofColor(HTColor.GREEN to 1, HTColor.GRAY to 3, HTColor.WHITE to 4)
         registry[STAINLESS_STEEL] = ColorConvertible.ofColor(HTColor.GRAY, HTColor.WHITE)
@@ -295,42 +295,41 @@ object HTCommonMaterials : HTMaterialsAddon {
         //Woods
     }
 
-    override fun modifyMaterialFormula(registry: HashMap<HTMaterialKey, FormulaConvertible>) {
+    override fun modifyMaterialFormula(registry: MutableMap<HTMaterialKey, FormulaConvertible>) {
         //Fluids
         //Gems
         registry[CINNABAR]
         registry[COKE] = registry[HTElementMaterials.CARBON]!!
         registry[OLIVINE]
         registry[PERIDOT]
-        registry[RUBY] = FormulaConvertible.of(registry, *HTAtomicGroups.ALUMINUM_OXIDE)
-        registry[SALT] = FormulaConvertible.of(
-            registry[HTElementMaterials.SODIUM]!! to 1,
-            registry[HTElementMaterials.CHLORINE]!! to 1
+        registry[RUBY] = FormulaConvertible.Child(
+            *HTAtomicGroups.ALUMINUM_OXIDE
         )
-        registry[SAPPHIRE] = FormulaConvertible.of(registry, *HTAtomicGroups.ALUMINUM_OXIDE)
+        registry[SALT] = FormulaConvertible.Child(
+            HTElementMaterials.SODIUM to 1,
+            HTElementMaterials.CHLORINE to 1
+        )
+        registry[SAPPHIRE] = FormulaConvertible.Child(
+            *HTAtomicGroups.ALUMINUM_OXIDE
+        )
         //Metals
-        registry[BRASS] = FormulaConvertible.of(
-            registry,
+        registry[BRASS] = FormulaConvertible.Child(
             HTElementMaterials.COPPER to 3,
             HTElementMaterials.ZINC to 1
         )
-        registry[BRONZE] = FormulaConvertible.of(
-            registry,
+        registry[BRONZE] = FormulaConvertible.Child(
             HTElementMaterials.COPPER to 3,
             HTElementMaterials.TIN to 1
         )
-        registry[ELECTRUM] = FormulaConvertible.of(
-            registry,
+        registry[ELECTRUM] = FormulaConvertible.Child(
             HTElementMaterials.SILVER to 1,
             HTElementMaterials.GOLD to 1
         )
-        registry[INVAR] = FormulaConvertible.of(
-            registry,
+        registry[INVAR] = FormulaConvertible.Child(
             HTElementMaterials.IRON to 1,
             HTElementMaterials.NICKEL to 2
         )
-        registry[STAINLESS_STEEL] = FormulaConvertible.of(
-            registry,
+        registry[STAINLESS_STEEL] = FormulaConvertible.Child(
             HTElementMaterials.IRON to 6,
             HTElementMaterials.CHROMIUM to 1,
             HTElementMaterials.MANGANESE to 1,
@@ -342,15 +341,14 @@ object HTCommonMaterials : HTMaterialsAddon {
         registry[BAUXITE]
         registry[RUBBER]
         //Stones
-        registry[MARBLE] = FormulaConvertible.of(
-            registry,
+        registry[MARBLE] = FormulaConvertible.Child(
             HTElementMaterials.CARBON to 1,
             *HTAtomicGroups.CARBONATE
         )
         //Woods
     }
 
-    override fun modifyMaterialMolar(registry: HashMap<HTMaterialKey, MolarMassConvertible>) {
+    override fun modifyMaterialMolar(registry: MutableMap<HTMaterialKey, MolarMassConvertible>) {
         //Fluids
         //Gems
         //Metals

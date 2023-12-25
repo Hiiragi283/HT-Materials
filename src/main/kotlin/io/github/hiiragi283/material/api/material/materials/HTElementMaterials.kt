@@ -1,15 +1,15 @@
 package io.github.hiiragi283.material.api.material.materials
 
-import com.google.common.collect.Multimap
 import io.github.hiiragi283.material.HTMaterialsCommon
-import io.github.hiiragi283.material.api.addon.HTMaterialsAddon
+import io.github.hiiragi283.material.api.HTMaterialsAddon
 import io.github.hiiragi283.material.api.material.ColorConvertible
 import io.github.hiiragi283.material.api.material.FormulaConvertible
 import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.MolarMassConvertible
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
 import io.github.hiiragi283.material.api.material.property.HTFluidProperty
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
+import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
 import io.github.hiiragi283.material.api.material.property.HTMetalProperty
 import io.github.hiiragi283.material.api.registry.HTDefaultedMap
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet
@@ -202,7 +202,7 @@ object HTElementMaterials : HTMaterialsAddon {
         )
     }
 
-    override fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialProperties.Builder>) {
+    override fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialPropertyMap.Builder>) {
         //1st Period
         registry.getOrCreate(HYDROGEN).add(HTFluidProperty()) { this.isGas = true }
         registry.getOrCreate(HELIUM).add(HTFluidProperty()) { this.isGas = true }
@@ -244,16 +244,16 @@ object HTElementMaterials : HTMaterialsAddon {
         registry.getOrCreate(PLUTONIUM).add(HTMetalProperty)
     }
 
-    override fun modifyMaterialFlag(registry: Multimap<HTMaterialKey, HTMaterialFlag>) {
+    override fun modifyMaterialFlag(registry: HTDefaultedMap<HTMaterialKey, HTMaterialFlagSet.Builder>) {
         //1st Period
 
         //2nd Period
-        registry.get(CARBON).apply {
+        registry.getOrCreate(CARBON).apply {
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_PLATE)
         }
         //3rd Period
-        registry.get(ALUMINUM).apply {
+        registry.getOrCreate(ALUMINUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -262,21 +262,21 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(SILICON).apply {
+        registry.getOrCreate(SILICON).apply {
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_INGOT)
             add(HTMaterialFlag.GENERATE_NUGGET)
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(PHOSPHORUS).apply {
+        registry.getOrCreate(PHOSPHORUS).apply {
             add(HTMaterialFlag.GENERATE_DUST)
         }
-        registry.get(SULFUR).apply {
+        registry.getOrCreate(SULFUR).apply {
             add(HTMaterialFlag.GENERATE_DUST)
         }
         //4th Period
-        registry.get(TITANIUM).apply {
+        registry.getOrCreate(TITANIUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -285,13 +285,13 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(IRON).apply {
+        registry.getOrCreate(IRON).apply {
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(NICKEL).apply {
+        registry.getOrCreate(NICKEL).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -300,14 +300,14 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(COPPER).apply {
+        registry.getOrCreate(COPPER).apply {
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
             add(HTMaterialFlag.GENERATE_NUGGET)
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(ZINC).apply {
+        registry.getOrCreate(ZINC).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -317,7 +317,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
         //5th Period
-        registry.get(SILVER).apply {
+        registry.getOrCreate(SILVER).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -326,7 +326,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(TIN).apply {
+        registry.getOrCreate(TIN).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -336,7 +336,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
         //6th Period
-        registry.get(TUNGSTEN).apply {
+        registry.getOrCreate(TUNGSTEN).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -345,7 +345,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(IRIDIUM).apply {
+        registry.getOrCreate(IRIDIUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -354,7 +354,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(PLATINUM).apply {
+        registry.getOrCreate(PLATINUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -363,13 +363,13 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(GOLD).apply {
+        registry.getOrCreate(GOLD).apply {
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(LEAD).apply {
+        registry.getOrCreate(LEAD).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_GEAR)
@@ -379,7 +379,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_ROD)
         }
         //7th Period
-        registry.get(URANIUM).apply {
+        registry.getOrCreate(URANIUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_INGOT)
@@ -387,7 +387,7 @@ object HTElementMaterials : HTMaterialsAddon {
             add(HTMaterialFlag.GENERATE_PLATE)
             add(HTMaterialFlag.GENERATE_ROD)
         }
-        registry.get(PLUTONIUM).apply {
+        registry.getOrCreate(PLUTONIUM).apply {
             add(HTMaterialFlag.GENERATE_BLOCk)
             add(HTMaterialFlag.GENERATE_DUST)
             add(HTMaterialFlag.GENERATE_INGOT)
@@ -397,7 +397,7 @@ object HTElementMaterials : HTMaterialsAddon {
         }
     }
 
-    override fun modifyMaterialColor(registry: HashMap<HTMaterialKey, ColorConvertible>) {
+    override fun modifyMaterialColor(registry: MutableMap<HTMaterialKey, ColorConvertible>) {
         //1st Period
         registry[HYDROGEN] = ColorConvertible { HTColor.BLUE }
         registry[HELIUM] = ColorConvertible { HTColor.YELLOW }
@@ -442,7 +442,7 @@ object HTElementMaterials : HTMaterialsAddon {
         registry[PLUTONIUM] = ColorConvertible { HTColor.RED }
     }
 
-    override fun modifyMaterialFormula(registry: HashMap<HTMaterialKey, FormulaConvertible>) {
+    override fun modifyMaterialFormula(registry: MutableMap<HTMaterialKey, FormulaConvertible>) {
         //1st Period
         registry[HYDROGEN] = FormulaConvertible { "H" }
         registry[HELIUM] = FormulaConvertible { "He" }
@@ -487,7 +487,7 @@ object HTElementMaterials : HTMaterialsAddon {
         registry[PLUTONIUM] = FormulaConvertible { "Pu" }
     }
 
-    override fun modifyMaterialMolar(registry: HashMap<HTMaterialKey, MolarMassConvertible>) {
+    override fun modifyMaterialMolar(registry: MutableMap<HTMaterialKey, MolarMassConvertible>) {
         //1st Period
         registry[HYDROGEN] = MolarMassConvertible { 1.0 }
         registry[HELIUM] = MolarMassConvertible { 4.0 }

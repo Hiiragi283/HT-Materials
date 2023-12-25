@@ -1,11 +1,12 @@
 package io.github.hiiragi283.material.api.material
 
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty
+import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPart
-import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapes
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
@@ -15,17 +16,17 @@ import org.slf4j.LoggerFactory
 class HTMaterial private constructor(
     val key: HTMaterialKey,
     val info: HTMaterialInfo,
-    val properties: HTMaterialProperties,
-    val flags: Collection<HTMaterialFlag>
+    val properties: HTMaterialPropertyMap,
+    val flags: HTMaterialFlagSet
 ) {
 
     //    Properties    //
 
     fun <T : HTMaterialProperty<T>> getProperty(key: HTPropertyKey<T>): T? = properties.getAs(key)
 
-    fun <T : HTMaterialProperty<T>> hasProperty(key: HTPropertyKey<T>): Boolean = key in properties
+    fun hasProperty(key: HTPropertyKey<*>): Boolean = key in properties
 
-    fun getDefaultShape(): HTShape? = when {
+    fun getDefaultShape(): HTShapeKey? = when {
         hasProperty(HTPropertyKey.METAL) -> HTShapes.INGOT
         hasProperty(HTPropertyKey.GEM) -> HTShapes.GEM
         else -> null
@@ -66,36 +67,25 @@ class HTMaterial private constructor(
             registry[key] ?: throw IllegalStateException("Material: $key is not registered!")
 
         @JvmStatic
+        fun getMaterialOrNull(key: HTMaterialKey): HTMaterial? = registry[key]
+
+        @JvmStatic
         internal fun create(
             key: HTMaterialKey,
             info: HTMaterialInfo,
-            properties: HTMaterialProperties,
-            flags: Collection<HTMaterialFlag>
+            properties: HTMaterialPropertyMap,
+            flags: HTMaterialFlagSet
         ): HTMaterial = HTMaterial(key, info, properties, flags).also {
             registry.putIfAbsent(key, it)
             LOGGER.info("Material: $key registered!")
         }
 
-        private val FLUID = object : HTShape("fluid") {
-
-            override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-            override fun getIdPath(material: HTMaterialKey): String = material.name
-
-            override fun getForgePath(material: HTMaterialKey): String {
-                throw UnsupportedOperationException()
-            }
-
-            override fun getCommonPath(material: HTMaterialKey): String {
-                throw UnsupportedOperationException()
-            }
-
-        }
+        private val shapeKey = HTShapeKey("fluid")
 
     }
 
     fun appendFluidTooltip(stack: ItemStack, lines: MutableList<Text>) {
-        HTPart(key, FLUID).appendTooltip(stack, lines)
+        HTPart(key, shapeKey).appendTooltip(stack, lines)
     }
 
 }

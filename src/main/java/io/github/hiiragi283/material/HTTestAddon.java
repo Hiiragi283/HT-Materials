@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material;
 
-import io.github.hiiragi283.material.api.addon.HTMaterialsAddon;
+import io.github.hiiragi283.material.api.HTMaterialsAddon;
 import org.jetbrains.annotations.NotNull;
 
 public class HTTestAddon implements HTMaterialsAddon {
@@ -34,7 +34,7 @@ public class HTTestAddon implements HTMaterialsAddon {
 
     @Override
     public void commonSetup() {
-        HTMaterialsAPI.registerItemToPart(HTVanillaMaterials.CALCITE, HTShapes.ROD, Items.BONE);
+        HTMaterialsAPI.registerItemToPart(HTVanillaMaterials.CALCITE, HTShapesOld.ROD, Items.BONE);
     }*/
 
 }

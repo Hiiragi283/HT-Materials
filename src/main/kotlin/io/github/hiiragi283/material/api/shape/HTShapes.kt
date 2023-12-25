@@ -1,124 +1,111 @@
 package io.github.hiiragi283.material.api.shape
 
-import io.github.hiiragi283.material.api.material.HTMaterial
-import io.github.hiiragi283.material.api.material.HTMaterialKey
+import io.github.hiiragi283.material.HTMaterialsCommon
+import io.github.hiiragi283.material.api.HTMaterialsAddon
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
+import io.github.hiiragi283.material.api.registry.HTDefaultedMap
+import io.github.hiiragi283.material.api.registry.HTObjectKeySet
 
-object HTShapes {
+object HTShapes : HTMaterialsAddon {
 
     //    Block    //
 
     @JvmField
-    val BLOCK: HTShape = HTShape.register(object : HTShape("block") {
-
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-        override fun getIdPath(material: HTMaterialKey): String = "${material.name}_block"
-
-        override fun getForgePath(material: HTMaterialKey): String = "storage_blocks/${material.name}"
-
-        override fun getCommonPath(material: HTMaterialKey): String = "${material.name}_blocks"
-
-    })
+    val BLOCK = HTShapeKey("block", forgePath = "storage_blocks/%s")
 
     @JvmField
-    val ORE: HTShape = HTShape.register(object : HTShape("ore") {
-
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-        override fun getIdPath(material: HTMaterialKey): String = "${material.name}_ore"
-
-        override fun getForgePath(material: HTMaterialKey): String = "ores/${material.name}"
-
-        override fun getCommonPath(material: HTMaterialKey): String = "${material.name}_ores"
-
-    })
+    val ORE = HTShapeKey("ore")
 
     @JvmField
-    val RAW_BLOCK: HTShape = HTShape.register(object : HTShape("raw_block") {
-
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-        override fun getIdPath(material: HTMaterialKey): String = "raw_${material.name}_block"
-
-        override fun getForgePath(material: HTMaterialKey): String = "storage_blocks/raw_${material.name}"
-
-        override fun getCommonPath(material: HTMaterialKey): String = "raw_${material.name}_blocks"
-
-    })
+    val RAW_BLOCK = HTShapeKey("raw_block", forgePath = "storage_blocks/raw_%s")
 
     //    Item    //
 
     @JvmField
-    val BLADE: HTShape = HTShape.createAndRegister("blade")
+    val DUST = HTShapeKey("dust")
 
     @JvmField
-    val BOLT: HTShape = HTShape.createAndRegister("bolt")
+    val GEAR = HTShapeKey("gear")
 
     @JvmField
-    val CRUSHED_DUST: HTShape = HTShape.createAndRegister("crushed_dust")
+    val GEM = HTShapeKey("gem")
 
     @JvmField
-    val CURVED_PLATE: HTShape = HTShape.createAndRegister("curved_plate")
+    val INGOT = HTShapeKey("ingot")
 
     @JvmField
-    val DOUBLE_INGOT: HTShape = HTShape.createAndRegister("double_ingot")
+    val NUGGET = HTShapeKey("nugget")
 
     @JvmField
-    val DRILL_HEAD: HTShape = HTShape.createAndRegister("drill_head")
+    val PLATE = HTShapeKey("plate")
 
     @JvmField
-    val DUST: HTShape = HTShape.createAndRegister("dust")
+    val RAW_ORE = HTShapeKey(
+        "raw_ore",
+        idPath = "raw_%s_ores",
+        forgePath = "raw_materials/%s"
+    )
 
     @JvmField
-    val GEAR: HTShape = HTShape.createAndRegister("gear")
+    val ROD = HTShapeKey("rod")
 
-    @JvmField
-    val GEM: HTShape = HTShape.createAndRegister("gem")
+    //    Register    //
 
-    @JvmField
-    val HOT_INGOT: HTShape = HTShape.createAndRegister("hot_ingot")
+    override val modId: String = HTMaterialsCommon.MOD_ID
 
-    @JvmField
-    val INGOT: HTShape = HTShape.createAndRegister("ingot")
+    override val priority: Int = -200
 
-    @JvmField
-    val LARGE_PLATE: HTShape = HTShape.createAndRegister("large_plate")
-
-    @JvmField
-    val NUGGET: HTShape = HTShape.createAndRegister("nugget")
-
-    @JvmField
-    val PLATE: HTShape = HTShape.createAndRegister("plate")
-
-    @JvmField
-    val RING: HTShape = HTShape.createAndRegister("ring")
-
-    @JvmField
-    val RAW_ORE: HTShape = object : HTShape("raw_ore") {
-
-        override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-        override fun getIdPath(material: HTMaterialKey): String = "raw_${material.name}_block"
-
-        override fun getForgePath(material: HTMaterialKey): String = "raw_materials/${material.name}"
-
-        override fun getCommonPath(material: HTMaterialKey): String = "raw_${material.name}_ores"
-
+    override fun registerShape(registry: HTObjectKeySet<HTShapeKey>) {
+        //Block
+        registry.addAll(
+            BLOCK,
+            ORE,
+            RAW_BLOCK
+        )
+        //Item
+        registry.addAll(
+            DUST,
+            GEAR,
+            GEM,
+            INGOT,
+            NUGGET,
+            PLATE,
+            RAW_ORE,
+            ROD
+        )
     }
 
-    @JvmField
-    val ROD: HTShape = HTShape.createAndRegister("rod")
-
-    @JvmField
-    val ROTOR: HTShape = HTShape.createAndRegister("rotor")
-
-    @JvmField
-    val SMALL_DUST: HTShape = HTShape.createAndRegister("small_dust")
-
-    @JvmField
-    val TINY_DUST: HTShape = HTShape.createAndRegister("tiny_dust")
-
-    @JvmField
-    val WIRE: HTShape = HTShape.createAndRegister("wire")
+    override fun modifyShapePredicate(registry: HTDefaultedMap<HTShapeKey, HTShapePredicate.Builder>) {
+        //Block
+        //Item
+        registry.getOrCreate(DUST).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_DUST)
+        }
+        registry.getOrCreate(GEAR).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_GEAR)
+        }
+        registry.getOrCreate(GEM).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_GEM)
+        }
+        registry.getOrCreate(INGOT).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_INGOT)
+        }
+        registry.getOrCreate(NUGGET).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_NUGGET)
+        }
+        registry.getOrCreate(PLATE).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_PLATE)
+        }
+        registry.getOrCreate(ROD).apply {
+            disabled = false
+            requiredFlags.add(HTMaterialFlag.GENERATE_ROD)
+        }
+    }
 
 }
