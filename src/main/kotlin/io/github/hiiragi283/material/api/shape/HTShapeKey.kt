@@ -13,7 +13,7 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
-data class HTShapeKey(
+data class HTShapeKey @JvmOverloads constructor(
     override val name: String,
     val idPath: String = "%s_$name",
     val forgePath: String = getForgePath(name),

@@ -20,6 +20,7 @@ class HTMaterialPropertyMap private constructor(
 
     class Builder : MutableMap<HTPropertyKey<*>, HTMaterialProperty<*>> by hashMapOf() {
 
+        @JvmOverloads
         inline fun <T : HTMaterialProperty<T>> add(
             property: T,
             action: T.() -> Unit = {}

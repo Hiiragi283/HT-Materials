@@ -1,7 +1,6 @@
 package io.github.hiiragi283.material.api.material.property
 
 import io.github.hiiragi283.material.api.registry.HTObjectKey
-import net.fabricmc.fabric.api.lookup.v1.custom.ApiProviderMap
 
 data class HTPropertyKey<T : HTMaterialProperty<T>>(
     override val name: String,
@@ -9,7 +8,7 @@ data class HTPropertyKey<T : HTMaterialProperty<T>>(
 ) : HTObjectKey<T> {
 
     init {
-        REGISTRY.putIfAbsent(name, this)
+        map.putIfAbsent(name, this)
     }
 
     //    Any    //
@@ -24,7 +23,7 @@ data class HTPropertyKey<T : HTMaterialProperty<T>>(
         private val map: MutableMap<String, HTPropertyKey<*>> = mutableMapOf()
 
         @JvmField
-        val REGISTRY: ApiProviderMap<String, HTPropertyKey<*>> = ApiProviderMap.create()
+        val REGISTRY: Map<String, HTPropertyKey<*>> = map
 
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
@@ -33,20 +32,31 @@ data class HTPropertyKey<T : HTMaterialProperty<T>>(
         //    Keys    //
 
         @JvmField
+        val COMPOUND: HTPropertyKey<HTCompoundProperty> = create("component")
+
+        @JvmField
         val FLUID: HTPropertyKey<HTFluidProperty> = create("fluid")
 
         @JvmField
         val GEM: HTPropertyKey<HTGemProperty> = create("gem")
 
         @JvmField
+        val HYDRATE: HTPropertyKey<HTHydrateProperty> = create("hydrate")
+
+        @JvmField
         val METAL: HTPropertyKey<HTMetalProperty> = create("metal")
+
+        @JvmField
+        val MIXTURE: HTPropertyKey<HTMixtureProperty> = create("mixture")
+
+        @JvmField
+        val POLYMER: HTPropertyKey<HTPolymerProperty> = create("polymer")
 
         @JvmField
         val STONE: HTPropertyKey<HTStoneProperty> = create("stone")
 
         @JvmField
         val WOOD: HTPropertyKey<HTWoodProperty> = create("wood")
-
 
     }
 

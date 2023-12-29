@@ -5,11 +5,12 @@ import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.part.HTPart
+import io.github.hiiragi283.material.api.shape.HTShape
 import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapes
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
+import net.minecraft.text.TranslatableText
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -34,7 +35,7 @@ class HTMaterial private constructor(
 
     fun verify() {
         properties.verify(this)
-        flags.forEach { it.verify(this) }
+        flags.verify(this)
     }
 
     //    Flags    //
@@ -82,10 +83,24 @@ class HTMaterial private constructor(
 
         private val shapeKey = HTShapeKey("fluid")
 
-    }
+        fun appendTooltip(material: HTMaterial, shape: HTShape?, stack: ItemStack, lines: MutableList<Text>) {
+            //Title
+            lines.add(TranslatableText("tooltip.ht_materials.material.title"))
+            //Name
+            val name: String = shape?.key?.getTranslatedName(material.key) ?: material.key.getTranslatedName()
+            lines.add(TranslatableText("tooltip.ht_materials.material.name", name))
+            //Formula
+            material.info.formula.takeIf(String::isNotEmpty)?.let { formula: String ->
+                lines.add(TranslatableText("tooltip.ht_materials.material.formula", formula))
+            }
+            //Molar Mass
+            material.info.molarMass.takeIf { it > 0.0 }?.let { molar: Double ->
+                lines.add(TranslatableText("tooltip.ht_materials.material.molar", molar))
+            }
+            //Tooltip from Properties
+            material.properties.values.forEach { it.appendTooltip(material, shape, stack, lines) }
+        }
 
-    fun appendFluidTooltip(stack: ItemStack, lines: MutableList<Text>) {
-        HTPart(key, shapeKey).appendTooltip(stack, lines)
     }
 
 }

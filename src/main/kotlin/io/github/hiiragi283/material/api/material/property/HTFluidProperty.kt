@@ -4,7 +4,7 @@ import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.material.HTMaterial
 import io.github.hiiragi283.material.api.material.HTMaterialKey
-import io.github.hiiragi283.material.api.part.HTPart
+import io.github.hiiragi283.material.api.shape.HTShape
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributeHandler
@@ -37,7 +37,7 @@ class HTFluidProperty : HTMaterialProperty<HTFluidProperty> {
 
     private val handlerCache: FluidVariantAttributeHandler by lazy { FluidVariantAttributes.getHandlerOrDefault(fluid) }
 
-    override fun appendTooltip(part: HTPart, stack: ItemStack, lines: MutableList<Text>) {
+    override fun appendTooltip(material: HTMaterial, shape: HTShape?, stack: ItemStack, lines: MutableList<Text>) {
         //Luminance
         handlerCache.getLuminance(fluidVariant).run {
             lines.add(TranslatableText("tooltip.ht_materials.material.luminance", this))

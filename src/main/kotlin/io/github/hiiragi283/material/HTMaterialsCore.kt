@@ -5,6 +5,7 @@ import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.*
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
+import io.github.hiiragi283.material.api.material.property.HTComponentProperty
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
 import io.github.hiiragi283.material.api.part.HTPartManager
@@ -30,7 +31,6 @@ import net.minecraft.tag.TagKey
 import net.minecraft.util.registry.Registry
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.awt.Color
 
 internal object HTMaterialsCore {
 
@@ -103,14 +103,36 @@ internal object HTMaterialsCore {
         cache.forEach { it.modifyMaterialMolar(molarMap) }
     }
 
+    private fun getColor(key: HTMaterialKey, property: HTMaterialPropertyMap): ColorConvertible {
+        var color: ColorConvertible? = property.values.filterIsInstance<HTComponentProperty<*>>().getOrNull(0)
+        colorMap[key]?.let { color = it }
+        return color ?: ColorConvertible.EMPTY
+    }
+
+    private fun getFormula(key: HTMaterialKey, property: HTMaterialPropertyMap): FormulaConvertible {
+        var formula: FormulaConvertible? = property.values.filterIsInstance<HTComponentProperty<*>>().getOrNull(0)
+        formulaMap[key]?.let { formula = it }
+        return formula ?: FormulaConvertible.EMPTY
+    }
+
+    private fun getMolar(key: HTMaterialKey, property: HTMaterialPropertyMap): MolarMassConvertible {
+        var molar: MolarMassConvertible? = property.values.filterIsInstance<HTComponentProperty<*>>().getOrNull(0)
+        molarMap[key]?.let { molar = it }
+        return molar ?: MolarMassConvertible.EMPTY
+    }
+
     fun createMaterial() {
         materialKeySet.forEach { key: HTMaterialKey ->
             val property: HTMaterialPropertyMap = propertyMap.getOrCreate(key).build()
             val flags: HTMaterialFlagSet = flagMap.getOrCreate(key).build()
-            val color: Color = colorMap.getOrDefault(key, ColorConvertible.EMPTY).asColor()
-            val formula: String = formulaMap.getOrDefault(key, FormulaConvertible.EMPTY).asFormula()
-            val molar: Double = molarMap.getOrDefault(key, MolarMassConvertible.EMPTY).asMolarMass()
-            val info = HTMaterialInfo(color, formula, molar)
+            val color: ColorConvertible = getColor(key, property)
+            val formula: FormulaConvertible = getFormula(key, property)
+            val molar: MolarMassConvertible = getMolar(key, property)
+            val info = HTMaterialInfo(
+                color.asColor(),
+                formula.asFormula(),
+                "%.1f".format(molar.asMolarMass()).toDouble()
+            )
             HTMaterial.create(key, info, property, flags)
         }
     }

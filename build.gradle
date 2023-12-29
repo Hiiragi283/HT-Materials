@@ -25,6 +25,10 @@ repositories {
         url "https://api.modrinth.com/maven"
         content { includeGroup "maven.modrinth" }
     }
+    maven {
+        url "https://maven.saps.dev/minecraft"
+        content { includeGroup "dev.latvian.mods" }
+    }
     maven { url "https://jitpack.io" }
     maven { url "https://maven.architectury.dev" }
     maven { url "https://maven.blamejared.com" }
@@ -52,10 +56,24 @@ dependencies {
     //modImplementation("pers.solid:brrp-fabric:1.0.1-1.18.2") { transitive = false }
 
     //CraftTweaker
-    modImplementation("com.blamejared.crafttweaker:CraftTweaker-fabric-1.18.2:9.1.211") {
+    /*modImplementation("com.blamejared.crafttweaker:CraftTweaker-fabric-1.18.2:9.1.211") {
+        exclude(module: "architectury")
         exclude(module: "fabric-api")
         exclude(module: "fabric-loader")
     }
+
+    //KubeJS
+    modImplementation("dev.latvian.mods:kubejs:1802.5.6-build.2") {
+        exclude(module: "architectury")
+        exclude(module: "fabric-api")
+        exclude(module: "fabric-loader")
+    }
+
+    modLocalRuntime modCompileOnly("dev.latvian.mods:kubejs-fabric:1802.5.6-build.2") {
+        exclude(module: "architectury")
+        exclude(module: "fabric-api")
+        exclude(module: "fabric-loader")
+    }*/
 
     //Roughly Enough Items
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:6.4.90") {

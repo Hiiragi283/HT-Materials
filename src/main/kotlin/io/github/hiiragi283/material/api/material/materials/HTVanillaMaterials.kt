@@ -178,40 +178,99 @@ object HTVanillaMaterials : HTMaterialsAddon {
     override fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialPropertyMap.Builder>) {
         //Fluids
         registry.getOrCreate(WATER)
+            .add(HTCompoundProperty(HTElementMaterials.HYDROGEN to 2, HTElementMaterials.OXYGEN to 1))
         registry.getOrCreate(LAVA)
+            .add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
         //Gems
-        registry.getOrCreate(AMETHYST).add(HTGemProperty.AMETHYST)
-        registry.getOrCreate(DIAMOND).add(HTGemProperty.DIAMOND)
+        registry.getOrCreate(AMETHYST).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTGemProperty.AMETHYST)
+        }
+        registry.getOrCreate(DIAMOND).apply {
+            add(HTCompoundProperty(HTElementMaterials.CARBON to 1))
+            add(HTGemProperty.DIAMOND)
+        }
         registry.getOrCreate(ENDER_PEARL)
-        registry.getOrCreate(EMERALD).add(HTGemProperty.EMERALD)
-        registry.getOrCreate(FLINT)
+        registry.getOrCreate(EMERALD).apply {
+            add(
+                HTCompoundProperty(
+                    HTElementMaterials.BERYLLIUM to 3,
+                    HTElementMaterials.ALUMINUM to 2,
+                    HTElementMaterials.SILICON to 6,
+                    HTElementMaterials.OXYGEN to 18
+                )
+            )
+            add(HTGemProperty.EMERALD)
+        }
+        registry.getOrCreate(FLINT).apply {
+            add(HTCompoundProperty(HTElementMaterials.CARBON to 1))
+        }
         registry.getOrCreate(LAPIS).add(HTGemProperty.LAPIS)
-        registry.getOrCreate(QUARTZ).add(HTGemProperty.QUARTZ)
+        registry.getOrCreate(QUARTZ).apply {
+            add(HTCompoundProperty(HTElementMaterials.CARBON to 1))
+            add(HTGemProperty.DIAMOND)
+        }
         //Metals
         registry.getOrCreate(NETHERITE).add(HTMetalProperty)
         //Solids
         registry.getOrCreate(BRICK)
-        registry.getOrCreate(CHARCOAL)
+        registry.getOrCreate(CHARCOAL).add(HTCompoundProperty(HTElementMaterials.CARBON to 1))
         registry.getOrCreate(CLAY)
-        registry.getOrCreate(COAL)
-        registry.getOrCreate(GLASS)
+        registry.getOrCreate(COAL).add(HTCompoundProperty(HTElementMaterials.CARBON to 1))
+        registry.getOrCreate(GLASS).add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
         registry.getOrCreate(GLOWSTONE)
         registry.getOrCreate(NETHER_BRICK)
         registry.getOrCreate(REDSTONE)
         //Stones
-        registry.getOrCreate(STONE).add(HTStoneProperty)
-        registry.getOrCreate(GRANITE).add(HTStoneProperty)
-        registry.getOrCreate(DIORITE).add(HTStoneProperty)
-        registry.getOrCreate(ANDESITE).add(HTStoneProperty)
-        registry.getOrCreate(DEEPSLATE).add(HTStoneProperty)
-        registry.getOrCreate(CALCITE).add(HTStoneProperty)
-        registry.getOrCreate(TUFF).add(HTStoneProperty)
-        registry.getOrCreate(OBSIDIAN).add(HTStoneProperty)
-        registry.getOrCreate(NETHERRACK).add(HTStoneProperty)
-        registry.getOrCreate(BASALT).add(HTStoneProperty)
-        registry.getOrCreate(END_STONE).add(HTStoneProperty)
+        registry.getOrCreate(STONE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(GRANITE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(DIORITE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(ANDESITE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(DEEPSLATE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(CALCITE).apply {
+            add(HTCompoundProperty(HTElementMaterials.CALCIUM to 1, *HTAtomicGroups.CARBONATE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(TUFF).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(OBSIDIAN).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(NETHERRACK).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(BASALT).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTStoneProperty)
+        }
+        registry.getOrCreate(END_STONE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.SILICON_OXIDE))
+            add(HTGemProperty.DIAMOND)
+        }
         //Woods
-        registry.getOrCreate(WOOD).add(HTWoodProperty)
+        registry.getOrCreate(WOOD).apply {
+            add(HTMixtureProperty(HTElementMaterials.CARBON, HTElementMaterials.HYDROGEN, HTElementMaterials.OXYGEN))
+            add(HTWoodProperty)
+        }
     }
 
     override fun modifyMaterialFlag(registry: HTDefaultedMap<HTMaterialKey, HTMaterialFlagSet.Builder>) {
@@ -354,7 +413,7 @@ object HTVanillaMaterials : HTMaterialsAddon {
         registry[BRICK] = ColorConvertible.ofColor(HTColor.DARK_RED to 2, HTColor.GOLD to 1, HTColor.DARK_GRAY to 2)
         registry[CHARCOAL] = ColorConvertible.ofColor(HTColor.BLACK to 7, HTColor.YELLOW to 1)
         registry[CLAY] = ColorConvertible { Color(0xa4a8b8) }
-        registry[COAL] = ColorConvertible.Child(HTElementMaterials.CARBON to 1)
+        registry[COAL]
         registry[GLASS] = ColorConvertible { HTColor.WHITE }
         registry[GLOWSTONE] = ColorConvertible.ofColor(HTColor.GOLD to 1, HTColor.YELLOW to 2)
         registry[NETHER_BRICK] = ColorConvertible.ofColor(HTColor.BLACK to 4, HTColor.DARK_RED to 1, HTColor.WHITE to 1)
@@ -382,118 +441,55 @@ object HTVanillaMaterials : HTMaterialsAddon {
 
     override fun modifyMaterialFormula(registry: MutableMap<HTMaterialKey, FormulaConvertible>) {
         //Fluids
-        registry[WATER] = FormulaConvertible.Child(
-            HTElementMaterials.HYDROGEN to 2,
-            HTElementMaterials.OXYGEN to 1
-        )
-        registry[LAVA] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[WATER]
+        registry[LAVA]
         //Gems
-        registry[AMETHYST] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[DIAMOND] = FormulaConvertible.Child(
-            HTElementMaterials.CARBON to 1
-        )
+        registry[AMETHYST]
+        registry[DIAMOND]
         registry[ENDER_PEARL]
-        registry[EMERALD] = FormulaConvertible.Child(
-            HTElementMaterials.BERYLLIUM to 3,
-            HTElementMaterials.ALUMINUM to 2,
-            HTElementMaterials.SILICON to 6,
-            HTElementMaterials.OXYGEN to 18
-        )
-        registry[FLINT] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[EMERALD]
+        registry[FLINT]
         registry[LAPIS]
-        registry[QUARTZ] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[QUARTZ]
         //Metals
         registry[NETHERITE] = FormulaConvertible { "Nr" }
         //Solids
         registry[BRICK]
-        registry[CHARCOAL] = FormulaConvertible.Child(
-            HTElementMaterials.CARBON to 1
-        )
+        registry[CHARCOAL]
         registry[CLAY]
-        registry[COAL] = FormulaConvertible.Child(
-            HTElementMaterials.CARBON to 1
-        )
-        registry[GLASS] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[COAL]
+        registry[GLASS]
         registry[GLOWSTONE]
         registry[NETHER_BRICK]
         registry[REDSTONE]
         //Stones
-        registry[STONE] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[GRANITE] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[DIORITE] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[ANDESITE] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[DEEPSLATE] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[CALCITE] = FormulaConvertible.Child(
-            HTElementMaterials.CALCIUM to 1,
-            *HTAtomicGroups.CARBONATE
-        )
+        registry[STONE]
+        registry[GRANITE]
+        registry[DIORITE]
+        registry[ANDESITE]
+        registry[DEEPSLATE]
+        registry[CALCITE]
         registry[TUFF]
-        registry[OBSIDIAN] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[NETHERRACK] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[BASALT] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[END_STONE] = FormulaConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[OBSIDIAN]
+        registry[NETHERRACK]
+        registry[BASALT]
+        registry[END_STONE]
         //Wood
         registry[WOOD] = FormulaConvertible { "C, H, O" }
     }
 
     override fun modifyMaterialMolar(registry: MutableMap<HTMaterialKey, MolarMassConvertible>) {
         //Fluids
-        registry[WATER] = MolarMassConvertible.Child(
-            HTElementMaterials.HYDROGEN to 2,
-            HTElementMaterials.OXYGEN to 1
-        )
-        registry[LAVA] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[WATER]
+        registry[LAVA]
         //Gems
-        registry[AMETHYST] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[DIAMOND] = MolarMassConvertible.Child(
-            HTElementMaterials.CARBON to 1
-        )
+        registry[AMETHYST]
+        registry[DIAMOND]
         registry[ENDER_PEARL]
-        registry[EMERALD] = MolarMassConvertible.Child(
-            HTElementMaterials.BERYLLIUM to 3,
-            HTElementMaterials.ALUMINUM to 2,
-            HTElementMaterials.SILICON to 6,
-            HTElementMaterials.OXYGEN to 18
-        )
-        registry[FLINT] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[EMERALD]
+        registry[FLINT]
         registry[LAPIS]
-        registry[QUARTZ] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[QUARTZ]
         //Metals
         registry[NETHERITE]
         //Solids
@@ -501,45 +497,22 @@ object HTVanillaMaterials : HTMaterialsAddon {
         registry[CHARCOAL]
         registry[CLAY]
         registry[COAL]
-        registry[GLASS] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[GLASS]
         registry[GLOWSTONE]
         registry[NETHER_BRICK]
         registry[REDSTONE]
         //Stones
-        registry[STONE] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[GRANITE] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[DIORITE] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[ANDESITE] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[DEEPSLATE] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[CALCITE] = MolarMassConvertible.Child(
-            HTElementMaterials.CALCIUM to 1,
-            *HTAtomicGroups.CARBONATE
-        )
+        registry[STONE]
+        registry[GRANITE]
+        registry[DIORITE]
+        registry[ANDESITE]
+        registry[DEEPSLATE]
+        registry[CALCITE]
         registry[TUFF]
-        registry[OBSIDIAN] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[NETHERRACK] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[BASALT] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
-        registry[END_STONE] = MolarMassConvertible.Child(
-            *HTAtomicGroups.SILICON_OXIDE
-        )
+        registry[OBSIDIAN]
+        registry[NETHERRACK]
+        registry[BASALT]
+        registry[END_STONE]
         //Wood
         registry[WOOD]
     }

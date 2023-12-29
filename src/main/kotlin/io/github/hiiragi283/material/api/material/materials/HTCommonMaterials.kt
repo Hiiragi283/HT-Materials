@@ -8,10 +8,7 @@ import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.MolarMassConvertible
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
-import io.github.hiiragi283.material.api.material.property.HTGemProperty
-import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
-import io.github.hiiragi283.material.api.material.property.HTMetalProperty
-import io.github.hiiragi283.material.api.material.property.HTStoneProperty
+import io.github.hiiragi283.material.api.material.property.*
 import io.github.hiiragi283.material.api.registry.HTDefaultedMap
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet
 import io.github.hiiragi283.material.util.HTColor
@@ -105,7 +102,8 @@ object HTCommonMaterials : HTMaterialsAddon {
             BRONZE,
             ELECTRUM,
             INVAR,
-            STAINLESS_STEEL
+            STAINLESS_STEEL,
+            STEEl
         )
         //Solids
         registry.addAll(
@@ -123,26 +121,69 @@ object HTCommonMaterials : HTMaterialsAddon {
     override fun modifyMaterialProperty(registry: HTDefaultedMap<HTMaterialKey, HTMaterialPropertyMap.Builder>) {
         //Fluids
         //Gems
-        registry.getOrCreate(CINNABAR).add(HTGemProperty.EMERALD)
-        registry.getOrCreate(COKE).add(HTGemProperty.COAL)
+        registry.getOrCreate(CINNABAR).apply {
+            add(HTCompoundProperty(HTElementMaterials.MERCURY to 1, HTElementMaterials.SULFUR to 1))
+            add(HTGemProperty.EMERALD)
+        }
+        registry.getOrCreate(COKE).apply {
+            add(HTCompoundProperty(HTElementMaterials.CARBON to 1))
+            add(HTGemProperty.COAL)
+        }
         registry.getOrCreate(OLIVINE).add(HTGemProperty.EMERALD)
         registry.getOrCreate(PERIDOT).add(HTGemProperty.RUBY)
-        registry.getOrCreate(RUBY).add(HTGemProperty.RUBY)
-        registry.getOrCreate(SALT).add(HTGemProperty.CUBIC)
-        registry.getOrCreate(SAPPHIRE).add(HTGemProperty.RUBY)
+        registry.getOrCreate(RUBY).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.ALUMINUM_OXIDE))
+            add(HTGemProperty.RUBY)
+        }
+        registry.getOrCreate(SALT).apply {
+            add(HTCompoundProperty(HTElementMaterials.SODIUM to 1, HTElementMaterials.CHLORINE to 1))
+            add(HTGemProperty.CUBIC)
+        }
+        registry.getOrCreate(SAPPHIRE).apply {
+            add(HTCompoundProperty(*HTAtomicGroups.ALUMINUM_OXIDE))
+            add(HTGemProperty.RUBY)
+        }
         //Metals
-        registry.getOrCreate(BRASS).add(HTMetalProperty)
-        registry.getOrCreate(BRONZE).add(HTMetalProperty)
-        registry.getOrCreate(ELECTRUM).add(HTMetalProperty)
-        registry.getOrCreate(INVAR).add(HTMetalProperty)
-        registry.getOrCreate(STAINLESS_STEEL).add(HTMetalProperty)
-        registry.getOrCreate(STEEl).add(HTMetalProperty)
+        registry.getOrCreate(BRASS).apply {
+            add(HTCompoundProperty(HTElementMaterials.COPPER to 3, HTElementMaterials.ZINC to 1))
+            add(HTMetalProperty)
+        }
+        registry.getOrCreate(BRONZE).apply {
+            add(HTCompoundProperty(HTElementMaterials.COPPER to 3, HTElementMaterials.TIN to 1))
+            add(HTMetalProperty)
+        }
+        registry.getOrCreate(ELECTRUM).apply {
+            add(HTCompoundProperty(HTElementMaterials.SILVER to 1, HTElementMaterials.GOLD to 1))
+            add(HTMetalProperty)
+        }
+        registry.getOrCreate(INVAR).apply {
+            add(HTCompoundProperty(HTElementMaterials.IRON to 2, HTElementMaterials.NICKEL to 1))
+            add(HTMetalProperty)
+        }
+        registry.getOrCreate(STAINLESS_STEEL).apply {
+            add(
+                HTCompoundProperty(
+                    HTElementMaterials.IRON to 6,
+                    HTElementMaterials.CHROMIUM to 1,
+                    HTElementMaterials.MANGANESE to 1,
+                    HTElementMaterials.NICKEL to 1
+                )
+            )
+            add(HTMetalProperty)
+        }
+        registry.getOrCreate(STEEl).apply {
+            add(HTMixtureProperty(HTElementMaterials.IRON, HTElementMaterials.CARBON))
+            add(HTMetalProperty)
+        }
         //Solids
         registry.getOrCreate(ASHES)
-        registry.getOrCreate(BAUXITE)
-        registry.getOrCreate(RUBBER)
+        registry.getOrCreate(BAUXITE).add(HTHydrateProperty(RUBY, 2))
+        registry.getOrCreate(RUBBER).add(HTPolymerProperty("CC(=C)C=C"))
         //Stones
-        registry.getOrCreate(MARBLE).add(HTStoneProperty)
+        registry.getOrCreate(MARBLE).apply {
+            add(HTCompoundProperty(HTElementMaterials.CALCIUM to 1, *HTAtomicGroups.CARBONATE))
+            add(HTStoneProperty)
+        }
         //Woods
     }
 
@@ -281,7 +322,7 @@ object HTCommonMaterials : HTMaterialsAddon {
         registry[SAPPHIRE] = ColorConvertible { HTColor.BLUE }
         //Metals
         registry[BRASS] = ColorConvertible { HTColor.GOLD }
-        registry[BRONZE] = ColorConvertible.Child(HTElementMaterials.COPPER to 3, HTElementMaterials.TIN to 1)
+        registry[BRONZE]
         registry[ELECTRUM] = ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW, HTColor.WHITE)
         registry[INVAR] = ColorConvertible.ofColor(HTColor.GREEN to 1, HTColor.GRAY to 3, HTColor.WHITE to 4)
         registry[STAINLESS_STEEL] = ColorConvertible.ofColor(HTColor.GRAY, HTColor.WHITE)
@@ -299,52 +340,25 @@ object HTCommonMaterials : HTMaterialsAddon {
         //Fluids
         //Gems
         registry[CINNABAR]
-        registry[COKE] = registry[HTElementMaterials.CARBON]!!
+        registry[COKE]
         registry[OLIVINE]
         registry[PERIDOT]
-        registry[RUBY] = FormulaConvertible.Child(
-            *HTAtomicGroups.ALUMINUM_OXIDE
-        )
-        registry[SALT] = FormulaConvertible.Child(
-            HTElementMaterials.SODIUM to 1,
-            HTElementMaterials.CHLORINE to 1
-        )
-        registry[SAPPHIRE] = FormulaConvertible.Child(
-            *HTAtomicGroups.ALUMINUM_OXIDE
-        )
+        registry[RUBY]
+        registry[SALT]
+        registry[SAPPHIRE]
         //Metals
-        registry[BRASS] = FormulaConvertible.Child(
-            HTElementMaterials.COPPER to 3,
-            HTElementMaterials.ZINC to 1
-        )
-        registry[BRONZE] = FormulaConvertible.Child(
-            HTElementMaterials.COPPER to 3,
-            HTElementMaterials.TIN to 1
-        )
-        registry[ELECTRUM] = FormulaConvertible.Child(
-            HTElementMaterials.SILVER to 1,
-            HTElementMaterials.GOLD to 1
-        )
-        registry[INVAR] = FormulaConvertible.Child(
-            HTElementMaterials.IRON to 1,
-            HTElementMaterials.NICKEL to 2
-        )
-        registry[STAINLESS_STEEL] = FormulaConvertible.Child(
-            HTElementMaterials.IRON to 6,
-            HTElementMaterials.CHROMIUM to 1,
-            HTElementMaterials.MANGANESE to 1,
-            HTElementMaterials.NICKEL to 1
-        )
+        registry[BRASS]
+        registry[BRONZE]
+        registry[ELECTRUM]
+        registry[INVAR]
+        registry[STAINLESS_STEEL]
         registry[STEEl] = FormulaConvertible { "Fe, C" }
         //Solids
         registry[ASHES]
         registry[BAUXITE]
         registry[RUBBER]
         //Stones
-        registry[MARBLE] = FormulaConvertible.Child(
-            HTElementMaterials.CARBON to 1,
-            *HTAtomicGroups.CARBONATE
-        )
+        registry[MARBLE]
         //Woods
     }
 

@@ -94,15 +94,16 @@ object HTMaterialsClient : ClientModInitializer {
 
         ItemTooltipCallback.EVENT.register { stack: ItemStack, _, lines: MutableList<Text> ->
 
-            HTPartManager.getPart(stack.item)?.appendTooltip(stack, lines)
+            HTPartManager.getPart(stack.item)?.let {
+                HTMaterial.appendTooltip(it.getMaterial(), it.getShape(), stack, lines)
+            }
 
             FluidStorage.ITEM.find(stack, ContainerItemContext.withInitial(stack))
                 ?.iterable(getTransaction())
                 ?.map(StorageView<FluidVariant>::getResource)
                 ?.map(FluidVariant::getFluid)
                 ?.mapNotNull(HTFluidManager::getMaterialKey)
-                ?.map(HTMaterialKey::getMaterial)
-                ?.forEach { it.appendFluidTooltip(stack, lines) }
+                ?.forEach { HTMaterial.appendTooltip(it.getMaterial(), null, stack, lines) }
 
         }
 

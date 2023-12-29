@@ -28,6 +28,19 @@ object HTMaterialsCommon : ModInitializer {
     val ICON: Item by lazy { Item(FabricItemSettings().group(ITEM_GROUP).rarity(Rarity.EPIC)) }
 
     override fun onInitialize() {
+        //Register Shapes
+        HTMaterialsCore.registerShape()
+        HTMaterialsCore.modifyShapePredicate()
+        HTMaterialsCore.createShape()
+        //Register Materials
+        HTMaterialsCore.registerMaterialKey()
+        HTMaterialsCore.modifyMaterialProperty()
+        HTMaterialsCore.modifyMaterialFlag()
+        HTMaterialsCore.modifyMaterialColor()
+        HTMaterialsCore.modifyMaterialFormula()
+        HTMaterialsCore.modifyMaterialMolar()
+        HTMaterialsCore.createMaterial()
+        HTMaterialsCore.verifyMaterial()
         //Initialize Game Objects
         ITEM_GROUP
         Registry.register(Registry.ITEM, id("icon"), ICON)
