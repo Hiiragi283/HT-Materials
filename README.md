@@ -39,13 +39,7 @@ namespace. Based on the Material System, there fluids are linked to Conventional
 ## How to create Addon
 
 1. Add new entrypoint `ht_materials` in `fabric.mod.json`
-2. Implement `io.github.hiiragi283.material.api.addon.HTMaterialsAddon`
-    1. `String getModId()` ... Return the modid of dependency
-    2. `void registerShapes()` ... Register your custom `HTShape`s
-    3. `void registerMaterials()` ... Register your custom `HTMaterial`s
-    4. `void modifyMaterials()` ... Modify registered `HTMaterial`s
-    5. `void commonSetup()` ... Called after all mods initialized
-    6. `void clientSetup()` ... Similar to `commonSetUp()` but only called in Client-Side
+2. Implement [io.github.hiiragi283.material.api.HTMaterialsAddon](/src/main/kotlin/io/github/hiiragi283/material/api/HTMaterialsAddon.kt)
 
 ### Example
 

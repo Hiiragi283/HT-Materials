@@ -26,9 +26,9 @@ object HMReiPlugin : REIClientPlugin {
 
     override fun registerEntryRenderers(registry: EntryRendererRegistry) {
         registry.transformTooltip(VanillaEntryTypes.FLUID) { fluidStack: EntryStack<FluidStack>, _, tooltip: Tooltip? ->
-            HTFluidManager.getMaterial(fluidStack.value.fluid)?.run {
+            HTFluidManager.getMaterialKey(fluidStack.value.fluid)?.getMaterial()?.run {
                 val tooltipDummy: MutableList<Text> = mutableListOf()
-                this.appendFluidTooltip(ItemStack.EMPTY, tooltipDummy)
+                HTMaterial.appendTooltip(this, null, ItemStack.EMPTY, tooltipDummy)
                 tooltip?.addAllTexts(tooltipDummy)
             }
             return@transformTooltip tooltip

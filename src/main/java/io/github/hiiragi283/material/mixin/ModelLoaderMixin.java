@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ModelLoader.class)
-public class ModelLoaderMixin {
+public abstract class ModelLoaderMixin {
 
     /**
      * @see <a href="https://github.com/Flytre/ResourceCore/blob/master/src/main/java/net/flytre/resource_core/mixin/ModelLoaderMixin.java">GitHub - ResourceCore</a>
@@ -23,7 +23,14 @@ public class ModelLoaderMixin {
     @Shadow
     private ResourceManager resourceManager;
 
-    @Inject(method = "loadModelFromJson", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(
+            method = "loadModelFromJson",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Lnet/minecraft/resource/Resource;"
+            ),
+            cancellable = true
+    )
     private void ht_materials$loadModelFromJson(Identifier id, CallbackInfoReturnable<JsonUnbakedModel> cir) {
         HTModelLoaderMixin.loadModelFromJson(id, resourceManager, cir);
     }

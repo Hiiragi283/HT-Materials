@@ -1,206 +1,106 @@
 package io.github.hiiragi283.material.api.material
 
-import io.github.hiiragi283.material.HTMaterialsCommon
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags
-import io.github.hiiragi283.material.api.material.materials.HTAtomicGroups
-import io.github.hiiragi283.material.api.material.materials.HTCommonMaterials
-import io.github.hiiragi283.material.api.material.materials.HTElementMaterials
-import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperties
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty
+import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.part.HTPart
 import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapes
-import io.github.hiiragi283.material.util.commonId
-import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
-import net.minecraft.client.resource.language.I18n
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
-import net.minecraft.util.Identifier
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.awt.Color
 
-@Suppress("UnstableApiUsage")
 class HTMaterial private constructor(
-    private val info: Info,
-    private val properties: HTMaterialProperties,
-    private val flags: HTMaterialFlags
-) : ColorConvertible, FormulaConvertible, MolarMassConvertible {
+    val key: HTMaterialKey,
+    val info: HTMaterialInfo,
+    val properties: HTMaterialPropertyMap,
+    val flags: HTMaterialFlagSet
+) {
+
+    //    Properties    //
+
+    fun <T : HTMaterialProperty<T>> getProperty(key: HTPropertyKey<T>): T? = properties.getAs(key)
+
+    fun hasProperty(key: HTPropertyKey<*>): Boolean = key in properties
+
+    fun getDefaultShape(): HTShapeKey? = when {
+        hasProperty(HTPropertyKey.METAL) -> HTShapes.INGOT
+        hasProperty(HTPropertyKey.GEM) -> HTShapes.GEM
+        else -> null
+    }
 
     fun verify() {
         properties.verify(this)
         flags.verify(this)
     }
 
-    //    Properties    //
-
-    fun getProperties(): Collection<HTMaterialProperty<*>> = properties.values
-
-    fun <T : HTMaterialProperty<T>> getProperty(key: HTPropertyKey<T>): T? = properties.getAs(key)
-
-    fun <T : HTMaterialProperty<T>> hasProperty(key: HTPropertyKey<T>): Boolean = key in properties
-
-    fun modifyProperties(init: HTMaterialProperties.() -> Unit) {
-        check(canModify) { "Cannot modify material properties after Initialization!!" }
-        properties.init()
-    }
-
-    fun getDefaultShape(): HTShape? = when {
-        hasProperty(HTPropertyKey.METAL) -> HTShapes.INGOT
-        hasProperty(HTPropertyKey.GEM) -> HTShapes.GEM
-        else -> null
-    }
-
     //    Flags    //
 
     fun hasFlag(flag: HTMaterialFlag): Boolean = flag in flags
 
-    fun modifyFlags(init: HTMaterialFlags.() -> Unit) {
-        check(canModify) { "Cannot modify material flags after Initialization!!" }
-        flags.init()
-    }
-
-    //    Info    //
-
-    fun getName(): String = info.name
-
-    fun getIdentifier(namespace: String = HTMaterialsCommon.MOD_ID): Identifier = Identifier(namespace, getName())
-
-    fun getCommonId(): Identifier = commonId(getName())
-
-    fun getIngotCountPerBlock(): Int = info.ingotPerBlock
-
-    fun getFluidAmountPerIngot(): Long = FluidConstants.BLOCK / getIngotCountPerBlock()
-
-    @Environment(EnvType.CLIENT)
-    fun getTranslatedName(): String = I18n.translate(info.translationKey)
-
-    fun getTranslatedText(): TranslatableText = TranslatableText(info.translationKey)
-
-    fun modifyInfo(init: Info.() -> Unit) {
-        check(canModify) { "Cannot modify material infos after Initialization!!" }
-        info.init()
-    }
-
-    //    ColorConvertible    //
-
-    private lateinit var colorCache: Color
-
-    override fun asColor(): Color {
-        check(!canModify) { "Cannot call #asFormula before Initialization!!" }
-        if (!this::colorCache.isInitialized) {
-            colorCache = info.color.asColor()
-            info.color = ColorConvertible.EMPTY
-        }
-        return colorCache
-    }
-
-    //    FormulaConvertible    //
-
-    private lateinit var formulaCache: String
-
-    override fun asFormula(): String {
-        check(!canModify) { "Cannot call #asFormula before Initialization!!" }
-        if (!this::formulaCache.isInitialized) {
-            formulaCache = info.formula.asFormula()
-            info.formula = FormulaConvertible.EMPTY
-        }
-        return formulaCache
-    }
-
-    //    MolarMassConvertible    //
-
-    private var molarCache: Double = 0.0
-
-    override fun asMolarMass(): Double {
-        check(!canModify) { "Cannot call #asMolarMass before Initialization!!" }
-        if (molarCache <= 0.0) {
-            molarCache = info.molarMass.asMolarMass()
-            info.molarMass = MolarMassConvertible.EMPTY
-        }
-        return molarCache
-    }
-
-    data class Info(
-        @JvmField val name: String,
-        @JvmField var color: ColorConvertible = ColorConvertible.EMPTY,
-        @JvmField var formula: FormulaConvertible = FormulaConvertible.EMPTY,
-        @JvmField var ingotPerBlock: Int = 9,
-        @JvmField var molarMass: MolarMassConvertible = MolarMassConvertible.EMPTY,
-        @JvmField var translationKey: String = "ht_material.$name"
-    )
-
     //    Any    //
 
-    override fun equals(other: Any?): Boolean = when (other) {
-        null -> false
-        !is HTMaterial -> false
-        else -> other.getName() == this.getName()
-    }
+    operator fun component1() = info
 
-    override fun hashCode(): Int = getName().hashCode()
+    operator fun component2() = properties
 
-    override fun toString(): String = getName()
+    operator fun component3() = flags
+
+    override fun toString(): String = key.toString()
 
     companion object {
 
-        private val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
+        private val LOGGER: Logger = LoggerFactory.getLogger(HTMaterial::class.java)
 
-        internal var canModify: Boolean = true
+        //    Registry    //
 
-        private val map: MutableMap<String, HTMaterial> = mutableMapOf()
+        private val registry: MutableMap<HTMaterialKey, HTMaterial> = linkedMapOf()
 
         @JvmField
-        val REGISTRY: Collection<HTMaterial> = map.values
+        val REGISTRY: Map<HTMaterialKey, HTMaterial> = registry
 
         @JvmStatic
-        fun create(name: String, init: HTMaterial.() -> Unit = {}) =
-            HTMaterial(Info(name), HTMaterialProperties(), HTMaterialFlags())
-                .also { check(canModify) { "Cannot register material after Initialization!!" } }
-                .apply(init)
-                .also { material ->
-                    map.putIfAbsent(name, material)
-                    LOGGER.info("The Material: $material registered!")
-                }
+        fun getMaterial(key: HTMaterialKey): HTMaterial =
+            registry[key] ?: throw IllegalStateException("Material: $key is not registered!")
 
         @JvmStatic
-        fun getMaterial(name: String): HTMaterial? = map[name]
+        fun getMaterialOrNull(key: HTMaterialKey): HTMaterial? = registry[key]
 
-        init {
-            HTElementMaterials
-            HTAtomicGroups
-            HTVanillaMaterials
-            HTCommonMaterials
+        @JvmStatic
+        internal fun create(
+            key: HTMaterialKey,
+            info: HTMaterialInfo,
+            properties: HTMaterialPropertyMap,
+            flags: HTMaterialFlagSet
+        ): HTMaterial = HTMaterial(key, info, properties, flags).also {
+            registry.putIfAbsent(key, it)
+            LOGGER.info("Material: $key registered!")
         }
 
-        private val FLUID = object : HTShape("fluid") {
+        private val shapeKey = HTShapeKey("fluid")
 
-            override fun canGenerateBlock(material: HTMaterial): Boolean = false
-
-            override fun canGenerateItem(material: HTMaterial): Boolean = false
-
-            override fun getIdPath(material: HTMaterial): String = material.getName()
-
-            override fun getForgePath(material: HTMaterial): String {
-                throw UnsupportedOperationException()
+        fun appendTooltip(material: HTMaterial, shape: HTShape?, stack: ItemStack, lines: MutableList<Text>) {
+            //Title
+            lines.add(TranslatableText("tooltip.ht_materials.material.title"))
+            //Name
+            val name: String = shape?.key?.getTranslatedName(material.key) ?: material.key.getTranslatedName()
+            lines.add(TranslatableText("tooltip.ht_materials.material.name", name))
+            //Formula
+            material.info.formula.takeIf(String::isNotEmpty)?.let { formula: String ->
+                lines.add(TranslatableText("tooltip.ht_materials.material.formula", formula))
             }
-
-            override fun getCommonPath(material: HTMaterial): String {
-                throw UnsupportedOperationException()
+            //Molar Mass
+            material.info.molarMass.takeIf { it > 0.0 }?.let { molar: Double ->
+                lines.add(TranslatableText("tooltip.ht_materials.material.molar", molar))
             }
-
+            //Tooltip from Properties
+            material.properties.values.forEach { it.appendTooltip(material, shape, stack, lines) }
         }
 
-    }
-
-    fun appendFluidTooltip(stack: ItemStack, lines: MutableList<Text>) {
-        HTPart(this, FLUID).appendTooltip(stack, lines)
     }
 
 }

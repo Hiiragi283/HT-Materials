@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 
 @SuppressWarnings("unchecked")
 @Mixin(TagManagerLoader.class)
-public class TagManagerLoaderMixin {
+public abstract class TagManagerLoaderMixin {
 
     @Inject(method = "buildRequiredGroup", at = @At(
             value = "INVOKE",

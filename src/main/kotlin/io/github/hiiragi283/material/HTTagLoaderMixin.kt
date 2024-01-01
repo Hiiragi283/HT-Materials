@@ -2,9 +2,10 @@ package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.part.HTPartManager
 import io.github.hiiragi283.material.api.shape.HTShape
-import io.github.hiiragi283.material.api.shape.HTShapes
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.mixin.TagBuilderMixin
 import io.github.hiiragi283.material.util.*
 import net.minecraft.fluid.Fluid
@@ -19,39 +20,18 @@ internal object HTTagLoaderMixin {
     @JvmStatic
     fun loadTags(map: MutableMap<Identifier, Tag.Builder>, registry: Registry<*>?) {
         when (registry) {
-            //Registry.BLOCK -> blockTags(map)
             Registry.FLUID -> fluidTags(map)
             Registry.ITEM -> itemTags(map)
             else -> {}
         }
     }
 
-    /*
-    @JvmStatic
-    fun blockTags(map: MutableMap<Identifier, Tag.Builder>) {
-        //Register Mining Tool & Harvest Level Tags
-        for (material: HTMaterial in HTMaterial.REGISTRY) {
-            val solidProperty: HTSolidProperty = material.getProperty(HTPropertyKey.SOLID) ?: continue
-            HTShapes.REGISTRY.forEach { shape: HTShape ->
-                (HTPartManager.getDefaultItem(material, shape)?.asBlock() as? HTMaterialBlock)?.run {
-                    solidProperty.harvestTool
-                        ?.let { getOrCreateBuilder(map, it) }
-                        ?.let { registerTag(it, Registry.BLOCK, this) }
-                    solidProperty.getHarvestLevelTag()
-                        ?.let { getOrCreateBuilder(map, it) }
-                        ?.let { registerTag(it, Registry.BLOCK, this) }
-                }
-            }
-        }
-        HTMaterialsCommon.LOGGER.info("Registered Mining Tool & Harvest Level Tags!")
-    }*/
-
     @JvmStatic
     fun fluidTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Tags from HTFluidManager
-        HTFluidManager.getMaterialToFluidsMap().forEach { material: HTMaterial, fluid: Fluid ->
+        HTFluidManager.getMaterialToFluidsMap().forEach { key: HTMaterialKey, fluid: Fluid ->
             registerTag(
-                getOrCreateBuilder(map, commonId(material.getName())),
+                getOrCreateBuilder(map, key.getCommonId()),
                 Registry.FLUID,
                 fluid
             )
@@ -61,7 +41,8 @@ internal object HTTagLoaderMixin {
     @JvmStatic
     fun itemTags(map: MutableMap<Identifier, Tag.Builder>) {
         //Register Tags from HTPartManager
-        HTPartManager.getPartToItemTable().forEach { (material: HTMaterial, shape: HTShape, items: Collection<Item>) ->
+        HTPartManager.getPartToItemTable()
+            .forEach { (material: HTMaterialKey, shape: HTShapeKey, items: Collection<Item>) ->
             items.forEach { item: Item ->
                 registerTag(
                     getOrCreateBuilder(map, shape.getCommonTag(material).id),
@@ -72,8 +53,8 @@ internal object HTTagLoaderMixin {
         }
         HTMixinLogger.INSTANCE.info("Registered Tags for HTPartManager's Entries!")
         //Sync ForgeTag and CommonTag entries
-        HTMaterial.REGISTRY.forEach { material ->
-            HTShapes.REGISTRY.forEach shape@{ shape ->
+        HTMaterial.REGISTRY.keys.forEach { material: HTMaterialKey ->
+            HTShape.REGISTRY.keys.forEach shape@{ shape: HTShapeKey ->
                 val forgeBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getForgeTag(material))
                 val commonBuilder: Tag.Builder = getOrCreateBuilder(map, shape.getCommonTag(material))
                 syncBuilder(commonBuilder, forgeBuilder)

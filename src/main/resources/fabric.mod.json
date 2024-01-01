@@ -32,15 +32,31 @@
     "ht_materials": [
       {
         "adapter": "kotlin",
-        "value": "io.github.hiiragi283.material.addon.HMCreateAddon"
+        "value": "io.github.hiiragi283.material.compat.HMCreateAddon"
       },
       {
         "adapter": "kotlin",
-        "value": "io.github.hiiragi283.material.addon.HMMIAddon"
+        "value": "io.github.hiiragi283.material.compat.HMMIAddon"
       },
       {
         "adapter": "kotlin",
-        "value": "io.github.hiiragi283.material.addon.HMTRAddon"
+        "value": "io.github.hiiragi283.material.compat.HMTRAddon"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.shape.HTShapes"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.material.materials.HTCommonMaterials"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.material.materials.HTElementMaterials"
+      },
+      {
+        "adapter": "kotlin",
+        "value": "io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials"
       }
     ],
     "rei_client": [

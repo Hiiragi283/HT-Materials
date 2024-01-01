@@ -2,12 +2,11 @@ package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid
 import io.github.hiiragi283.material.api.item.HTMaterialItem
-import io.github.hiiragi283.material.api.material.HTMaterial
+import io.github.hiiragi283.material.api.material.HTMaterialKey
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey
-import io.github.hiiragi283.material.api.shape.HTShape
+import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.modify
-import net.minecraft.block.Block
 import net.minecraft.client.render.model.json.JsonUnbakedModel
 import net.minecraft.item.Item
 import net.minecraft.resource.Resource
@@ -26,9 +25,9 @@ object HTModelLoaderMixin {
         resourceManager: ResourceManager,
         cir: CallbackInfoReturnable<JsonUnbakedModel>
     ) {
+        if (resourceManager.containsResource(id)) return
         if (id.namespace == HTMaterialsCommon.MOD_ID) {
             val modelId: Identifier = when {
-                id.path.startsWith("block/") -> getBlockId(id)
                 id.path.startsWith("item/") -> getItemId(id)
                 else -> null
             } ?: return
@@ -38,12 +37,6 @@ object HTModelLoaderMixin {
                 JsonUnbakedModel.deserialize(reader).apply { this.id = id.toString() }
             cir.returnValue = jsonUnbakedModel
         }
-    }
-
-    @JvmStatic
-    private fun getBlockId(id: Identifier): Identifier? {
-        val block: Block = Registry.BLOCK.get(id.modify { it.removePrefix("block/") })
-        return null
     }
 
     @JvmStatic
@@ -58,12 +51,12 @@ object HTModelLoaderMixin {
 
     @JvmStatic
     private fun getMaterialItemId(item: HTMaterialItem): Identifier? {
-        val (material: HTMaterial, shape: HTShape) = item
+        val (key: HTMaterialKey, shape: HTShapeKey) = item
         return if (shape == HTShapes.GEM) {
-            material.getProperty(HTPropertyKey.GEM)?.type?.let { "${it.name.lowercase()}_gem" }?.let {
-                HTMaterialsCommon.id("models/item/$it.json")
+            key.getMaterial().getProperty(HTPropertyKey.GEM)?.let { "${it.name.lowercase()}_gem" }?.let {
+                HTMaterialsCommon.id("models/material/$it.json")
             }
-        } else HTMaterialsCommon.id("models/item/${shape}.json")
+        } else HTMaterialsCommon.id("models/material/${shape}.json")
     }
 
 }

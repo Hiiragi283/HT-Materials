@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.mixin;
 
-import io.github.hiiragi283.material.api.addon.HTMaterialsAddons;
+import io.github.hiiragi283.material.HTMaterialsCore;
 import io.github.hiiragi283.material.util.HTMixinLogger;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
-public class ClientMainMixin {
+public abstract class ClientMainMixin {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;currentThread()Ljava/lang/Thread;"))
     private void ht_materials$currentThread(RunArgs args, CallbackInfo ci) {
-        HTMaterialsAddons.INSTANCE.clientSetup();
+        HTMaterialsCore.INSTANCE.clientSetup();
         HTMixinLogger.INSTANCE.info("HTMaterials Addons finished common & client setup!");
     }
 
