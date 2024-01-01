@@ -23,7 +23,7 @@ import java.util.Map;
  */
 
 @Mixin(TagGroupLoader.class)
-public class TagLoaderMixin<T> implements HTTagLoader<T> {
+public abstract class TagLoaderMixin<T> implements HTTagLoader<T> {
 
     @Inject(method = "loadTags", at = @At(value = "RETURN"))
     private void ht_materials$loadTags(ResourceManager manager, CallbackInfoReturnable<Map<Identifier, Tag.Builder>> cir) {

@@ -25,6 +25,7 @@ object HTModelLoaderMixin {
         resourceManager: ResourceManager,
         cir: CallbackInfoReturnable<JsonUnbakedModel>
     ) {
+        if (resourceManager.containsResource(id)) return
         if (id.namespace == HTMaterialsCommon.MOD_ID) {
             val modelId: Identifier = when {
                 id.path.startsWith("item/") -> getItemId(id)
@@ -53,9 +54,9 @@ object HTModelLoaderMixin {
         val (key: HTMaterialKey, shape: HTShapeKey) = item
         return if (shape == HTShapes.GEM) {
             key.getMaterial().getProperty(HTPropertyKey.GEM)?.let { "${it.name.lowercase()}_gem" }?.let {
-                HTMaterialsCommon.id("models/item/$it.json")
+                HTMaterialsCommon.id("models/material/$it.json")
             }
-        } else HTMaterialsCommon.id("models/item/${shape}.json")
+        } else HTMaterialsCommon.id("models/material/${shape}.json")
     }
 
 }
