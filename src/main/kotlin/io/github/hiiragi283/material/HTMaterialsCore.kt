@@ -1,6 +1,7 @@
 package io.github.hiiragi283.material
 
 import io.github.hiiragi283.material.api.HTMaterialsAddon
+import io.github.hiiragi283.material.api.event.HTRecipeRegisterCallback
 import io.github.hiiragi283.material.api.fluid.HTFluidManager
 import io.github.hiiragi283.material.api.item.HTMaterialItem
 import io.github.hiiragi283.material.api.material.*
@@ -17,7 +18,7 @@ import io.github.hiiragi283.material.api.shape.HTShapeKey
 import io.github.hiiragi283.material.api.shape.HTShapePredicate
 import io.github.hiiragi283.material.api.shape.HTShapes
 import io.github.hiiragi283.material.util.isModLoaded
-import io.github.hiiragi283.material.util.suffix
+import io.github.hiiragi283.material.util.prefix
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.loader.api.FabricLoader
@@ -209,18 +210,20 @@ internal object HTMaterialsCore {
     }
 
     private fun registerRecipes() {
-        HTMaterial.REGISTRY.keys.forEach { key: HTMaterialKey ->
-            HTPartManager.getDefaultItem(key, HTShapes.INGOT)?.let { ingotRecipe(key, it) }
-            HTPartManager.getDefaultItem(key, HTShapes.NUGGET)?.let { nuggetRecipe(key, it) }
+        HTRecipeRegisterCallback.EVENT.register { hander ->
+            HTMaterial.REGISTRY.keys.forEach { key: HTMaterialKey ->
+                HTPartManager.getDefaultItem(key, HTShapes.INGOT)?.let { ingotRecipe(key, it, hander) }
+                HTPartManager.getDefaultItem(key, HTShapes.NUGGET)?.let { nuggetRecipe(key, it, hander) }
+            }
         }
     }
 
-    private fun ingotRecipe(material: HTMaterialKey, item: Item) {
+    private fun ingotRecipe(material: HTMaterialKey, item: Item, handler: HTRecipeRegisterCallback.Handler) {
         //9x Nugget -> 1x Ingot
         if (!HTPartManager.hasDefaultItem(material, HTShapes.NUGGET)) return
         val nuggetTag: TagKey<Item> = HTShapes.NUGGET.getCommonTag(material)
-        HTRecipeManager.registerVanillaRecipe(
-            HTShapes.INGOT.getIdentifier(material, HTMaterialsCommon.MOD_ID).suffix("_shaped"),
+        handler.addVanilla(
+            HTShapes.INGOT.getIdentifier(material, HTMaterialsCommon.MOD_ID).prefix("shaped/"),
             ShapedRecipeJsonBuilder.create(item)
                 .pattern("AAA")
                 .pattern("AAA")
@@ -230,12 +233,12 @@ internal object HTMaterialsCore {
         )
     }
 
-    private fun nuggetRecipe(material: HTMaterialKey, item: Item) {
+    private fun nuggetRecipe(material: HTMaterialKey, item: Item, handler: HTRecipeRegisterCallback.Handler) {
         //1x Ingot -> 9x Nugget
         if (!HTPartManager.hasDefaultItem(material, HTShapes.INGOT)) return
         val ingotTag: TagKey<Item> = HTShapes.INGOT.getCommonTag(material)
-        HTRecipeManager.registerVanillaRecipe(
-            HTShapes.NUGGET.getIdentifier(material, HTMaterialsCommon.MOD_ID).suffix("_shapeless"),
+        handler.addVanilla(
+            HTShapes.NUGGET.getIdentifier(material, HTMaterialsCommon.MOD_ID).prefix("shapeless/"),
             ShapelessRecipeJsonBuilder.create(item, 9)
                 .input(ingotTag)
                 .criterion("has_ingot", RecipeProvider.conditionsFromTag(ingotTag))

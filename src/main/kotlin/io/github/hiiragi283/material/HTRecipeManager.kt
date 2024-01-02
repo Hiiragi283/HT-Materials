@@ -2,9 +2,6 @@ package io.github.hiiragi283.material
 
 import aztech.modern_industrialization.recipe.json.MIRecipeJson
 import com.google.gson.JsonObject
-import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder
-import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder
-import net.minecraft.data.server.recipe.RecipeJsonProvider
 import net.minecraft.util.Identifier
 import reborncore.common.crafting.RebornRecipe
 import reborncore.common.crafting.serde.RebornRecipeSerde
@@ -12,32 +9,11 @@ import java.util.function.Function
 
 object HTRecipeManager {
 
-    @JvmField
-    internal val REGISTRY: MutableMap<Identifier, JsonObject> = mutableMapOf()
-
-    //    Vanilla    //
-
-    @JvmStatic
-    fun registerVanillaRecipe(recipeId: Identifier, jsonBuilder: CraftingRecipeJsonBuilder) {
-        jsonBuilder.offerTo({ provider: RecipeJsonProvider ->
-            REGISTRY.putIfAbsent(recipeId, provider.toJson())
-        }, recipeId)
-    }
-
-    //    Create    //
-
-    @JvmStatic
-    fun registerMechanicalCrafting(recipeId: Identifier, builder: MechanicalCraftingRecipeBuilder) {
-        builder.build({ provider: RecipeJsonProvider ->
-            REGISTRY.putIfAbsent(recipeId, provider.toJson())
-        }, recipeId)
-    }
-
     //    Modern Industrialization    //
 
     @JvmStatic
     fun <T : MIRecipeJson<*>> registerMIRecipe(recipeId: Identifier, recipeJson: MIRecipeJson<T>) {
-        REGISTRY.putIfAbsent(recipeId, recipeJson.toJsonObject())
+        mutableMapOf<Identifier, JsonObject>().putIfAbsent(recipeId, recipeJson.toJsonObject())
     }
 
     //    TechReborn    //
@@ -50,7 +26,7 @@ object HTRecipeManager {
     ) {
         val jsonObject = JsonObject()
         rebornRecipeSerde.toJson(function.apply(recipeId), jsonObject, true)
-        REGISTRY.putIfAbsent(recipeId, jsonObject)
+        mutableMapOf<Identifier, JsonObject>().putIfAbsent(recipeId, jsonObject)
     }
 
     fun test() {
