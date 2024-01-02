@@ -40,5 +40,4 @@ val GSON_MODEL: Gson = GsonBuilder().registerTypeAdapter(JsonUnbakedModel::class
     .registerTypeAdapter(ModelOverride::class.java, ModelOverride.Deserializer())
     .create()
 
-
 fun deserializeJsonModel(json: JsonElement): JsonUnbakedModel = GSON_MODEL.fromJson(json, JsonUnbakedModel::class.java)

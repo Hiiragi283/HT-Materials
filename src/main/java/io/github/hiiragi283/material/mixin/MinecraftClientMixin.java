@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(MinecraftClient.class)
-public abstract class ClientMainMixin {
+public abstract class MinecraftClientMixin {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;currentThread()Ljava/lang/Thread;"))
     private void ht_materials$currentThread(RunArgs args, CallbackInfo ci) {

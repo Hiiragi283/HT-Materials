@@ -24,12 +24,15 @@ import java.util.concurrent.Executor;
 @Mixin(TagManagerLoader.class)
 public abstract class TagManagerLoaderMixin {
 
-    @Inject(method = "buildRequiredGroup", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/tag/TagGroupLoader;<init>(Ljava/util/function/Function;Ljava/lang/String;)V",
-            shift = At.Shift.BY,
-            by = 2
-    ), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "buildRequiredGroup",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/tag/TagGroupLoader;<init>(Ljava/util/function/Function;Ljava/lang/String;)V",
+                    shift = At.Shift.BY,
+                    by = 2
+            ),
+            locals = LocalCapture.CAPTURE_FAILHARD
+    )
     private <T> void ht_materials$getRegistryToTagLoader(
             ResourceManager resourceManager,
             Executor prepareExecutor,

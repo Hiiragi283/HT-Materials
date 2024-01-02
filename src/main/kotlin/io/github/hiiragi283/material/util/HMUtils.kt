@@ -2,6 +2,8 @@
 
 package io.github.hiiragi283.material.util
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import net.fabricmc.api.EnvType
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction
 import net.fabricmc.loader.api.FabricLoader
@@ -52,6 +54,10 @@ fun Identifier.prefix(prefix: String) = Identifier(this.namespace, prefix + this
 fun Identifier.suffix(suffix: String) = Identifier(this.namespace, this.path + suffix)
 
 fun Identifier.modify(function: Function<String, String>) = Identifier(this.namespace, function.apply(this.path))
+
+//    Json    //
+
+fun buildJson(builderAction: JsonObject.() -> Unit): JsonObject = JsonObject().apply(builderAction)
 
 //    Loader    //
 

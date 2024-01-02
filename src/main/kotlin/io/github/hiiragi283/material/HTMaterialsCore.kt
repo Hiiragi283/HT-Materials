@@ -28,6 +28,7 @@ import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import net.minecraft.tag.TagKey
+import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -156,9 +157,13 @@ internal object HTMaterialsCore {
                 .filterNot { HTPartManager.hasDefaultItem(it.key, shapeKey) }
                 .keys
                 .forEach { materialKey: HTMaterialKey ->
+                    val id: Identifier = shapeKey.getIdentifier(materialKey)
                     //Register Item
-                    HTMaterialItem(materialKey, shapeKey).run {
-                        Registry.register(Registry.ITEM, shapeKey.getIdentifier(materialKey), this)
+                    Registry.register(
+                        Registry.ITEM,
+                        id,
+                        HTMaterialItem(materialKey, shapeKey)
+                    ).run {
                         //Register as Default Item
                         HTPartManager.forceRegister(materialKey, shapeKey, this)
                     }
