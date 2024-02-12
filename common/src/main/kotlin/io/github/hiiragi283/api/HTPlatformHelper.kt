@@ -1,0 +1,71 @@
+package io.github.hiiragi283.api
+
+import io.github.hiiragi283.api.util.getInstance
+import net.minecraft.block.Block
+import net.minecraft.client.color.block.BlockColorProvider
+import net.minecraft.client.color.item.ItemColorProvider
+import net.minecraft.fluid.Fluid
+import net.minecraft.item.Item
+import net.minecraft.util.Identifier
+
+interface HTPlatformHelper {
+    companion object {
+        @JvmStatic
+        val INSTANCE: HTPlatformHelper = getInstance()
+    }
+
+    fun getAllModId(): Collection<String>
+
+    fun isDevelop(): Boolean
+
+    fun isModLoaded(id: String): Boolean
+
+    //    Side    //
+
+    fun getSide(): Side
+
+    fun isClient(): Boolean = getSide().isClient
+
+    fun onSide(side: Side, action: () -> Unit) {
+        if (getSide() == side) action()
+    }
+
+    enum class Side(val isClient: Boolean) {
+        CLIENT(true),
+        SERVER(false),
+    }
+
+    //    Loader    //
+
+    fun getLoaderType(): Loader
+
+    fun onLoader(loader: Loader, action: () -> Unit) {
+        if (getLoaderType() == loader) action()
+    }
+
+    enum class Loader(val tagNamespace: String) {
+        FABRIC("c"),
+        FORGE("forge"),
+        ;
+
+        fun id(path: String) = Identifier(tagNamespace, path)
+    }
+
+    //    Registry    //
+
+    fun getBlock(id: Identifier): Block
+
+    fun getFluid(id: Identifier): Fluid
+
+    fun getItem(id: Identifier): Item
+
+    fun <T : Block> registerBlock(id: String, block: T): T
+
+    fun <T : Fluid> registerFluid(id: String, fluid: T): T
+
+    fun <T : Item> registerItem(id: String, item: T): T
+
+    fun registerBlockColor(provider: BlockColorProvider, block: Block)
+
+    fun registerItemColor(provider: ItemColorProvider, item: Item)
+}
