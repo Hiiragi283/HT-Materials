@@ -3,11 +3,7 @@
   "minVersion": "0.8",
   "package": "io.github.hiiragi283.forge.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "ResourcePackLoaderMixin",
-    "TagBuilderAccessor",
-    "TagGroupLoaderMixin"
-  ],
+  "mixins": [],
   "client": [],
   "injectors": {
     "defaultRequire": 1

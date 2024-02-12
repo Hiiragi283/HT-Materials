@@ -4,9 +4,9 @@ import io.github.hiiragi283.api.material.HTMaterialKey
 import io.github.hiiragi283.api.material.HTMaterialKeys
 import io.github.hiiragi283.api.material.HTMaterialsInit
 import io.github.hiiragi283.api.material.content.HTMaterialContentMap
+import io.github.hiiragi283.api.material.content.HTStorageBlockContent
 import io.github.hiiragi283.api.util.collection.DefaultedMap
 import io.github.hiiragi283.fabric.content.HTSimpleFluidContent
-import io.github.hiiragi283.fabric.content.HTStorageBlockContent
 import net.minecraft.tag.BlockTags
 
 object HTMaterialsInitFabric : HTMaterialsInit() {

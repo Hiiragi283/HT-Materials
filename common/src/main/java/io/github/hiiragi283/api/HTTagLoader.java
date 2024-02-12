@@ -1,4 +1,4 @@
-package io.github.hiiragi283.fabric;
+package io.github.hiiragi283.api;
 
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;

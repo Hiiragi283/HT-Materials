@@ -15,8 +15,8 @@ import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.minecraftforge.fluids.FluidAttributes
 import net.minecraftforge.fluids.ForgeFlowingFluid
-import net.minecraftforge.fml.RegistryObject
 import net.minecraftforge.registries.ForgeRegistries
+import net.minecraftforge.registries.RegistryObject
 import java.util.function.Supplier
 import net.minecraft.fluid.Fluid as MCFluid
 
@@ -26,10 +26,10 @@ class HTForgeFluidContent : HTMaterialContent.Fluid(HTShapeKey("fluid")) {
 
     override fun init(materialKey: HTMaterialKey) {
         val still: Supplier<MCFluid> =
-            RegistryObject.of(HTMaterialsAPI.id(materialKey.name), ForgeRegistries.FLUIDS)
+            RegistryObject.create(HTMaterialsAPI.id(materialKey.name), ForgeRegistries.FLUIDS)
         val flowing: Supplier<MCFluid> =
-            RegistryObject.of(HTMaterialsAPI.id("flowing_" + materialKey.name), ForgeRegistries.FLUIDS)
-        bucket = RegistryObject.of(HTMaterialsAPI.id(materialKey.name + "_bucket"), ForgeRegistries.ITEMS)
+            RegistryObject.create(HTMaterialsAPI.id("flowing_" + materialKey.name), ForgeRegistries.FLUIDS)
+        bucket = RegistryObject.create(HTMaterialsAPI.id(materialKey.name + "_bucket"), ForgeRegistries.ITEMS)
         properties = ForgeFlowingFluid.Properties(
             still,
             flowing,

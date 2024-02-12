@@ -6,6 +6,7 @@ import net.minecraft.client.color.block.BlockColorProvider
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
+import net.minecraft.tag.TagKey
 import net.minecraft.util.Identifier
 
 interface HTPlatformHelper {
@@ -68,4 +69,8 @@ interface HTPlatformHelper {
     fun registerBlockColor(provider: BlockColorProvider, block: Block)
 
     fun registerItemColor(provider: ItemColorProvider, item: Item)
+
+    //    TagKey    //
+
+    fun getMiningLevelTag(level: Int): TagKey<Block>
 }

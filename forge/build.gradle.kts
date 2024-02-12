@@ -18,7 +18,7 @@ loom {
 
     forge {
         convertAccessWideners = true
-        mixinConfigs.add("ht_materials.mixins.json")
+        mixinConfigs.addAll("ht_materials.mixins.json", "ht_materials.forge.mixins.json")
     }
 }
 
@@ -40,7 +40,7 @@ val forgeLoader: String by rootProject
 dependencies {
     add("forge", "net.minecraftforge:forge:$forgeLoader")
     modImplementation("thedarkcolour:kotlinforforge:3.12.0")
-    //modImplementation("mezz.jei:jei-1.16.5:7.7.1.153")
+    // modImplementation("mezz.jei:jei-1.16.5:7.7.1.153")
     add(
         "common",
         project(path = ":common", configuration = "namedElements").apply { isTransitive = false },

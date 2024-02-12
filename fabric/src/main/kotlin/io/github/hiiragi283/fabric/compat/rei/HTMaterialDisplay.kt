@@ -11,8 +11,6 @@ import me.shedaniel.rei.api.common.entry.EntryStack
 import me.shedaniel.rei.api.common.util.EntryStacks
 
 class HTMaterialDisplay(val material: HTMaterial, val key: HTMaterialKey = material.key) : Display {
-
-
     private val entries: EntryIngredient = EntryIngredient.of(getEntries())
 
     override fun getInputEntries(): MutableList<EntryIngredient> = mutableListOf(entries)
@@ -26,9 +24,8 @@ class HTMaterialDisplay(val material: HTMaterial, val key: HTMaterialKey = mater
             HTMaterialsAPI.INSTANCE.partManager()
                 .getFilteredItems { it.materialKey == key }
                 .map(HTPartManager.Entry::item)
-                .map(EntryStacks::of)
+                .map(EntryStacks::of),
         )
         addAll(HTMaterialsAPI.INSTANCE.fluidManager().getFluids(key).map(EntryStacks::of))
     }
-
 }

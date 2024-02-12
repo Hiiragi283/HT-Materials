@@ -1,10 +1,10 @@
-package io.github.hiiragi283.fabric
+package io.github.hiiragi283.api
 
-import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.material.HTMaterialKey
+import io.github.hiiragi283.api.material.content.HTMaterialContent
 import io.github.hiiragi283.api.part.HTPart
 import io.github.hiiragi283.api.shape.HTShapeKey
-import io.github.hiiragi283.fabric.mixin.TagBuilderAccessor
+import io.github.hiiragi283.mixin.TagBuilderAccessor
 import net.minecraft.block.Block
 import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
@@ -37,7 +37,25 @@ internal object HTTagLoaderMixin {
     @JvmStatic
     private fun blockTags(map: MutableMap<Identifier, Tag.Builder>) {
         // Register Harvest Level and Tool for Material Block
-        HTMaterialsAPI.INSTANCE.materialRegistry().getValues().map { it.getContents(Block::class.java) }
+        HTMaterialsAPI.INSTANCE.materialRegistry().getValues()
+            .map { it.getContents(Block::class.java) }
+            .filterIsInstance<HTMaterialContent.Block>()
+            .forEach { content ->
+                // Harvest Tool
+                content.toolTag?.id?.run {
+                    registerTag(
+                        getOrCreateBuilder(map, this),
+                        Registry.BLOCK,
+                        content.block,
+                    )
+                }
+                // Harvest Level
+                registerTag(
+                    getOrCreateBuilder(map, HTPlatformHelper.INSTANCE.getMiningLevelTag(content.toolLevel).id),
+                    Registry.BLOCK,
+                    content.block,
+                )
+            }
     }
 
     @JvmStatic

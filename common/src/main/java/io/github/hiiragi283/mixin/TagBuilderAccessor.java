@@ -1,4 +1,4 @@
-package io.github.hiiragi283.forge.mixin;
+package io.github.hiiragi283.mixin;
 
 import net.minecraft.tag.Tag;
 import org.spongepowered.asm.mixin.Mixin;

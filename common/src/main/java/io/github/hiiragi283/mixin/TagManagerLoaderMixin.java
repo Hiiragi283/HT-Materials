@@ -1,6 +1,6 @@
-package io.github.hiiragi283.fabric.mixin;
+package io.github.hiiragi283.mixin;
 
-import io.github.hiiragi283.fabric.HTTagLoader;
+import io.github.hiiragi283.api.HTTagLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.tag.TagGroupLoader;
 import net.minecraft.tag.TagManagerLoader;

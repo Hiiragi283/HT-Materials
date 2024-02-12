@@ -18,7 +18,6 @@ import net.minecraft.text.Text
 
 @Environment(EnvType.CLIENT)
 object HMReiPlugin : REIClientPlugin {
-
     val MATERIAL_ID: CategoryIdentifier<HTMaterialDisplay> = CategoryIdentifier.of(HTMaterialsAPI.id("material"))
 
     @Suppress("UnstableApiUsage")
@@ -46,6 +45,5 @@ object HMReiPlugin : REIClientPlugin {
     }
 
     override fun registerEntries(registry: EntryRegistry) {
-
     }
 }

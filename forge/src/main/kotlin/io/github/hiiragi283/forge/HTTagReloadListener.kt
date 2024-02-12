@@ -54,11 +54,7 @@ object HTTagReloadListener : SynchronousResourceReloader {
         HTMaterialsAPI.log("Reloaded Part Manager!")
     }
 
-    private fun <T> getTagMap(
-        prefix: String,
-        manager: ResourceManager,
-        getter: (Identifier) -> T?
-    ): Map<Identifier, Tag<T>> {
+    private fun <T> getTagMap(prefix: String, manager: ResourceManager, getter: (Identifier) -> T?): Map<Identifier, Tag<T>> {
         // Load tag builder map from json
         val builderMap: MutableMap<Identifier, Tag.Builder> =
             manager.findResources(prefix) { it.endsWith(".json") }.associate { id ->
@@ -79,7 +75,7 @@ object HTTagReloadListener : SynchronousResourceReloader {
                 builderMap.entries.iterator()
             while (iterator.hasNext()) {
                 val (id: Identifier, builder: Tag.Builder) = iterator.next()
-                val optionalTag: Optional<Tag<T>> = builder.build(tagMap::get, getter)
+                val optionalTag: Optional<Tag<T>> = builder.build(tagMap::get, getter).right()
                 if (!optionalTag.isPresent) continue
                 tagMap[id] = optionalTag.get()
                 iterator.remove()

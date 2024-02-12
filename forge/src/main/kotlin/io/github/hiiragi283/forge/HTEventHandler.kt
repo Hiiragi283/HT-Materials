@@ -2,8 +2,11 @@ package io.github.hiiragi283.forge
 
 import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.material.HTMaterialKey
+import io.github.hiiragi283.api.util.resource.HTResourcePackProvider
 import net.minecraft.item.ItemStack
+import net.minecraft.resource.ResourceType
 import net.minecraft.text.Text
+import net.minecraftforge.event.AddPackFindersEvent
 import net.minecraftforge.event.AddReloadListenerEvent
 import net.minecraftforge.event.entity.player.ItemTooltipEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
@@ -12,8 +15,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fml.common.Mod
 
 @Mod.EventBusSubscriber
+@Suppress("unused")
 object HTEventHandler {
-    @Suppress("unused")
     @SubscribeEvent
     fun onAddReloadListener(event: AddReloadListenerEvent) {
         event.addListener(HTTagReloadListener)
@@ -21,7 +24,15 @@ object HTEventHandler {
     }
 
     @SubscribeEvent
-    @Suppress("unused")
+    fun onAddPackFinder(event: AddPackFindersEvent) {
+        when (event.packType) {
+            ResourceType.CLIENT_RESOURCES -> HTResourcePackProvider.CLIENT
+            ResourceType.SERVER_DATA -> HTResourcePackProvider.SERVER
+            null -> throw IllegalStateException()
+        }.let(event::addRepositorySource)
+    }
+
+    @SubscribeEvent
     fun onItemTooltip(event: ItemTooltipEvent) {
         val stack: ItemStack = event.itemStack
         if (stack.isEmpty) return

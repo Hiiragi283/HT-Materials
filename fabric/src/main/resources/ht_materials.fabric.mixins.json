@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.hiiragi283.fabric.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ModResourcePackCreatorMixin",
+    "TagKeyMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

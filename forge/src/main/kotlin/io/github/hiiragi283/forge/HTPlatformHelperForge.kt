@@ -12,8 +12,12 @@ import net.minecraft.fluid.Fluid
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.Item
 import net.minecraft.item.Items
+import net.minecraft.tag.BlockTags
+import net.minecraft.tag.TagKey
 import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 import net.minecraftforge.api.distmarker.Dist
+import net.minecraftforge.common.Tags
 import net.minecraftforge.fml.ModList
 import net.minecraftforge.fml.loading.FMLLoader
 import net.minecraftforge.forgespi.language.IModInfo
@@ -63,5 +67,15 @@ class HTPlatformHelperForge : HTPlatformHelper {
 
     override fun registerItemColor(provider: ItemColorProvider, item: Item) {
         itemColors.register(provider, item)
+    }
+
+    override fun getMiningLevelTag(level: Int): TagKey<Block> = when {
+        level == 0 -> Tags.Blocks.NEEDS_WOOD_TOOL
+        level == 1 -> BlockTags.NEEDS_STONE_TOOL
+        level == 2 -> BlockTags.NEEDS_IRON_TOOL
+        level == 3 -> BlockTags.NEEDS_DIAMOND_TOOL
+        level == 4 -> Tags.Blocks.NEEDS_NETHERITE_TOOL
+        level > 5 -> TagKey.of(Registry.BLOCK_KEY, Identifier("forge", "needs_tool_level_$level"))
+        else -> throw IllegalStateException()
     }
 }

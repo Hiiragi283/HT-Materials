@@ -4,6 +4,7 @@ import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.HTPlatformHelper
 import net.fabricmc.api.EnvType
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
+import net.fabricmc.fabric.api.mininglevel.v1.MiningLevelManager
 import net.fabricmc.loader.api.FabricLoader
 import net.fabricmc.loader.api.ModContainer
 import net.fabricmc.loader.api.metadata.ModMetadata
@@ -12,6 +13,7 @@ import net.minecraft.client.color.block.BlockColorProvider
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.fluid.Fluid
 import net.minecraft.item.Item
+import net.minecraft.tag.TagKey
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 
@@ -52,4 +54,6 @@ class HTPlatformHelperFabric : HTPlatformHelper {
     override fun registerItemColor(provider: ItemColorProvider, item: Item) {
         ColorProviderRegistry.ITEM.register(provider, item)
     }
+
+    override fun getMiningLevelTag(level: Int): TagKey<Block> = MiningLevelManager.getBlockTag(level)
 }

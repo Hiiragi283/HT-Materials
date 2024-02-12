@@ -32,8 +32,7 @@ object HTRuntimeResourcePack : HTRuntimePackBase(ResourceType.CLIENT_RESOURCES) 
         get() = _data
     private val _data: ConcurrentMap<Identifier, JsonElement> = ConcurrentHashMap()
 
-    private fun getBlockStateId(block: Block): Identifier =
-        Registry.BLOCK.getId(block).modify { "blockstates/$it.json" }
+    private fun getBlockStateId(block: Block): Identifier = Registry.BLOCK.getId(block).modify { "blockstates/$it.json" }
 
     @JvmStatic
     fun addBlockState(block: Block, blockStateSupplier: BlockStateSupplier) {

@@ -5,6 +5,7 @@ import io.github.hiiragi283.api.material.HTMaterialKey
 import io.github.hiiragi283.api.shape.HTShapeKey
 import net.minecraft.fluid.FlowableFluid
 import net.minecraft.item.BlockItem
+import net.minecraft.tag.TagKey
 import java.util.function.Supplier
 import net.minecraft.block.Block as MCBlock
 import net.minecraft.fluid.Fluid as MCFluid
@@ -16,7 +17,9 @@ sealed class HTMaterialContent<T>(val shapeKey: HTShapeKey, val objClass: Class<
     open fun postInit(materialKey: HTMaterialKey) {}
 
     enum class Type {
-        BLOCK, FLUID, ITEM;
+        BLOCK,
+        FLUID,
+        ITEM,
     }
 
     //    Block    //
@@ -31,6 +34,9 @@ sealed class HTMaterialContent<T>(val shapeKey: HTShapeKey, val objClass: Class<
             block = HTPlatformHelper.INSTANCE.registerBlock(blockId(materialKey), block(materialKey))
             blockItem = HTPlatformHelper.INSTANCE.registerItem(blockId(materialKey), blockItem(materialKey))
         }
+
+        open var toolTag: TagKey<MCBlock>? = null
+        open var toolLevel: Int = 0
 
         abstract fun blockId(materialKey: HTMaterialKey): String
 

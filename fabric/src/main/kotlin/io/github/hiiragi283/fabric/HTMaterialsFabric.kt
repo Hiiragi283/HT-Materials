@@ -5,7 +5,6 @@ import io.github.hiiragi283.api.HTPlatformHelper
 import io.github.hiiragi283.api.material.HTMaterialRegistry
 import io.github.hiiragi283.api.part.HTPart
 import io.github.hiiragi283.api.shape.HTShapeRegistry
-import io.github.hiiragi283.api.util.resource.HTResourcePackProvider
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.DedicatedServerModInitializer
 import net.fabricmc.api.ModInitializer
@@ -17,7 +16,6 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -57,9 +55,6 @@ object HTMaterialsFabric : PreLaunchEntrypoint, ModInitializer, ClientModInitial
         HTMaterialsCoreFabric.postInitialize(HTPlatformHelper.Side.CLIENT)
         HTMaterialsCoreFabric.registerRecipes()
         ItemTooltipCallback.EVENT.register(HTMaterialsFabric::getTooltip)
-        (MinecraftClient.getInstance().resourcePackManager as MutableResourcePackManager)
-            .`ht_materials$addPackProvider`(HTResourcePackProvider.CLIENT)
-        HTMaterialsAPI.log("Registered runtime resource pack!")
         HTMaterialsAPI.log("Client post-initialize completed!")
     }
 

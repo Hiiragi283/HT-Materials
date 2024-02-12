@@ -1,10 +1,9 @@
-package io.github.hiiragi283.forge.content
+package io.github.hiiragi283.api.material.content
 
 import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.HTPlatformHelper
 import io.github.hiiragi283.api.material.HTMaterialKey
 import io.github.hiiragi283.api.material.HTMaterialType
-import io.github.hiiragi283.api.material.content.HTMaterialContent
 import io.github.hiiragi283.api.shape.HTShapeKey
 import io.github.hiiragi283.api.shape.HTShapeKeys
 import io.github.hiiragi283.api.util.addObject
@@ -23,11 +22,11 @@ import net.minecraft.block.Block as MCBlock
 
 class HTStorageBlockContent(
     private val strength: Float = 5.0f,
-    private val toolType: TagKey<MCBlock>? = null,
-    private val toolLevel: Int = 0,
+    override var toolTag: TagKey<MCBlock>? = null,
+    override var toolLevel: Int = 0,
 ) : HTMaterialContent.Block(HTShapeKeys.BLOCK) {
     private fun getBlockSetting(type: HTMaterialType): AbstractBlock.Settings = AbstractBlock.Settings.of(type.blockMaterial).apply {
-        toolType?.let {
+        toolTag?.let {
             strength(strength)
             requiresTool()
         } ?: run {

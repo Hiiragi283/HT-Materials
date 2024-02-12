@@ -4,8 +4,6 @@ import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.HTPlatformHelper
 import io.github.hiiragi283.api.material.HTMaterialRegistry
 import io.github.hiiragi283.api.shape.HTShapeRegistry
-import io.github.hiiragi283.api.util.resource.HTResourcePackProvider
-import net.minecraft.client.MinecraftClient
 import net.minecraft.item.Item
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
@@ -41,11 +39,6 @@ object HTMaterialsForge {
         }
 
         MinecraftForge.EVENT_BUS.register(::aboutToServerStart)
-
-        HTPlatformHelper.INSTANCE.onSide(HTPlatformHelper.Side.CLIENT) {
-            MinecraftClient.getInstance().resourcePackManager.addPackFinder(HTResourcePackProvider.CLIENT)
-            HTMaterialsAPI.log("Registered runtime resource pack!")
-        }
     }
 
     private fun commonSetup(event: FMLCommonSetupEvent) {
@@ -63,7 +56,5 @@ object HTMaterialsForge {
     @JvmStatic
     private fun aboutToServerStart(event: ServerAboutToStartEvent) {
         HTMaterialsCoreForge.registerRecipes()
-        event.server.dataPackManager.addPackFinder(HTResourcePackProvider.SERVER)
-        HTMaterialsAPI.log("Registered runtime data pack!")
     }
 }
