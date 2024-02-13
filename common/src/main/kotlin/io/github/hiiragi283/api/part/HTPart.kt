@@ -26,15 +26,15 @@ data class HTPart(
 
     companion object {
         @JvmStatic
-        private lateinit var cache: Map<Identifier, HTPart>
+        private lateinit var cache: Map<String, HTPart>
 
         @JvmStatic
         fun initCache() {
-            val map: MutableMap<Identifier, HTPart> = hashMapOf()
+            val map: MutableMap<String, HTPart> = hashMapOf()
             HTMaterialsAPI.INSTANCE.shapeRegistry().getValues().forEach { shape ->
                 HTMaterialsAPI.INSTANCE.materialRegistry().getKeys().forEach { material ->
-                    shape.getCommonId(material)
-                    map[shape.getCommonId(material)] = HTPart(material, shape.key)
+                    map[shape.getFabricId(material).path] = HTPart(material, shape.key)
+                    map[shape.getForgeId(material).path] = HTPart(material, shape.key)
                 }
             }
             cache = map
@@ -44,6 +44,9 @@ data class HTPart(
         fun fromTag(tag: TagKey<*>): HTPart? = fromId(tag.id)
 
         @JvmStatic
-        fun fromId(id: Identifier): HTPart? = if (id.namespace == "c") cache[id] else null
+        fun fromId(id: Identifier): HTPart? = fromPath(id.path).takeIf { id.namespace in listOf("c", "forge") }
+
+        @JvmStatic
+        fun fromPath(path: String): HTPart? = cache[path]
     }
 }

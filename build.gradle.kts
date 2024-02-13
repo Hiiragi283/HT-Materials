@@ -43,20 +43,23 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven(url = "https://cursemaven.com") {
-            content { includeGroup("curse.maven") }
-        }
-        maven(url = "https://api.modrinth.com/maven") {
-            content { includeGroup("maven.modrinth") }
-        }
-        maven(url = "https://maven.architectury.dev/")
-        maven(url = "https://maven.blamejared.com") {
-            content { includeGroup("vazkii.patchouli") }
-        }
-        maven(url = "https://maven.shedaniel.me/") //REI
-        maven(url = "https://maven.terraformersmc.com/releases/")
-        maven(url = "https://thedarkcolour.github.io/KotlinForForge/") //KfF
-        maven(url = "https://dvs1.progwml6.com/files/maven/") //JEI
+        maven(url = "https://api.modrinth.com/maven")
+        maven(url = "https://cursemaven.com")
+        maven(url = "https://dvs1.progwml6.com/files/maven")
+        maven(url = "https://jitpack.io")
+        maven(url = "https://maven.architectury.dev")
+        maven(url = "https://maven.blamejared.com")
+        maven(url = "https://maven.blamejared.com") // JEI
+        maven(url = "https://maven.jamieswhiteshirt.com/libs-release") // Reach Entity Attributes
+        maven(url = "https://maven.ladysnake.org/releases")
+        maven(url = "https://maven.shedaniel.me") // REI
+        maven(url = "https://maven.terraformersmc.com/releases") //Mod Menu
+        maven(url = "https://maven.tterrag.com") // Flywheel
+        maven(url = "https://mvn.devos.one/snapshots") // Create
+        maven(url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") // DevAuth
+        maven(url = "https://raw.githubusercontent.com/SolidBlock-cn/mvn-repo/main")
+        maven(url = "https://thedarkcolour.github.io/KotlinForForge") // KFF
+        maven(url = "https://ueaj.dev/maven")
     }
 
     dependencies {

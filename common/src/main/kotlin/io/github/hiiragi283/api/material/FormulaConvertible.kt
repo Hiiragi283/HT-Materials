@@ -4,27 +4,6 @@ fun interface FormulaConvertible {
     fun asFormula(): String
 
     companion object {
-        @JvmField
-        val EMPTY = FormulaConvertible { "" }
-
-        @JvmStatic
-        fun of(vararg formulas: FormulaConvertible) = of(formulas.associateWith { 1 })
-
-        @JvmStatic
-        fun of(vararg pair: Pair<FormulaConvertible, Int>) = of(pair.toMap())
-
-        @JvmStatic
-        fun of(map: Map<FormulaConvertible, Int>) =
-            FormulaConvertible { format(map.mapKeys { (formula: FormulaConvertible, _) -> formula.asFormula() }) }
-
-        @JvmStatic
-        fun ofString(vararg formulas: String) = ofString(formulas.associateWith { 1 })
-
-        @JvmStatic
-        fun ofString(vararg pairs: Pair<String, Int>) = ofString(pairs.toMap())
-
-        @JvmStatic
-        fun ofString(map: Map<String, Int>) = FormulaConvertible { format(map) }
 
         @JvmStatic
         fun format(formulas: Iterable<String>): String = format(formulas.associateWith { 1 })

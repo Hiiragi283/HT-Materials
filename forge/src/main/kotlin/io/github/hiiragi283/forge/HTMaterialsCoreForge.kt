@@ -51,7 +51,7 @@ internal object HTMaterialsCoreForge : HTMaterialsCore() {
 
     override fun ingotRecipe(partManager: HTPartManager, materialKey: HTMaterialKey, item: Item) {
         if (!partManager.hasItem(materialKey, HTShapeKeys.NUGGET)) return
-        val nuggetTagId: Identifier = HTShapeKeys.NUGGET.getShape().getCommonId(materialKey)
+        val nuggetTagId: Identifier = HTShapeKeys.NUGGET.getShape().getForgeId(materialKey)
         HTRuntimeDataPack.addRecipe(
             HTShapeKeys.INGOT.getShape().getIdentifier(materialKey).prefix("shaped/"),
             buildJson {
@@ -75,7 +75,7 @@ internal object HTMaterialsCoreForge : HTMaterialsCore() {
 
     override fun nuggetRecipe(partManager: HTPartManager, materialKey: HTMaterialKey, item: Item) {
         if (!partManager.hasItem(materialKey, HTShapeKeys.INGOT)) return
-        val ingotTagId: Identifier = HTShapeKeys.INGOT.getShape().getCommonId(materialKey)
+        val ingotTagId: Identifier = HTShapeKeys.INGOT.getShape().getForgeId(materialKey)
         HTRuntimeDataPack.addRecipe(
             HTShapeKeys.NUGGET.getShape().getIdentifier(materialKey).prefix("shapeless/"),
             buildJson {

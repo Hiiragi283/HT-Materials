@@ -47,6 +47,10 @@
     "ht_materials": [
       {
         "adapter": "kotlin",
+        "value": "io.github.hiiragi283.fabric.compat.HMCreateAddon"
+      },
+      {
+        "adapter": "kotlin",
         "value": "io.github.hiiragi283.fabric.compat.HMIRAddon"
       },
       {
@@ -62,7 +66,7 @@
         "value": "io.github.hiiragi283.fabric.compat.HTMaterialsInitFabric"
       }
     ],
-    "rei_plugins_v0": [
+    "rei_client": [
       {
         "adapter": "kotlin",
         "value": "io.github.hiiragi283.fabric.compat.rei.HMReiPlugin"

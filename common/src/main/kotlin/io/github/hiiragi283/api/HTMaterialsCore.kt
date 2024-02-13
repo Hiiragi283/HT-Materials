@@ -48,16 +48,21 @@ abstract class HTMaterialsCore {
         val idPathMap: Map<HTShapeKey, String> = buildMap {
             addons.forEach { it.modifyShapeIdPath(this) }
         }
-        // Register shape tag path
-        val tagPathMap: Map<HTShapeKey, String> = buildMap {
-            addons.forEach { it.modifyShapeTagPath(this) }
+        // Register shape fabric tag path
+        val fabricTagPathMap: Map<HTShapeKey, String> = buildMap {
+            addons.forEach { it.modifyShapeFabricTagPath(this) }
+        }
+        // Register shape forge tag path
+        val forgeTagPathMap: Map<HTShapeKey, String> = buildMap {
+            addons.forEach { it.modifyShapeForgeTagPath(this) }
         }
         // Create and register shape
         val shapeMap: Map<HTShapeKey, HTShape> = buildMap {
             shapeKeySet.forEach { key: HTShapeKey ->
                 val idPath: String = idPathMap.getOrDefault(key, "%s_${key.name}")
-                val tagPath: String = tagPathMap.getOrDefault(key, "${idPath}s")
-                putIfAbsent(key, HTShape(key, idPath, tagPath))
+                val fabricTagPath: String = fabricTagPathMap.getOrDefault(key, "${idPath}s")
+                val forgeTagPath: String = forgeTagPathMap.getOrDefault(key, "")
+                putIfAbsent(key, HTShape(key, idPath, fabricTagPath, forgeTagPath))
                 HTMaterialsAPI.log("Shape: ${key.name} registered!")
             }
         }

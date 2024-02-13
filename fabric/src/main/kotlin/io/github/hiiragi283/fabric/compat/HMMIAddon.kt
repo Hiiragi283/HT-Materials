@@ -43,16 +43,4 @@ object HMMIAddon : HTMaterialsAddon {
             }
         }
     }
-
-    /*override fun commonSetup() {
-        HTRecipeRegisterCallback.EVENT.register { handler ->
-            handler.addMIRecipe(
-                HTMaterialsFabric.id("test_mi"),
-                MIRecipeJson.create(MIMachineRecipeTypes.MIXER, 32, 200)
-                    .addItemInput(HTPartManagerOld.getDefaultItem(HTElementMaterials.COPPER, HTShapes.DUST)!!, 3)
-                    .addItemInput(HTPartManagerOld.getDefaultItem(HTElementMaterials.TIN, HTShapes.DUST)!!, 1)
-                    .addItemOutput(HTPartManagerOld.getDefaultItem(HTCommonMaterials.BRONZE, HTShapes.DUST)!!, 4)
-                )
-        }
-    }*/
 }

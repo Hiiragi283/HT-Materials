@@ -76,7 +76,9 @@ class HTPartManager(builder: Builder) {
 
     fun hasItem(part: HTPart): Boolean = partToItemsMap.containsKey(part)
 
-    data class Entry(val materialKey: HTMaterialKey, val shapeKey: HTShapeKey, val item: Item)
+    data class Entry(val materialKey: HTMaterialKey, val shapeKey: HTShapeKey, val item: Item) {
+        fun getPart(): HTPart = HTPart(materialKey, shapeKey)
+    }
 
     class Builder {
         internal val itemToPartMap: MutableMap<Item, HTPart> = mutableMapOf()

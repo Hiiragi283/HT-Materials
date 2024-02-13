@@ -26,10 +26,16 @@ object HTEventHandler {
     @SubscribeEvent
     fun onAddPackFinder(event: AddPackFindersEvent) {
         when (event.packType) {
-            ResourceType.CLIENT_RESOURCES -> HTResourcePackProvider.CLIENT
-            ResourceType.SERVER_DATA -> HTResourcePackProvider.SERVER
-            null -> throw IllegalStateException()
-        }.let(event::addRepositorySource)
+            ResourceType.CLIENT_RESOURCES -> {
+                event.addRepositorySource(HTResourcePackProvider.CLIENT)
+                HTMaterialsAPI.log("Registered runtime resource pack!")
+            }
+            ResourceType.SERVER_DATA -> {
+                event.addRepositorySource(HTResourcePackProvider.SERVER)
+                HTMaterialsAPI.log("Registered runtime data pack!")
+            }
+            else -> {}
+        }
     }
 
     @SubscribeEvent

@@ -35,7 +35,7 @@ sealed class HTMaterialContent<T>(val shapeKey: HTShapeKey, val objClass: Class<
             blockItem = HTPlatformHelper.INSTANCE.registerItem(blockId(materialKey), blockItem(materialKey))
         }
 
-        open var toolTag: TagKey<MCBlock>? = null
+        open var toolTag: Supplier<TagKey<MCBlock>>? = null
         open var toolLevel: Int = 0
 
         abstract fun blockId(materialKey: HTMaterialKey): String

@@ -28,17 +28,17 @@ public abstract class TagGroupLoaderMixin<T> implements HTTagLoader<T> {
 
     @Nullable
     @Unique
-    private Registry<T> registry;
+    private Registry<T> ht_materials$registry;
 
     @Nullable
     @Override
     public Registry<T> ht_materials$getRegistry() {
-        return registry;
+        return ht_materials$registry;
     }
 
     @Override
     public void ht_materials$setRegistry(Registry<T> registry) {
-        this.registry = registry;
+        this.ht_materials$registry = registry;
     }
 
 }

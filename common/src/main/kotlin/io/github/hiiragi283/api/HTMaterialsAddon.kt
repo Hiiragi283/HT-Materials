@@ -24,7 +24,9 @@ interface HTMaterialsAddon {
 
     fun modifyShapeIdPath(registry: MutableMap<HTShapeKey, String>) {}
 
-    fun modifyShapeTagPath(registry: MutableMap<HTShapeKey, String>) {}
+    fun modifyShapeFabricTagPath(registry: MutableMap<HTShapeKey, String>) {}
+
+    fun modifyShapeForgeTagPath(registry: MutableMap<HTShapeKey, String>) {}
 
     fun registerMaterialKey(registry: ImmutableSet.Builder<HTMaterialKey>) {}
 

@@ -1,4 +1,4 @@
-package io.github.hiiragi283.fabric.example;
+package io.github.hiiragi283.example;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -10,6 +10,7 @@ import io.github.hiiragi283.api.material.HTMaterialKey;
 import io.github.hiiragi283.api.material.HTMaterialType;
 import io.github.hiiragi283.api.material.composition.HTMaterialComposition;
 import io.github.hiiragi283.api.material.content.HTMaterialContentMap;
+import io.github.hiiragi283.api.material.content.HTStorageBlockContent;
 import io.github.hiiragi283.api.material.element.HTElement;
 import io.github.hiiragi283.api.material.property.HTMaterialPropertyMap;
 import io.github.hiiragi283.api.part.HTPartManager;
@@ -17,9 +18,9 @@ import io.github.hiiragi283.api.shape.HTShapeKey;
 import io.github.hiiragi283.api.shape.HTShapeKeys;
 import io.github.hiiragi283.api.util.HTColor;
 import io.github.hiiragi283.api.util.collection.DefaultedMap;
-import io.github.hiiragi283.fabric.content.HTSimpleFluidContent;
 import io.github.hiiragi283.api.material.content.HTSimpleItemContent;
 import net.minecraft.item.Items;
+import net.minecraft.tag.BlockTags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -70,7 +71,7 @@ public class HTTestAddon implements HTMaterialsAddon {
     @Override
     public void modifyMaterialContent(@NotNull DefaultedMap<HTMaterialKey, HTMaterialContentMap> registry) {
         HTMaterialContentMap builder = registry.getOrCreate(INFINITY_KEY);
-        builder.add(new HTSimpleFluidContent());
+        builder.add(new HTStorageBlockContent(5.0f, () -> BlockTags.PICKAXE_MINEABLE, 4));
         builder.add(new HTSimpleItemContent(HTShapeKeys.DUST));
         builder.add(new HTSimpleItemContent(HTShapeKeys.GEAR));
         builder.add(new HTSimpleItemContent(HTShapeKeys.INGOT));

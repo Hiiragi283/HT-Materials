@@ -18,11 +18,12 @@ import net.minecraft.tag.TagKey
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import java.util.function.Supplier
 import net.minecraft.block.Block as MCBlock
 
 class HTStorageBlockContent(
     private val strength: Float = 5.0f,
-    override var toolTag: TagKey<MCBlock>? = null,
+    override var toolTag: Supplier<TagKey<MCBlock>>? = null,
     override var toolLevel: Int = 0,
 ) : HTMaterialContent.Block(HTShapeKeys.BLOCK) {
     private fun getBlockSetting(type: HTMaterialType): AbstractBlock.Settings = AbstractBlock.Settings.of(type.blockMaterial).apply {

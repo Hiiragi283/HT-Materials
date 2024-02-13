@@ -4,7 +4,10 @@
   "package": "io.github.hiiragi283.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DataPackContentMixin",
+    "OptionalTagEntryMixin",
     "TagBuilderAccessor",
+    "TagEntryMixin",
     "TagGroupLoaderMixin",
     "TagManagerLoaderMixin"
   ],

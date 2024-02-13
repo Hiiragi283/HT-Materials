@@ -41,8 +41,10 @@ val fabricKotlin: String by rootProject
 val modMenu: String by rootProject
 val rei: String by rootProject
 val indRev: String by rootProject
+val mi: String by rootProject
 
 dependencies {
+    // Fabric
     modImplementation("net.fabricmc:fabric-loader:$fabricLoader") {
         exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
@@ -55,22 +57,54 @@ dependencies {
         exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
     }
-    modImplementation("maven.modrinth:modmenu:$modMenu") {
+    // Mod Menu
+    modLocalRuntime("maven.modrinth:modmenu:$modMenu") {
         exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
     }
+    // REI
     modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:$rei") {
         exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
     }
+    // Tech Reborn
     modImplementation("TechReborn:TechReborn-1.18:+") {
         exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
     }
-    modImplementation("curse.maven:industrial-revolution-391708:$indRev") {
+    // Industrial Revolution
+    modCompileOnly("curse.maven:industrial-revolution-391708:$indRev") {
         exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
     }
+    // Create
+    modImplementation("com.simibubi.create:create-fabric-1.18.2:0.5.1-c-build.1159+mc1.18.2") {
+        exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
+    }
+
+    /*modCompileOnly("com.tterrag.registrate_fabric:Registrate:MC1.18.2-1.1.7") {
+        exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
+    }*/
+
+    // Modern Industrialization
+    modCompileOnly("maven.modrinth:modern-industrialization:$mi") {
+        exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
+    }
+    // LazyDFU
+    modLocalRuntime("maven.modrinth:lazydfu:0.1.2") {
+        exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
+    }
+    // DevAuth
+    // Dev Only
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.0") {
+        exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
+    }
+    // Common
     add(
         "common",
         project(path = ":common", configuration = "namedElements").apply { isTransitive = false },

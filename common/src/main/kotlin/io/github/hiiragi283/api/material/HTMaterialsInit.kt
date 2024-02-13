@@ -6,6 +6,7 @@ import io.github.hiiragi283.api.HTMaterialsAddon
 import io.github.hiiragi283.api.material.composition.HTMaterialComposition
 import io.github.hiiragi283.api.material.content.HTMaterialContentMap
 import io.github.hiiragi283.api.material.content.HTSimpleItemContent
+import io.github.hiiragi283.api.material.content.HTStorageBlockContent
 import io.github.hiiragi283.api.material.element.HTElements
 import io.github.hiiragi283.api.shape.HTShapeKey
 import io.github.hiiragi283.api.shape.HTShapeKeys
@@ -13,6 +14,7 @@ import io.github.hiiragi283.api.util.HTColor
 import io.github.hiiragi283.api.util.addAll
 import io.github.hiiragi283.api.util.collection.DefaultedMap
 import net.minecraft.item.Item
+import net.minecraft.tag.BlockTags
 import java.awt.Color
 
 abstract class HTMaterialsInit : HTMaterialsAddon {
@@ -35,6 +37,20 @@ abstract class HTMaterialsInit : HTMaterialsAddon {
             HTShapeKeys.PLATE,
             HTShapeKeys.ROD,
         )
+    }
+
+    override fun modifyShapeForgeTagPath(registry: MutableMap<HTShapeKey, String>) {
+        // Block
+        registry[HTShapeKeys.BLOCK] = "storage_blocks/%s"
+        registry[HTShapeKeys.ORE] = "ores/%s"
+        // Items
+        registry[HTShapeKeys.DUST] = "dusts/%s"
+        registry[HTShapeKeys.GEAR] = "gears/%s"
+        registry[HTShapeKeys.GEM] = "gems/%s"
+        registry[HTShapeKeys.INGOT] = "ingots/%s"
+        registry[HTShapeKeys.NUGGET] = "nuggets/%s"
+        registry[HTShapeKeys.PLATE] = "plates/%s"
+        registry[HTShapeKeys.ROD] = "rods/%s"
     }
 
     override fun registerMaterialKey(registry: ImmutableSet.Builder<HTMaterialKey>) {
@@ -379,6 +395,7 @@ abstract class HTMaterialsInit : HTMaterialsAddon {
             .add(HTSimpleItemContent(HTShapeKeys.PLATE))
         // 3rd Period
         registry.getOrCreate(HTMaterialKeys.ALUMINUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.SILICON)
             .addMetalComponents()
@@ -388,39 +405,51 @@ abstract class HTMaterialsInit : HTMaterialsAddon {
             .add(HTSimpleItemContent(HTShapeKeys.DUST))
         // 4th Period
         registry.getOrCreate(HTMaterialKeys.TITANIUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 3))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.IRON)
             .addMetalComponents()
             .remove<Item>(HTShapeKeys.INGOT)
             .remove<Item>(HTShapeKeys.NUGGET)
         registry.getOrCreate(HTMaterialKeys.NICKEL)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.COPPER)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.ZINC)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         // 5th Period
         registry.getOrCreate(HTMaterialKeys.SILVER)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.TIN)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         // 6th Period
         registry.getOrCreate(HTMaterialKeys.TUNGSTEN)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 3))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.IRIDIUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 3))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.PLATINUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 3))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.GOLD)
             .addMetalComponents()
             .remove<Item>(HTShapeKeys.INGOT)
             .remove<Item>(HTShapeKeys.NUGGET)
         registry.getOrCreate(HTMaterialKeys.LEAD)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         // 7th Period
         registry.getOrCreate(HTMaterialKeys.URANIUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.PLUTONIUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         // Vanilla - Fluids
         // Vanilla - Gems
@@ -500,33 +529,46 @@ abstract class HTMaterialsInit : HTMaterialsAddon {
         // Common - Fluids
         // Common - Gems
         registry.getOrCreate(HTMaterialKeys.CINNABAR)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .add(HTSimpleItemContent(HTShapeKeys.DUST))
             .add(HTSimpleItemContent(HTShapeKeys.GEM))
         registry.getOrCreate(HTMaterialKeys.COKE)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE))
             .add(HTSimpleItemContent(HTShapeKeys.DUST))
             .add(HTSimpleItemContent(HTShapeKeys.GEM))
         registry.getOrCreate(HTMaterialKeys.OLIVINE)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addGemComponents()
         registry.getOrCreate(HTMaterialKeys.PERIDOT)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addGemComponents()
         registry.getOrCreate(HTMaterialKeys.RUBY)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 3))
             .addGemComponents()
         registry.getOrCreate(HTMaterialKeys.SALT)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addGemComponents()
         registry.getOrCreate(HTMaterialKeys.SAPPHIRE)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 3))
             .addGemComponents()
         // Common - Metals
         registry.getOrCreate(HTMaterialKeys.BRASS)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.BRONZE)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 1))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.ELECTRUM)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.INVAR)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.STAINLESS_STEEL)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         registry.getOrCreate(HTMaterialKeys.STEEl)
+            .add(HTStorageBlockContent(toolTag = BlockTags::PICKAXE_MINEABLE, toolLevel = 2))
             .addMetalComponents()
         // Common - Solids
         registry.getOrCreate(HTMaterialKeys.ASHES)
@@ -534,6 +576,7 @@ abstract class HTMaterialsInit : HTMaterialsAddon {
         registry.getOrCreate(HTMaterialKeys.BAUXITE)
             .add(HTSimpleItemContent(HTShapeKeys.DUST))
         registry.getOrCreate(HTMaterialKeys.RUBBER)
+            .add(HTStorageBlockContent())
             .addMetalComponents()
         // Common - Stones
         registry.getOrCreate(HTMaterialKeys.MARBLE)
