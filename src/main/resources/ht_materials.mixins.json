@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.hiiragi283.material.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "TagGroupLoaderMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

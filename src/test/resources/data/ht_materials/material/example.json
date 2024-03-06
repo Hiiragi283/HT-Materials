@@ -1,0 +1,25 @@
+{
+  "composition": {
+    "components": [
+      {
+        "element": {
+          "id": "c:carbon"
+        },
+        "weight": 6
+      }
+    ],
+    "color": {
+      "red": 255,
+      "green": 255,
+      "blue": 255
+    },
+    "formula": "Sugar",
+    "molar": 180.0
+  },
+  "flags": [
+    "flag1",
+    "flag2",
+    "flag3"
+  ],
+  "properties": []
+}
