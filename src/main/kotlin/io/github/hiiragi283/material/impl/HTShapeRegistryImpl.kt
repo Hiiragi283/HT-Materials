@@ -5,6 +5,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.extension.getJsonMultiMap
+import io.github.hiiragi283.api.extension.runTryAndCatch
 import io.github.hiiragi283.api.shape.HTShape
 import io.github.hiiragi283.api.shape.HTShapeRegistry
 import io.github.hiiragi283.material.HTMaterials
@@ -27,13 +28,15 @@ object HTShapeRegistryImpl : HTShapeRegistry, SimpleSynchronousResourceReloadLis
                 // Reload from Data Pack
                 getJsonMultiMap(manager, "shape").values.forEach { jsonObjects: Collection<JsonObject> ->
                     jsonObjects.forEach { jsonObject: JsonObject ->
-                        JsonHelper.getArray(jsonObject, "add", null)
-                            ?.map(JsonElement::getAsString)
-                            ?.forEach<String>(::add)
+                        runTryAndCatch {
+                            JsonHelper.getArray(jsonObject, "add", null)
+                                ?.map(JsonElement::getAsString)
+                                ?.forEach<String>(::add)
+                        }
                     }
                 }
                 // Reload from Addons
-                HTMaterials.addons.forEach { it.modifyShapeRegistry(this) }
+                HTMaterials.addons.forEach { runTryAndCatch { it.modifyShapeRegistry(this) } }
                 // Initialize
                 this@HTShapeRegistryImpl.registry = this.registry
                 HTMaterialsAPI.log("HTShapeRegistry initialized!")

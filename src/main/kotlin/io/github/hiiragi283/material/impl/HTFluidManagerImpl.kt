@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMultimap
 import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.extension.allModsId
 import io.github.hiiragi283.api.extension.notEmptyOrNull
+import io.github.hiiragi283.api.extension.runTryAndCatch
 import io.github.hiiragi283.api.extension.values
 import io.github.hiiragi283.api.fluid.HTFluidManager
 import io.github.hiiragi283.api.material.HTMaterialKey
@@ -31,22 +32,26 @@ object HTFluidManagerImpl : HTFluidManager, SimpleSynchronousResourceReloadListe
 
     override fun reload(manager: ResourceManager) {
         HTFluidManager.Builder().run {
+            runTryAndCatch {
+            }
             // Reload from Tags
             HTMaterialsAPI.INSTANCE.materialRegistry().keys.forEach { materialKey: HTMaterialKey ->
                 TagKey.of(RegistryKeys.FLUID, materialKey.getCommonId()).values(Registries.FLUID).forEach { fluid ->
-                    add(materialKey, fluid)
+                    runTryAndCatch { add(materialKey, fluid) }
                 }
             }
             // Reload from Fluids
             allModsId.forEach { modId: String ->
                 HTMaterialsAPI.INSTANCE.materialRegistry().keys.forEach { materialKey: HTMaterialKey ->
                     Registries.FLUID.get(Identifier(modId, materialKey.name)).notEmptyOrNull()?.run {
-                        add(materialKey, this)
+                        runTryAndCatch { add(materialKey, this) }
                     }
                 }
             }
             // Reload from Addons
-            HTMaterials.addons.forEach { it.modifyFluidManager(this) }
+            HTMaterials.addons.forEach {
+                runTryAndCatch { it.modifyFluidManager(this) }
+            }
             // Initialize
             this@HTFluidManagerImpl.fluidToMaterialMap = this@run.fluidToMaterialMap
             this@HTFluidManagerImpl.materialToFluidsMap = this@run.materialToFluidsMap

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMultimap
 import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.extension.allModsId
 import io.github.hiiragi283.api.extension.nonAirOrNull
+import io.github.hiiragi283.api.extension.runTryAndCatch
 import io.github.hiiragi283.api.extension.values
 import io.github.hiiragi283.api.material.HTMaterialKey
 import io.github.hiiragi283.api.part.HTPart
@@ -35,7 +36,7 @@ object HTPartManagerImpl : HTPartManager, SimpleSynchronousResourceReloadListene
             HTMaterialsAPI.INSTANCE.materialRegistry().keys.forEach { materialKey: HTMaterialKey ->
                 HTMaterialsAPI.INSTANCE.shapeRegistry().values.forEach { shapeKey: HTShape ->
                     HTPart(materialKey, shapeKey).getPartTag().values(Registries.ITEM).forEach { item: Item ->
-                        add(materialKey, shapeKey, item)
+                        runTryAndCatch { add(materialKey, shapeKey, item) }
                     }
                 }
             }
@@ -44,13 +45,13 @@ object HTPartManagerImpl : HTPartManager, SimpleSynchronousResourceReloadListene
                 HTMaterialsAPI.INSTANCE.materialRegistry().keys.forEach { materialKey: HTMaterialKey ->
                     HTMaterialsAPI.INSTANCE.shapeRegistry().values.forEach { shapeKey: HTShape ->
                         Registries.ITEM.get(shapeKey.getId(materialKey, modid)).nonAirOrNull()?.run {
-                            add(materialKey, shapeKey, this)
+                            runTryAndCatch { add(materialKey, shapeKey, this) }
                         }
                     }
                 }
             }
             // Reload from Addons
-            HTMaterials.addons.forEach { it.modifyPartManager(this) }
+            HTMaterials.addons.forEach { runTryAndCatch { it.modifyPartManager(this) } }
             // Initialize
             this@HTPartManagerImpl.itemToEntryMap = this@run.itemToEntryMap
             this@HTPartManagerImpl.partToEntriesMap = this@run.partToEntriesMap

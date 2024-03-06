@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder
 import io.github.hiiragi283.api.extension.*
 import io.github.hiiragi283.api.material.element.HTElement
 import java.awt.Color
-import java.util.*
 
 abstract class HTMaterialComposition : Encodable<HTMaterialComposition> {
     abstract val componentMap: Map<HTElement, Int>

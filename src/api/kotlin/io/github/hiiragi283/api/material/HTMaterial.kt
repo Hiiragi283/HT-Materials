@@ -6,9 +6,9 @@ import io.github.hiiragi283.api.HTMaterialsAPI
 import io.github.hiiragi283.api.extension.Encodable
 import io.github.hiiragi283.api.material.composition.HTMaterialComposition
 import io.github.hiiragi283.api.material.element.HTElement
-import io.github.hiiragi283.api.material.property.HTMaterialProperty
 import io.github.hiiragi283.api.material.property.HTPropertyMap
 import io.github.hiiragi283.api.material.property.HTPropertyType
+import io.github.hiiragi283.api.material.property.MaterialTooltipProvider
 import io.github.hiiragi283.api.material.type.HTMaterialType
 import io.github.hiiragi283.api.material.type.HTMaterialTypes
 import io.github.hiiragi283.api.shape.HTShape
@@ -20,7 +20,7 @@ import java.util.function.Consumer
 
 class HTMaterial(builder: Builder) : Encodable<HTMaterial> {
     val key: HTMaterialKey = HTMaterialKey(builder.key)
-    val composition: HTMaterialComposition = builder.composition ?: HTMaterialComposition.EMPTY
+    val composition: HTMaterialComposition = builder.composition
     val flags: Set<String> = builder.flags.toSet()
     val properties: HTPropertyMap = HTPropertyMap(builder.properties)
     private val type: HTMaterialType = HTMaterialTypes.UNDEFINED
@@ -64,15 +64,15 @@ class HTMaterial(builder: Builder) : Encodable<HTMaterial> {
 
     //    Properties    //
 
-    fun forEachProperty(biConsumer: BiConsumer<HTPropertyType<*>, HTMaterialProperty>) {
+    fun forEachProperty(biConsumer: BiConsumer<HTPropertyType<*>, Any>) {
         properties.forEach(biConsumer)
     }
 
-    fun forEachProperty(action: (HTPropertyType<*>, HTMaterialProperty) -> Unit) {
+    fun forEachProperty(action: (HTPropertyType<*>, Any) -> Unit) {
         properties.forEach(action)
     }
 
-    fun <T : HTMaterialProperty> getProperty(key: HTPropertyType<T>): T? = key.cast(properties[key])
+    fun <T> getProperty(key: HTPropertyType<T>): T? = key.cast(properties[key])
 
     fun hasProperty(key: HTPropertyType<*>): Boolean = key in properties
 
@@ -99,7 +99,9 @@ class HTMaterial(builder: Builder) : Encodable<HTMaterial> {
             lines.add(Text.translatable("tooltip.ht_materials.material.molar", molar))
         }
         // Tooltip from Properties
-        properties.values.forEach { it.appendTooltip(this, shapeKey, stack, lines) }
+        properties.values
+            .filterIsInstance<MaterialTooltipProvider>()
+            .forEach { it.appendTooltip(this, shapeKey, stack, lines) }
     }
 
     //    Any    //
@@ -109,7 +111,7 @@ class HTMaterial(builder: Builder) : Encodable<HTMaterial> {
     //    Builder    //
 
     class Builder(val key: String) {
-        var composition: HTMaterialComposition? = null
+        var composition: HTMaterialComposition = HTMaterialComposition.EMPTY
         val flags: MutableCollection<String> = mutableSetOf()
         val properties: HTPropertyMap.Builder = HTPropertyMap.Builder()
 
@@ -117,9 +119,9 @@ class HTMaterial(builder: Builder) : Encodable<HTMaterial> {
             merge(other.composition, other.flags, other.properties)
         }
 
-        fun merge(composition: HTMaterialComposition?, flags: Collection<String>, properties: HTPropertyMap.Builder) {
+        fun merge(composition: HTMaterialComposition, flags: Collection<String>, properties: HTPropertyMap.Builder) {
             // composition
-            composition?.let { this.composition = it }
+            composition.let { this.composition = it }
             // flags
             this.flags.addAll(flags)
             // properties

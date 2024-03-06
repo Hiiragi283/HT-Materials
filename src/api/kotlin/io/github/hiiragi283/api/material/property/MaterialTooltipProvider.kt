@@ -5,11 +5,11 @@ import io.github.hiiragi283.api.shape.HTShape
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 
-interface HTMaterialProperty {
+fun interface MaterialTooltipProvider {
     fun appendTooltip(
         material: HTMaterial,
-        shapeKey: HTShape?,
+        shape: HTShape?,
         stack: ItemStack,
         lines: MutableList<Text>,
-    ) {}
+    )
 }

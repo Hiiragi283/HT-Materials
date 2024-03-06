@@ -2,12 +2,9 @@ package io.github.hiiragi283.material.impl.prop
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
-import io.github.hiiragi283.api.HTMaterialsAPI
-import io.github.hiiragi283.api.material.property.HTMaterialProperty
 import io.github.hiiragi283.api.material.property.HTPropertyType
 import net.minecraft.item.ToolMaterial
 import net.minecraft.recipe.Ingredient
-import net.minecraft.registry.Registry
 import net.minecraft.util.dynamic.Codecs
 
 class HTToolMaterialProperty(
@@ -17,7 +14,16 @@ class HTToolMaterialProperty(
     private val miningLevel: Int,
     private val enchantability: Int,
     private val repairIngredient: Ingredient,
-) : HTMaterialProperty, ToolMaterial {
+) : ToolMaterial {
+    constructor(other: ToolMaterial) : this(
+        other.durability,
+        other.miningSpeedMultiplier,
+        other.attackDamage,
+        other.miningLevel,
+        other.enchantability,
+        other.repairIngredient,
+    )
+
     //    ToolMaterial    //
 
     override fun getDurability(): Int = durability
@@ -50,9 +56,5 @@ class HTToolMaterialProperty(
                 }
             },
         )
-
-        init {
-            Registry.register(HTMaterialsAPI.Registries.PROPERTY_TYPE, HTMaterialsAPI.id("material_tool"), TYPE)
-        }
     }
 }

@@ -36,6 +36,10 @@ object HTMaterials : ModInitializer, ClientModInitializer, DedicatedServerModIni
 
     internal lateinit var addons: Iterable<HTMaterialsAddon>
 
+    init {
+        HTMaterialsAPIImpl
+    }
+
     private fun initAddons() {
         addons = getEntrypoints<HTMaterialsAddon>(HTMaterialsAPI.MOD_ID)
             .filter { isModLoaded(it.modId) }

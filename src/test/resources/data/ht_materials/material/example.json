@@ -1,11 +1,19 @@
 {
+  "key": "example",
   "composition": {
-    "components": [
+    "componentMap": [
       {
+        "weight": 1,
         "element": {
-          "id": "c:carbon"
-        },
-        "weight": 6
+          "id": "c:iron",
+          "color": {
+            "red": 255,
+            "green": 255,
+            "blue": 255
+          },
+          "formula": "Fe",
+          "molar": 55.8
+        }
       }
     ],
     "color": {
@@ -13,13 +21,20 @@
       "green": 255,
       "blue": 255
     },
-    "formula": "Sugar",
-    "molar": 180.0
+    "formula": "Fe",
+    "molar": 55.8
   },
-  "flags": [
-    "flag1",
-    "flag2",
-    "flag3"
-  ],
-  "properties": []
+  "flags": [],
+  "properties": {
+    "ht_materials:material_tool": {
+      "mining_level": 2,
+      "enchantability": 14,
+      "repair": {
+        "item": "minecraft:iron_ingot"
+      },
+      "durability": 250,
+      "mining_speed": 6.0,
+      "attack_damage": 2.0
+    }
+  }
 }
